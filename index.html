@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>Sostenibilidad Global SpA | Sostenibilidad, datos y tecnología</title>
+<meta name="description" content="Sostenibilidad, datos geoespaciales, tecnología, producción y comunicación sobre OpenStreetMap, desde Los Ángeles, Región del Biobío.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Sostenibilidad Global SpA">
+<meta property="og:description" content="Sostenibilidad, datos geoespaciales y tecnología al servicio del territorio, desde el Biobío.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ctext y=%22.9em%22 font-size=%2290%22%3E🌿%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="vendor/leaflet/leaflet.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Montserrat:wght@600;700;800&display=swap">
+<link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+<div id="map" role="application" aria-label="Mapa de la Región del Biobío"></div>
+
+<div id="ui">
+  <header class="top">
+    <button class="brand" type="button" data-k="quienes">Sostenibilidad <span>Global</span></button>
+    <nav class="nav" id="nav" aria-label="Secciones"></nav>
+  </header>
+
+  <main class="mid">
+    <section class="card intro" id="intro" aria-labelledby="h1">
+      <div class="card-h"><h1 id="h1"></h1><button class="min" type="button" aria-label="Minimizar presentación"></button></div>
+      <div class="card-b"><p id="intro-t"></p><small id="intro-s"></small>
+      <small id="intro-c"></small></div>
+    </section>
+    <section class="card tagsC" id="areas" aria-labelledby="areas-t">
+      <div class="card-h"><h2 id="areas-t" class="lbl"></h2><button class="min" type="button" aria-label="Minimizar áreas de trabajo"></button></div>
+      <div class="card-b" id="tags"></div>
+    </section>
+  </main>
+
+  <aside class="card" id="panel" role="dialog" aria-labelledby="pt" inert>
+    <div class="card-h"><h2 id="pt" tabindex="-1"></h2>
+      <span class="btns"><button class="min" type="button" aria-label="Minimizar detalle"></button><button id="x" type="button" aria-label="Cerrar detalle">×</button></span>
+    </div>
+    <div class="card-b" id="pb"></div>
+  </aside>
+
+  <a id="lnk" class="fab" href="#" target="_blank" rel="noopener" aria-label="LinkedIn de Gustavo Godoy" title="LinkedIn"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path fill="currentColor" d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg></a>
+
+  <div id="aviso" role="status" hidden><span id="aviso-t"></span><button type="button" id="aviso-x" aria-label="Cerrar aviso">×</button></div>
+</div>
+
+<noscript><p class="nojs">Este sitio necesita JavaScript para mostrar el mapa.</p></noscript>
+<script src="vendor/leaflet/leaflet.js"></script>
+<script src="assets/js/app.js"></script>
+</body>
+</html>
