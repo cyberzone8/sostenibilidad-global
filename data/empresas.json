@@ -1,0 +1,16 @@
+{
+  "_ayuda": "Empresas verificadas que aparecen en el mapa. Copia el bloque de 'ejemplo', cambia los datos y pon activo:true. lat/lng vienen en el mensaje de WhatsApp del cliente.",
+  "empresas": [
+    {
+      "id": "ejemplo",
+      "activo": false,
+      "nombre": "Empresa de ejemplo",
+      "rubro": "Reciclaje de cartón",
+      "comuna": "Los Ángeles",
+      "descripcion": "Texto breve aprobado por la empresa.",
+      "web": "https://ejemplo.cl",
+      "lat": -37.4697,
+      "lng": -72.3537
+    }
+  ]
+}
