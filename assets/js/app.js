@@ -7,7 +7,7 @@
   const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   const getJSON = async (u) => { const r = await fetch(u, { cache: "no-cache" }); if (!r.ok) throw new Error(`${u} (${r.status})`); return r.json(); };
 
-  const S = { cfg: null, grupos: [], servicios: [], secciones: [], empresas: [], pick: null, pickMk: null, picking: false, map: null, demo: null, tiles: { ok: 0, err: 0 }, lastFocus: null };
+  const S = { cfg: null, grupos: [], servicios: [], secciones: [], empresas: [], emp: null, empMissing: false, empNear: null, empCob: null, pick: null, pickMk: null, picking: false, map: null, demo: null, tiles: { ok: 0, err: 0 }, lastFocus: null };
   const narrow = () => matchMedia("(max-width:760px)").matches;
 
   /* ---------- Avisos ---------- */
@@ -39,6 +39,86 @@
       <button class="btn alt" type="button" id="pick">📍 Marcar ubicación en el mapa</button> <span class="nota" id="pickT">${S.pick ? `Ubicación marcada (${S.pick.lat.toFixed(5)}, ${S.pick.lng.toFixed(5)})` : "Opcional: facilita la verificación."}</span><br>
       <button class="btn" type="button" id="reg">Enviar por WhatsApp</button>`;
   }
+
+  /* ---------- Modo empresa (?e=id): la misma página con la marca y el mapa de una empresa ---------- */
+  const NOM_DIA = ["", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+  const hm = (t) => { const [h, m] = String(t).split(":").map(Number); return h * 60 + (m || 0); };
+  function abiertoAhora(hor) {
+    if (!Array.isArray(hor) || !hor.length) return null;
+    try {
+      const p = new Intl.DateTimeFormat("en-GB", { timeZone: "America/Santiago", weekday: "short", hour: "2-digit", minute: "2-digit", hour12: false }).formatToParts(new Date());
+      const g = (t) => p.find((x) => x.type === t).value;
+      const wd = { Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6, Sun: 7 }[g("weekday")];
+      const now = (Number(g("hour")) % 24) * 60 + Number(g("minute"));
+      return hor.some((b) => (b.dias || []).includes(wd) && hm(b.abre) <= now && now < hm(b.cierra));
+    } catch (e) { return null; }
+  }
+  const waE = (t) => `https://wa.me/${S.emp.whatsapp || S.cfg.sitio.whatsapp}?text=${encodeURIComponent(t)}`;
+  const msgBase = () => S.emp.mensajeWhatsApp || `Hola, vi a ${S.emp.nombre} en Sostenibilidad Global y quiero hacer una consulta.`;
+  const dirUrl = () => `https://www.google.com/maps/dir/?api=1&destination=${S.emp.lat},${S.emp.lng}`;
+  const telHref = (t) => "tel:" + String(t).replace(/[^\d+]/g, "");
+  const estadoHtml = () => { const a = abiertoAhora(S.emp.horario); return a === null ? "" : `<span class="estado ${a ? "ab" : "ce"}">${a ? "Abierto ahora" : "Cerrado ahora"}</span>`; };
+  const horarioHtml = () => {
+    const e = S.emp; if (!(e.horario || []).length) return "";
+    return `<h3>Horario</h3><table class="hor">${e.horario.map((b) => `<tr><td>${esc(b.etiqueta)}</td><td>${esc(b.abre)} – ${esc(b.cierra)}</td></tr>`).join("")}</table>${e.horarioNota ? `<p class="nota">${esc(e.horarioNota)}</p>` : ""}`;
+  };
+  const botonesEmp = (texto) => {
+    const e = S.emp;
+    return `<div class="acts"><a class="btn" href="${esc(waE(texto || msgBase()))}" target="_blank" rel="noopener">Escribir por WhatsApp</a>${e.telefono ? `<a class="btn alt" href="${esc(telHref(e.telefono))}">Llamar</a>` : ""}<a class="btn alt" href="${esc(dirUrl())}" target="_blank" rel="noopener">Cómo llegar</a></div>`;
+  };
+  function renderEmpresa(id) {
+    const e = S.emp, sv = e.servicios || [];
+    if (id === "info" || id === "contacto") {
+      const cob = e.cobertura ? `<h3>Zona de atención</h3><p>${esc(e.cobertura.texto || "")}</p>${e.cobertura.radioKm ? `<button class="btn alt" type="button" data-zoom="cob">Ver zona en el mapa</button>` : ""}` : "";
+      const lista = sv.length ? `<h3>Servicios</h3><ul>${sv.map((s) => `<li>${esc(s.titulo)}</li>`).join("")}</ul>` : "";
+      const pie = e.prototipo ? "Prototipo con datos de ejemplo, pendientes de confirmar con la empresa." : "✓ Empresa verificada por Sostenibilidad Global SpA.";
+      return { t: e.nombre, h: `<span class="ey">${esc(e.rubro)} · ${esc(e.comuna)}</span> ${estadoHtml()}<p>${esc(e.descripcion || "")}</p><p><b>Dirección:</b> ${esc(e.direccion || e.comuna)}</p>${botonesEmp()}${horarioHtml()}${lista}${cob}<p class="nota">${esc(pie)}</p>` };
+    }
+    const m = /^sv:(\d+)$/.exec(id), s = m && sv[Number(m[1])];
+    if (!s) return null;
+    return { t: s.titulo, h: `<span class="ey">${esc(e.nombre)}</span><p>${esc(s.detalle || "")}</p>${botonesEmp(`Hola, vi a ${e.nombre} en Sostenibilidad Global y necesito: ${s.titulo}.`)}` };
+  }
+  function setupEmp() {
+    const e = S.emp;
+    const d = `${e.rubro} en ${e.comuna}, Región del Biobío. ${e.descripcion || ""}`.trim();
+    const meta = (sel, v) => { const m = $(sel); if (m) m.setAttribute("content", v); };
+    document.title = `${e.nombre} | ${e.rubro} en ${e.comuna}`;
+    meta('meta[name="description"]', d); meta('meta[property="og:title"]', e.nombre); meta('meta[property="og:description"]', d);
+    const br = $(".brand"); br.dataset.k = "info"; br.textContent = e.nombre;
+    $("#h1").innerHTML = `${esc(e.nombre)} <em>${esc(e.rubro)} en ${esc(e.comuna)}</em>`;
+    $("#intro-t").textContent = e.descripcion || "";
+    $("#intro-s").innerHTML = `${esc(e.direccion || e.comuna)} ${estadoHtml()}${e.prototipo ? ' <span class="estado pr">Prototipo · datos de ejemplo</span>' : ""}`;
+    $("#intro-c").innerHTML = [`<a href="${esc(waE(msgBase()))}" target="_blank" rel="noopener">Escribir por WhatsApp</a>`, e.telefono ? `<a href="${esc(telHref(e.telefono))}">${esc(e.telefono)}</a>` : "", `<a href="${esc(dirUrl())}" target="_blank" rel="noopener">Cómo llegar</a>`].filter(Boolean).join(" · ");
+    $("#areas-t").textContent = "Servicios";
+    $("#tags").innerHTML = `<div class="chips">${(e.servicios || []).map((s, i) => `<button class="chip" type="button" data-k="sv:${i}">${esc(s.titulo)}</button>`).join("")}</div>`;
+    $("#nav").innerHTML = `<button type="button" data-k="info">Sobre nosotros</button><button type="button" data-k="contacto">Contacto y horario</button><a class="navlink" href="${esc(dirUrl())}" target="_blank" rel="noopener">Cómo llegar ↗</a>`;
+    $("#lnk").hidden = true;
+    const red = document.createElement("a");
+    red.className = "red"; red.href = location.pathname; red.innerHTML = "🌿 Parte de la red <b>Sostenibilidad Global</b>";
+    $("#ui").appendChild(red);
+    if (!e.prototipo) {
+      const ld = { "@context": "https://schema.org", "@type": "AutoRepair", name: e.nombre, description: d, url: location.href,
+        address: { "@type": "PostalAddress", streetAddress: e.direccion || undefined, addressLocality: e.comuna, addressRegion: "Biobío", addressCountry: "CL" },
+        geo: { "@type": "GeoCoordinates", latitude: e.lat, longitude: e.lng }, telephone: e.telefono || undefined,
+        openingHoursSpecification: (e.horario || []).map((b) => ({ "@type": "OpeningHoursSpecification", dayOfWeek: b.dias.map((n) => NOM_DIA[n]), opens: b.abre, closes: b.cierra })) };
+      const sc = document.createElement("script"); sc.type = "application/ld+json";
+      sc.textContent = JSON.stringify(ld).replace(/</g, "\\u003c"); document.head.appendChild(sc);
+    } else {
+      aviso("Prototipo con datos de ejemplo: falta confirmar con el taller la dirección exacta, el teléfono o WhatsApp, el horario y los servicios.");
+    }
+  }
+  function empMap(m) {
+    const e = S.emp, ll = [e.lat, e.lng];
+    S.empNear = L.latLng(ll).toBounds(3000);
+    if (e.cobertura && e.cobertura.radioKm) {
+      S.empCob = L.circle(ll, { radius: e.cobertura.radioKm * 1000, color: "#1f6b4a", weight: 2, dashArray: "6 8", fillColor: "#5dbb8a", fillOpacity: 0.1, interactive: false }).addTo(m);
+    }
+    const pin = L.marker(ll, { icon: L.divIcon({ className: "", html: `<div class="pin"><i></i><b>${esc(e.nombre)}</b></div>`, iconSize: [0, 0] }), keyboard: true, title: e.nombre }).addTo(m);
+    pin.on("click", () => open("info"));
+    fit(S.empNear);
+  }
+  const zoomEmp = (k) => fit(k === "cob" && S.empCob ? S.empCob.getBounds() : S.empNear);
+
   const odsHtml = (a = []) => a.length ? `<div class="ods">${a.map((n) => `<span>ODS ${esc(n)} · ${esc(S.cfg.ods[n] || "")}</span>`).join("")}</div>` : "";
   const grupoTitulo = (id) => (S.grupos.find((g) => g.id === id) || {}).titulo || "";
   const activos = () => S.servicios.filter((s) => s.activo !== false);
@@ -72,13 +152,18 @@
 
   /* ---------- Panel ---------- */
   function open(id, need, fromUser = true) {
-    const sv = activos().find((s) => s.id === id);
-    const sc = S.secciones.find((s) => s.id === id && s.activo !== false);
-    if (!sv && !sc) return;
-    const r = sv ? renderServicio(sv) : renderSeccion(sc, need);
+    let sv = null, r;
+    if (S.emp) { r = renderEmpresa(id); if (!r) return; }
+    else {
+      sv = activos().find((s) => s.id === id);
+      const sc = S.secciones.find((s) => s.id === id && s.activo !== false);
+      if (!sv && !sc) return;
+      r = sv ? renderServicio(sv) : renderSeccion(sc, need);
+    }
     const p = $("#panel");
     $("#pt").textContent = r.t; $("#pb").innerHTML = r.h;
     if (fromUser) S.lastFocus = document.activeElement;
+    if (S.emp) $("#aviso").hidden = true;
     p.inert = false; p.classList.add("open"); setMin(p, false); p.scrollTop = 0;
     document.body.classList.add("pop");
     $$("[data-k]").forEach((b) => b.classList.toggle("on", b.dataset.k === id && !b.classList.contains("brand")));
@@ -119,6 +204,7 @@
           : "No se pudo cargar el mapa base de OpenStreetMap. Revisa tu conexión o la dirección de teselas en data/config.json.");
       }
     });
+    if (S.emp) { empMap(m); addEventListener("resize", () => m.invalidateSize()); return; }
     fit(c.limites);
     const pin = L.marker(c.centro, { icon: L.divIcon({ className: "", html: `<div class="pin"><i></i><b>${esc(c.etiquetaCentro)}</b></div>`, iconSize: [0, 0] }), keyboard: true, title: c.etiquetaCentro }).addTo(m);
     pin.on("click", () => open("quienes"));
@@ -126,7 +212,7 @@
       const mk = L.marker([e.lat, e.lng], { icon: L.divIcon({ className: "", html: '<div class="emp"></div>', iconSize: [0, 0] }), title: e.nombre, keyboard: true }).addTo(m);
       const w = safeUrl(e.web);
       const node = document.createElement("div");
-      node.innerHTML = `<b>${esc(e.nombre)}</b><br><small>✓ Verificada · ${esc(e.rubro)}${e.comuna ? " · " + esc(e.comuna) : ""}</small>${e.descripcion ? `<p>${esc(e.descripcion)}</p>` : ""}${w ? `<a href="${esc(w)}" target="_blank" rel="noopener">Sitio web</a>` : ""}`;
+      node.innerHTML = `<b>${esc(e.nombre)}</b><br><small>${e.prototipo ? "Prototipo (datos de ejemplo)" : "✓ Verificada"} · ${esc(e.rubro)}${e.comuna ? " · " + esc(e.comuna) : ""}</small>${e.descripcion ? `<p>${esc(e.descripcion)}</p>` : ""}${w ? `<a href="${esc(w)}" target="_blank" rel="noopener">Sitio web</a>` : ""}${e.servicios && e.servicios.length ? `<p><a href="?e=${encodeURIComponent(e.id)}">Ver ficha de la empresa →</a></p>` : ""}`;
       mk.bindPopup(node);
     });
     m.on("click", (ev) => {
@@ -153,9 +239,10 @@
 
   /* ---------- Eventos ---------- */
   document.addEventListener("click", (e) => {
-    const b = e.target.closest(".min, #x, [data-k], [data-need], #send, #pick, #reg");
+    const b = e.target.closest(".min, #x, [data-k], [data-need], [data-zoom], #send, #pick, #reg");
     if (!b) return;
     if (b.id === "x") return closeP();
+    if (b.dataset.zoom) return zoomEmp(b.dataset.zoom);
     if (b.classList.contains("min")) { const card = b.closest(".card"); return setMin(card, !card.classList.contains("is-min")); }
     if (b.id === "send") {
       const cuerpo = `Tipo de organización: ${$("#f1").value}\nNecesidad: ${$("#f2").value}\nUbicación: ${$("#f3").value}\n\n${$("#f4").value}`;
@@ -180,6 +267,8 @@
       const [cfg, sv, sc] = await Promise.all(["data/config.json", "data/servicios.json", "data/secciones.json"].map(getJSON));
       S.empresas = (await getJSON("data/empresas.json").catch(() => ({ empresas: [] }))).empresas || [];
       S.cfg = cfg; S.grupos = sv.grupos || []; S.servicios = sv.servicios || []; S.secciones = sc;
+      const eid = new URLSearchParams(location.search).get("e");
+      if (eid) { S.emp = S.empresas.find((x) => x.id === eid && x.activo !== false) || null; S.empMissing = !S.emp; }
     } catch (err) {
       aviso(location.protocol === "file:"
         ? "Los navegadores bloquean la lectura de datos al abrir el archivo directamente. Publica el sitio en GitHub Pages o ábrelo con un servidor local (python3 -m http.server)."
@@ -187,6 +276,7 @@
       return;
     }
     const t = S.cfg.textos, si = S.cfg.sitio;
+    if (S.emp) setupEmp(); else {
     $("#h1").innerHTML = `${esc(t.titulo)} <em>${esc(t.tituloEnfasis)}</em>`;
     $("#intro-t").textContent = t.intro;
     $("#intro-s").textContent = `${si.razonSocial} · RUT ${si.rut} · ${si.direccion}`;
@@ -200,9 +290,11 @@
       const items = activos().filter((s) => s.grupo === g.id);
       return items.length ? `<details class="grp"><summary>${esc(g.titulo)} <small>${items.length}</small></summary><div class="chips">${items.map((s) => `<button class="chip" type="button" data-k="${esc(s.id)}">${esc(s.titulo)}</button>`).join("")}</div></details>` : "";
     }).join("");
+    }
     $$(".card").forEach((c) => setMin(c, false));
     if (narrow()) setMin($("#intro"), true);
     initMap();
+    if (S.empMissing) aviso("No encontramos esa empresa. Te mostramos el mapa general.");
     const h = decodeURIComponent(location.hash.slice(1));
     if (h) open(h, null, false);
   }

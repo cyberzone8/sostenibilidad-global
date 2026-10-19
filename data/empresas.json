@@ -1,5 +1,5 @@
 {
-  "_ayuda": "Empresas verificadas que aparecen en el mapa. Copia el bloque de 'ejemplo', cambia los datos y pon activo:true. lat/lng vienen en el mensaje de WhatsApp del cliente.",
+  "_ayuda": "Empresas del mapa. Copia el bloque 'ejemplo', cambia los datos y pon activo:true. Si la empresa tiene 'servicios', su ficha se abre en modo empresa con ?e=<id> (ej.: index.html?e=diesel-jj). horario: dias 1=lunes ... 7=domingo. cobertura.radioKm dibuja la zona de atención. whatsapp vacío usa el de Sostenibilidad Global. prototipo:true marca la ficha como datos de ejemplo.",
   "empresas": [
     {
       "id": "ejemplo",
@@ -11,6 +11,71 @@
       "web": "https://ejemplo.cl",
       "lat": -37.4697,
       "lng": -72.3537
+    },
+    {
+      "id": "diesel-jj",
+      "activo": true,
+      "prototipo": true,
+      "nombre": "Servicio Técnico Diesel J.J",
+      "rubro": "Motores y maquinaria diésel",
+      "comuna": "Mulchén",
+      "direccion": "Mulchén, Región del Biobío (dirección exacta por confirmar)",
+      "descripcion": "Taller especializado en motores diésel para camiones, maquinaria agrícola y forestal. Diagnóstico, reparación y atención en terreno en Mulchén y alrededores.",
+      "web": "",
+      "telefono": null,
+      "whatsapp": null,
+      "mensajeWhatsApp": "Hola, vi Servicio Técnico Diesel J.J en Sostenibilidad Global y necesito una revisión para mi vehículo o maquinaria.",
+      "lat": -37.7167,
+      "lng": -72.2405,
+      "horario": [
+        {
+          "etiqueta": "Lunes a viernes",
+          "dias": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "abre": "08:30",
+          "cierra": "18:30"
+        },
+        {
+          "etiqueta": "Sábado",
+          "dias": [
+            6
+          ],
+          "abre": "09:00",
+          "cierra": "13:00"
+        }
+      ],
+      "horarioNota": "Domingo y festivos: cerrado. Urgencias en ruta: consultar por WhatsApp.",
+      "cobertura": {
+        "texto": "Mulchén y alrededores, hasta unos 40 km (ejemplo)",
+        "radioKm": 40
+      },
+      "servicios": [
+        {
+          "titulo": "Diagnóstico y scanner",
+          "detalle": "Revisión del motor y lectura de fallas para saber qué reparar antes de gastar. (Texto de ejemplo)"
+        },
+        {
+          "titulo": "Bombas e inyectores",
+          "detalle": "Revisión, prueba y reparación del sistema de inyección diésel. (Texto de ejemplo)"
+        },
+        {
+          "titulo": "Mantención de camiones y maquinaria",
+          "detalle": "Mantención preventiva para camiones, tractores y maquinaria forestal. (Texto de ejemplo)"
+        },
+        {
+          "titulo": "Servicio en terreno",
+          "detalle": "Atención donde está el equipo, dentro de la zona de cobertura. (Texto de ejemplo)"
+        },
+        {
+          "titulo": "Residuos del taller",
+          "detalle": "Orientación para dar destino autorizado al aceite usado, filtros y otros residuos del taller, junto a la red de Sostenibilidad Global. (Texto de ejemplo)"
+        }
+      ]
     }
   ]
 }
