@@ -1,0 +1,54 @@
+{
+  "sitio": {
+    "nombre": "Sostenibilidad Global",
+    "razonSocial": "Sostenibilidad Global SpA",
+    "rut": "77.430.133-K",
+    "direccion": "Qta Betania, Los Ángeles",
+    "correo": "sostenibilidadglobalspa@gmail.com",
+    "telefono": "+56 9 8594 7020",
+    "whatsapp": "56985947020",
+    "linkedin": "https://www.linkedin.com/in/gustavo-godoy-phd-confidential-strategic-advisor-9b505029"
+  },
+  "textos": {
+    "titulo": "Sostenibilidad, datos y tecnología",
+    "tituloEnfasis": "para tu territorio.",
+    "intro": "Proyectos ambientales y de economía circular, información geoespacial, sistemas informáticos, producción, logística y comunicación, desde la Región del Biobío. Elige un área de trabajo para ver qué hacemos.",
+    "areas": "Áreas de trabajo"
+  },
+  "mapa": {
+    "centro": [
+      -37.4697,
+      -72.3537
+    ],
+    "etiquetaCentro": "Sostenibilidad Global · Los Ángeles",
+    "limites": [
+      [
+        -38.9,
+        -73.8
+      ],
+      [
+        -36.0,
+        -71.0
+      ]
+    ],
+    "zoomMax": 19,
+    "teselas": {
+      "url": "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+      "atribucion": "© <a href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\" rel=\"noopener\">colaboradores de OpenStreetMap</a>"
+    }
+  },
+  "ods": {
+    "7": "Energía asequible y no contaminante",
+    "8": "Trabajo decente y crecimiento económico",
+    "9": "Industria, innovación e infraestructura",
+    "11": "Ciudades y comunidades sostenibles",
+    "12": "Producción y consumo responsables",
+    "13": "Acción por el clima",
+    "15": "Vida de ecosistemas terrestres",
+    "17": "Alianzas para lograr los objetivos"
+  },
+  "registro": {
+    "precioUF": null,
+    "textoPrecio": "El valor del registro se expresa en UF y se informa por WhatsApp antes de publicar."
+  }
+}

@@ -1,0 +1,172 @@
+[
+  {
+    "id": "quienes",
+    "activo": true,
+    "titulo": "Quiénes somos",
+    "eyebrow": "Sostenibilidad Global SpA",
+    "encabezado": "Ingeniería, consultoría y tecnología para la sustentabilidad",
+    "parrafos": [
+      "Somos una empresa de Los Ángeles, Región del Biobío. Combinamos sostenibilidad, información geográfica, tecnología y gestión de proyectos para ayudar a organizaciones a decidir mejor sobre sus recursos, su producción y su territorio: desde estudios ambientales y economía circular hasta sistemas informáticos, logística y comunicación.",
+      "Trabajamos con empresas, municipios y operadores autorizados. No transportamos ni disponemos residuos: habilitamos, validamos y registramos."
+    ],
+    "cta": {
+      "texto": "Conversemos",
+      "abre": "contacto"
+    }
+  },
+  {
+    "id": "metodo",
+    "activo": true,
+    "titulo": "Método",
+    "eyebrow": "Cómo trabajamos",
+    "encabezado": "Un proceso simple, con acuerdos por escrito",
+    "bloques": [
+      {
+        "titulo": "1 · Diagnóstico",
+        "texto": "Entendemos el problema, el residuo o el territorio."
+      },
+      {
+        "titulo": "2 · Diseño",
+        "texto": "Definimos la solución, el destino o el plan, con alternativas comparadas."
+      },
+      {
+        "titulo": "3 · Contrato",
+        "texto": "Alcance, tarifas, responsabilidades y confidencialidad por escrito."
+      },
+      {
+        "titulo": "4 · Operación y reportes",
+        "texto": "Seguimiento, registro en mapa e informes verificables."
+      }
+    ]
+  },
+  {
+    "id": "alianzas",
+    "activo": true,
+    "titulo": "Alianzas",
+    "eyebrow": "Alianzas",
+    "encabezado": "Crecemos junto a empresas establecidas",
+    "bloques": [
+      {
+        "titulo": "Generadores de residuos",
+        "texto": "Destino autorizado y respaldo documental.",
+        "enlace": {
+          "texto": "Escribir →",
+          "asunto": "Diagnóstico de residuos"
+        }
+      },
+      {
+        "titulo": "Operadores y valorizadores",
+        "texto": "Plantas con autorización vigente que quieren clientes con información ordenada.",
+        "enlace": {
+          "texto": "Escribir →",
+          "asunto": "Alianza con Sostenibilidad Global"
+        }
+      },
+      {
+        "titulo": "Sector público",
+        "texto": "Estudios, plataformas y apoyo técnico en licitaciones.",
+        "enlace": {
+          "texto": "Escribir →",
+          "asunto": "Licitaciones y proyectos públicos"
+        }
+      }
+    ]
+  },
+  {
+    "id": "futuro",
+    "activo": true,
+    "titulo": "Futuro sostenible",
+    "eyebrow": "Alineamiento con un futuro sostenible",
+    "encabezado": "Nuestro trabajo contribuye a los ODS",
+    "parrafos": [
+      "Los Objetivos de Desarrollo Sostenible de Naciones Unidas orientan nuestras áreas de trabajo. Cada servicio indica a cuáles contribuye."
+    ],
+    "ods": [
+      9,
+      11,
+      12,
+      13,
+      15,
+      17
+    ],
+    "nota": "Describe la orientación de nuestros servicios; no constituye una certificación."
+  },
+  {
+    "id": "anuncios",
+    "activo": true,
+    "titulo": "Anuncios",
+    "eyebrow": "Ofertas y anuncios",
+    "encabezado": "Novedades y oportunidades",
+    "bloques": [
+      {
+        "etiqueta": "Oferta",
+        "titulo": "Primera reunión de diagnóstico sin costo",
+        "texto": "Cuéntanos tu caso y te indicamos qué requisitos aplican. Cupos limitados cada mes."
+      },
+      {
+        "etiqueta": "Novedad",
+        "titulo": "Plataforma de trazabilidad en piloto",
+        "texto": "Perfiles de usuario y conexión con GPS de transportistas. Inscríbete para las pruebas."
+      },
+      {
+        "etiqueta": "Proyecto",
+        "titulo": "De residuo a recurso: valor para el Biobío",
+        "texto": "Diseño inicial de una planta que convierte residuos orgánicos en compost y fertilizantes. Buscamos socios, terreno y financiamiento."
+      }
+    ],
+    "nota": "Las condiciones de cada oferta se confirman por escrito."
+  },
+  {
+    "id": "expertos",
+    "activo": true,
+    "titulo": "Expertos Chile",
+    "eyebrow": "Empresa hermana",
+    "encabezado": "Expertos Chile SpA",
+    "parrafos": [
+      "Consultoría tecnológica, ingeniería de procesos y capacitación en inteligencia artificial. Expertos Chile aporta el análisis de procesos y costos; Sostenibilidad Global lo lleva a la operación y al territorio."
+    ],
+    "enlaceExterno": {
+      "texto": "Visitar Expertos Chile",
+      "url": "https://cyberzone8.github.io/expertoschile/"
+    }
+  },
+  {
+    "id": "programa",
+    "activo": true,
+    "titulo": "Programa",
+    "enlaceDirecto": "https://cyberzone8.github.io/liderazgo-territorial/"
+  },
+  {
+    "id": "empresas",
+    "activo": true,
+    "titulo": "Registra tu empresa",
+    "eyebrow": "Empresas en el mapa",
+    "encabezado": "Haz visible tu empresa o negocio en el mapa",
+    "parrafos": [
+      "Completa los datos, marca tu ubicación y envíalos por WhatsApp. Antes de publicar verificamos la información y nos contactamos contigo.",
+      "La publicación en el mapa tiene un valor en UF, que te informamos en esa conversación."
+    ],
+    "registro": true,
+    "mostrarContacto": true,
+    "nota": "Este sitio no guarda lo que escribes: el mensaje se prepara en tu WhatsApp y lo envías tú. Nada se publica sin verificación y acuerdo previo."
+  },
+  {
+    "id": "contacto",
+    "activo": true,
+    "titulo": "Contacto",
+    "eyebrow": "Contacto",
+    "encabezado": "¿Tienes un desafío ambiental o de residuos?",
+    "parrafos": [
+      "Cuéntanos qué necesitas y te respondemos directamente por WhatsApp."
+    ],
+    "formulario": true,
+    "tipos": [
+      "Empresa",
+      "Municipio u organismo público",
+      "Operador o valorizador",
+      "Otro"
+    ],
+    "ubicacionInicial": "Biobío, ",
+    "mostrarContacto": true
+  }
+]

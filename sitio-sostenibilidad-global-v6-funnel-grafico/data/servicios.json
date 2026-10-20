@@ -1,0 +1,646 @@
+{
+  "grupos": [
+    {
+      "id": "residuos",
+      "titulo": "Residuos y economía circular"
+    },
+    {
+      "id": "ambiental",
+      "titulo": "Gestión ambiental y territorio"
+    },
+    {
+      "id": "datos",
+      "titulo": "Datos, mapas y geoespacial"
+    },
+    {
+      "id": "tecnologia",
+      "titulo": "Sistemas informáticos y automatización"
+    },
+    {
+      "id": "produccion",
+      "titulo": "Producción, energía y recursos"
+    },
+    {
+      "id": "comercio",
+      "titulo": "Comercio y logística"
+    },
+    {
+      "id": "profesional",
+      "titulo": "Servicios profesionales y personas"
+    },
+    {
+      "id": "comunicacion",
+      "titulo": "Mercado, marca y comunicación"
+    }
+  ],
+  "servicios": [
+    {
+      "id": "simbiosis",
+      "activo": true,
+      "grupo": "residuos",
+      "titulo": "Simbiosis industrial",
+      "resumen": "Identificamos qué residuo de una organización puede ser insumo de otra y estructuramos la relación entre ambas.",
+      "acciones": [
+        "Mapeo de flujos de residuos y materias primas",
+        "Búsqueda y contacto de socios industriales",
+        "Diseño del acuerdo y de la logística"
+      ],
+      "ods": [
+        9,
+        12,
+        17
+      ]
+    },
+    {
+      "id": "valorizacion",
+      "activo": true,
+      "grupo": "residuos",
+      "titulo": "Valorización de residuos",
+      "resumen": "Evaluamos cómo transformar un residuo en un producto con mercado, junto a operadores autorizados.",
+      "acciones": [
+        "Estudios técnicos y económicos de alternativas",
+        "Diseño de rutas de transformación y subproductos",
+        "Revisión de permisos y requisitos"
+      ],
+      "ods": [
+        12,
+        15
+      ],
+      "enlace": {
+        "texto": "Ver el piloto para plantas de valorización",
+        "url": "valorizacion/"
+      }
+    },
+    {
+      "id": "destino",
+      "activo": true,
+      "grupo": "residuos",
+      "titulo": "Habilitación de destino",
+      "resumen": "Buscamos, comparamos y validamos destinos autorizados para tu residuo.",
+      "acciones": [
+        "Búsqueda y contacto de alternativas",
+        "Verificación de autorizaciones sanitarias y ambientales",
+        "Cotización comparada y recomendación"
+      ],
+      "ods": [
+        12
+      ]
+    },
+    {
+      "id": "trazabilidad",
+      "activo": true,
+      "grupo": "residuos",
+      "titulo": "Trazabilidad con mapa",
+      "resumen": "Registramos cada viaje sobre OpenStreetMap: origen, destino, toneladas y estado documental, con acceso según el perfil de cada usuario.",
+      "acciones": [
+        "Plataforma con mapa y perfiles de usuario",
+        "Integración con el GPS de transportistas",
+        "Reportes para auditorías y fiscalizaciones"
+      ],
+      "ods": [
+        9,
+        11,
+        12
+      ],
+      "mapa": {
+        "ruta": {
+          "desde": [
+            -37.4697,
+            -72.3537
+          ],
+          "hasta": [
+            -36.827,
+            -73.0503
+          ],
+          "etiqueta": "Ejemplo ilustrativo de una ruta"
+        }
+      }
+    },
+    {
+      "id": "problemas",
+      "activo": true,
+      "grupo": "ambiental",
+      "titulo": "Problemas ambientales",
+      "resumen": "Diagnosticamos problemas ambientales de una organización o territorio para entender sus causas y priorizar acciones.",
+      "acciones": [
+        "Línea base y levantamiento de información",
+        "Análisis de causas y efectos",
+        "Priorización de acciones"
+      ],
+      "ods": [
+        13,
+        15
+      ]
+    },
+    {
+      "id": "politica",
+      "activo": true,
+      "grupo": "ambiental",
+      "titulo": "Política y economía ambiental",
+      "resumen": "Analizamos cómo la regulación y los incentivos económicos influyen en las decisiones ambientales de tu organización.",
+      "acciones": [
+        "Revisión de requisitos normativos aplicables",
+        "Análisis de costo y beneficio de alternativas",
+        "Lineamientos de sostenibilidad"
+      ],
+      "ods": [
+        12,
+        17
+      ]
+    },
+    {
+      "id": "ecologia",
+      "activo": true,
+      "grupo": "ambiental",
+      "titulo": "Ecología y recursos naturales",
+      "resumen": "Usamos modelos para entender el uso de los recursos naturales y evaluar escenarios antes de decidir.",
+      "acciones": [
+        "Modelos y análisis de sistemas naturales",
+        "Evaluación de escenarios de uso",
+        "Indicadores de seguimiento"
+      ],
+      "ods": [
+        15
+      ]
+    },
+    {
+      "id": "decisiones",
+      "activo": true,
+      "grupo": "ambiental",
+      "titulo": "Ciencias ambientales para decidir",
+      "resumen": "Convertimos datos ambientales y geográficos en información clara para tomar decisiones.",
+      "acciones": [
+        "Análisis de datos y sistemas de información geográfica",
+        "Mapas y tableros de decisión",
+        "Informes técnicos comprensibles"
+      ],
+      "ods": [
+        9,
+        13
+      ]
+    },
+    {
+      "id": "evaluacion",
+      "activo": true,
+      "grupo": "ambiental",
+      "titulo": "Planificación y evaluación ambiental",
+      "resumen": "Apoyamos la planificación de proyectos y la evaluación de sus efectos ambientales, con medidas de mitigación.",
+      "acciones": [
+        "Apoyo técnico en estudios de impacto ambiental",
+        "Medidas de mitigación y seguimiento",
+        "Planes de manejo ambiental"
+      ],
+      "ods": [
+        11,
+        15
+      ]
+    },
+    {
+      "id": "gestion",
+      "activo": true,
+      "grupo": "ambiental",
+      "titulo": "Gestión ambiental",
+      "resumen": "Ordenamos la gestión ambiental de organizaciones: responsabilidades, procesos y cumplimiento.",
+      "acciones": [
+        "Diagnóstico de cumplimiento",
+        "Procedimientos y registros",
+        "Seguimiento de indicadores"
+      ],
+      "ods": [
+        12
+      ]
+    },
+    {
+      "id": "proyectos",
+      "activo": true,
+      "grupo": "ambiental",
+      "titulo": "Proyectos ambientales",
+      "resumen": "Diseñamos, administramos y hacemos seguimiento a proyectos ambientales, desde la idea hasta su cierre.",
+      "acciones": [
+        "Formulación y plan de trabajo",
+        "Gestión de plazos, costos y equipos",
+        "Propuestas para fondos y licitaciones"
+      ],
+      "ods": [
+        17
+      ]
+    },
+    {
+      "id": "clima",
+      "activo": true,
+      "grupo": "ambiental",
+      "titulo": "Cambio climático",
+      "resumen": "Evaluamos la vulnerabilidad de un territorio u organización y definimos medidas de adaptación y mitigación.",
+      "acciones": [
+        "Diagnóstico de vulnerabilidad",
+        "Medidas de adaptación y mitigación",
+        "Mapas de amenazas climáticas"
+      ],
+      "ods": [
+        13,
+        11
+      ]
+    },
+    {
+      "id": "riesgos",
+      "activo": true,
+      "grupo": "ambiental",
+      "titulo": "Riesgos de desastres",
+      "resumen": "Identificamos amenazas y capacidades de un territorio para preparar a comunidades y municipios.",
+      "acciones": [
+        "Mapas de amenazas y capacidades",
+        "Planes de preparación y respuesta",
+        "Talleres con comunidades"
+      ],
+      "ods": [
+        11,
+        13
+      ]
+    },
+    {
+      "id": "rehab",
+      "activo": true,
+      "grupo": "ambiental",
+      "titulo": "Rehabilitación ambiental",
+      "resumen": "Diseñamos la recuperación de suelos y ecosistemas terrestres degradados, con soluciones basadas en la naturaleza.",
+      "acciones": [
+        "Diagnóstico del sitio degradado",
+        "Diseño de la intervención",
+        "Monitoreo de la recuperación"
+      ],
+      "ods": [
+        15,
+        13
+      ]
+    },
+    {
+      "id": "asentamientos",
+      "activo": true,
+      "grupo": "ambiental",
+      "titulo": "Asentamientos sostenibles",
+      "resumen": "Apoyamos la planificación de localidades urbanas y rurales con criterios de sostenibilidad.",
+      "acciones": [
+        "Diagnóstico territorial",
+        "Análisis del metabolismo urbano",
+        "Propuestas de mejora junto a la comunidad"
+      ],
+      "ods": [
+        11
+      ]
+    },
+    {
+      "id": "turismo",
+      "activo": true,
+      "grupo": "ambiental",
+      "titulo": "Turismo sostenible",
+      "resumen": "Diseñamos planes para destinos locales que quieren crecer cuidando su territorio.",
+      "acciones": [
+        "Diagnóstico del destino",
+        "Plan de gestión y capacidad de carga",
+        "Indicadores de sostenibilidad"
+      ],
+      "ods": [
+        8,
+        11,
+        12
+      ]
+    },
+    {
+      "id": "investigacion",
+      "activo": true,
+      "grupo": "ambiental",
+      "titulo": "Investigación aplicada",
+      "resumen": "Realizamos investigación aplicada para resolver preguntas concretas de organizaciones y territorios.",
+      "acciones": [
+        "Diseño metodológico",
+        "Levantamiento y análisis de datos",
+        "Transferencia de resultados"
+      ],
+      "ods": [
+        9,
+        17
+      ]
+    },
+    {
+      "id": "nbs",
+      "activo": true,
+      "grupo": "ambiental",
+      "titulo": "Soluciones basadas en la naturaleza",
+      "resumen": "Diseñamos intervenciones que usan procesos naturales para resolver problemas urbanos y rurales.",
+      "acciones": [
+        "Diagnóstico y diseño de la solución",
+        "Evaluación de beneficios ambientales y sociales",
+        "Integración con el territorio y sus comunidades"
+      ],
+      "ods": [
+        11,
+        13,
+        15
+      ]
+    },
+    {
+      "id": "biomimetica",
+      "activo": true,
+      "grupo": "ambiental",
+      "titulo": "Biomimética",
+      "resumen": "Tomamos estrategias de la naturaleza como inspiración para productos, procesos y sistemas más eficientes.",
+      "acciones": [
+        "Búsqueda de referentes biológicos",
+        "Aplicación al diseño de procesos y productos",
+        "Estudios de factibilidad"
+      ],
+      "ods": [
+        9,
+        12
+      ]
+    },
+    {
+      "id": "produccion-limpia",
+      "activo": true,
+      "grupo": "residuos",
+      "titulo": "Producción más limpia y economía circular",
+      "resumen": "Revisamos procesos productivos para usar menos recursos y generar menos residuos.",
+      "acciones": [
+        "Diagnóstico de procesos y consumos",
+        "Medidas de eficiencia y circularidad",
+        "Seguimiento de resultados"
+      ],
+      "ods": [
+        9,
+        12
+      ]
+    },
+    {
+      "id": "metabolismo",
+      "activo": true,
+      "grupo": "ambiental",
+      "titulo": "Metabolismo urbano",
+      "resumen": "Medimos los flujos de energía, agua, materiales y residuos de una ciudad o zona para orientar decisiones.",
+      "acciones": [
+        "Balance de flujos del territorio",
+        "Identificación de oportunidades de aprovechamiento",
+        "Indicadores para seguimiento"
+      ],
+      "ods": [
+        11,
+        12
+      ]
+    },
+    {
+      "id": "impacto",
+      "activo": true,
+      "grupo": "ambiental",
+      "titulo": "Estudios de impacto ambiental",
+      "resumen": "Estudios para mitigar, adaptar o restaurar los efectos de un proyecto sobre su entorno.",
+      "acciones": [
+        "Línea base y evaluación de efectos",
+        "Medidas de mitigación y adaptación",
+        "Apoyo en la documentación técnica"
+      ],
+      "ods": [
+        13,
+        15
+      ]
+    },
+    {
+      "id": "sig",
+      "activo": true,
+      "grupo": "datos",
+      "titulo": "Sistemas de información geográfica",
+      "resumen": "Creamos bases de datos y cartografía para ver y analizar tu información sobre el territorio.",
+      "acciones": [
+        "Captura, edición y procesamiento de datos",
+        "Cartografía y visualización",
+        "Bases de datos multidimensionales"
+      ],
+      "ods": [
+        9,
+        11
+      ]
+    },
+    {
+      "id": "decision-geo",
+      "activo": true,
+      "grupo": "datos",
+      "titulo": "Soporte de decisión geoespacial",
+      "resumen": "Sistemas que combinan mapas y datos para decidir dónde y cómo actuar.",
+      "acciones": [
+        "Análisis espacial y modelación",
+        "Paneles y herramientas de consulta",
+        "Integración con tus sistemas"
+      ],
+      "ods": [
+        9,
+        11,
+        13
+      ]
+    },
+    {
+      "id": "tierra",
+      "activo": true,
+      "grupo": "datos",
+      "titulo": "Ciencias de la tierra y percepción remota",
+      "resumen": "Geología, topografía, geodesia, fotogrametría y percepción remota aplicadas a proyectos.",
+      "acciones": [
+        "Prospección y levantamiento de información",
+        "Procesamiento de imágenes y datos",
+        "Informes técnicos"
+      ],
+      "ods": [
+        9,
+        15
+      ]
+    },
+    {
+      "id": "software",
+      "activo": true,
+      "grupo": "tecnologia",
+      "titulo": "Desarrollo de sistemas informáticos",
+      "resumen": "Desarrollamos software a medida para actividades, procesos, maquinaria y organizaciones.",
+      "acciones": [
+        "Levantamiento de requerimientos",
+        "Diseño y desarrollo",
+        "Puesta en marcha y mejora continua"
+      ],
+      "ods": [
+        9,
+        17
+      ]
+    },
+    {
+      "id": "automatizacion",
+      "activo": true,
+      "grupo": "tecnologia",
+      "titulo": "Automatización, control y monitoreo",
+      "resumen": "Tecnología para controlar y monitorear sistemas naturales y artificiales.",
+      "acciones": [
+        "Diseño de procesos tecnológicos",
+        "Monitoreo de variables",
+        "Simulación y modelado"
+      ],
+      "ods": [
+        9,
+        12
+      ]
+    },
+    {
+      "id": "web",
+      "activo": true,
+      "grupo": "tecnologia",
+      "titulo": "Diseño web y plataformas",
+      "resumen": "Sitios y plataformas web claros, accesibles y fáciles de mantener.",
+      "acciones": [
+        "Diseño y desarrollo web",
+        "Integración con mapas y datos",
+        "Mantención"
+      ],
+      "ods": [
+        9
+      ]
+    },
+    {
+      "id": "energia",
+      "activo": true,
+      "grupo": "produccion",
+      "titulo": "Energías renovables y recursos naturales",
+      "resumen": "Estudios y diseño de proyectos de energía y de uso de recursos naturales.",
+      "acciones": [
+        "Evaluación de alternativas energéticas",
+        "Estudios de aprovechamiento de recursos",
+        "Diseño y simulación de proyectos"
+      ],
+      "ods": [
+        7,
+        13
+      ]
+    },
+    {
+      "id": "agro",
+      "activo": true,
+      "grupo": "produccion",
+      "titulo": "Producción agrícola, silvícola y animal",
+      "resumen": "Diseño, simulación y mejora de sistemas de producción del sector agropecuario y forestal.",
+      "acciones": [
+        "Diagnóstico y diseño productivo",
+        "Modelado de procesos",
+        "Innovación y administración de proyectos"
+      ],
+      "ods": [
+        8,
+        12,
+        15
+      ]
+    },
+    {
+      "id": "industria",
+      "activo": true,
+      "grupo": "produccion",
+      "titulo": "Producción industrial e innovación",
+      "resumen": "Diseño, simulación y desarrollo de productos, servicios y líneas de producción.",
+      "acciones": [
+        "Diseño y simulación de líneas de producción",
+        "Desarrollo de productos y servicios",
+        "Gestión de la innovación"
+      ],
+      "ods": [
+        9,
+        12
+      ]
+    },
+    {
+      "id": "abastecimiento",
+      "activo": true,
+      "grupo": "comercio",
+      "titulo": "Abastecimiento y logística",
+      "resumen": "Compra, venta, importación, exportación y distribución de materias primas, productos e insumos.",
+      "acciones": [
+        "Búsqueda de proveedores y compradores",
+        "Logística y distribución",
+        "Insumos para estudios, producción y construcción"
+      ],
+      "ods": [
+        8,
+        9,
+        17
+      ]
+    },
+    {
+      "id": "profesionales",
+      "activo": true,
+      "grupo": "profesional",
+      "titulo": "Servicios profesionales",
+      "resumen": "Servicios profesionales a personas, empresas y organismos públicos, en terreno o a distancia.",
+      "acciones": [
+        "Asesoría técnica y gestión de proyectos",
+        "Trabajo en terreno y remoto",
+        "Apoyo en licitaciones"
+      ],
+      "ods": [
+        8,
+        17
+      ]
+    },
+    {
+      "id": "personas",
+      "activo": true,
+      "grupo": "profesional",
+      "titulo": "Selección de personal y recursos humanos",
+      "resumen": "Selección de personal y gestión de recursos humanos para proyectos y organizaciones.",
+      "acciones": [
+        "Perfiles y búsqueda de candidatos",
+        "Gestión de equipos",
+        "Apoyo en procesos de contratación"
+      ],
+      "ods": [
+        8
+      ]
+    },
+    {
+      "id": "mercado",
+      "activo": true,
+      "grupo": "comunicacion",
+      "titulo": "Investigación de mercado y desarrollo de producto",
+      "resumen": "Entendemos el mercado y ayudamos a definir producto y canales de distribución.",
+      "acciones": [
+        "Estudios de mercado",
+        "Programación y desarrollo de producto",
+        "Canales de distribución y logística"
+      ],
+      "ods": [
+        8,
+        9
+      ]
+    },
+    {
+      "id": "marca",
+      "activo": true,
+      "grupo": "comunicacion",
+      "titulo": "Marca, marketing e internacionalización",
+      "resumen": "Comunicación, imagen, relaciones públicas, marketing y apertura a mercados internacionales.",
+      "acciones": [
+        "Posicionamiento de marca y publicidad",
+        "Análisis de redes sociales",
+        "Relaciones internacionales e internacionalización"
+      ],
+      "ods": [
+        8,
+        17
+      ]
+    },
+    {
+      "id": "video",
+      "activo": true,
+      "grupo": "comunicacion",
+      "titulo": "Video, edición y contenidos",
+      "resumen": "Producción audiovisual: video, edición y musicalización para tu comunicación.",
+      "acciones": [
+        "Producción y edición de video",
+        "Musicalización",
+        "Contenidos para web y redes"
+      ],
+      "ods": [
+        9
+      ]
+    }
+  ]
+}
