@@ -127,3 +127,19 @@ select,input,textarea{width:100%;padding:8px 10px;border:1px solid var(--ln);bor
 .estado.pr{background:#fff0c9;color:#7a5200}
 .pin i{flex:none}
 @media(max-width:760px){body.pop .red{display:none}}
+
+/* ===== Escenas del mapa por servicio ===== */
+.fx{animation:fxin .55s ease-out both}
+@keyframes fxin{from{opacity:0}to{opacity:1}}
+.fl{stroke-dasharray:9 9;animation:fxin .55s ease-out both,dashm 1.1s linear .55s infinite}
+@keyframes dashm{to{stroke-dashoffset:-18}}
+.ah{position:absolute;left:0;top:0;width:0;height:0;transform-origin:0 0}
+.ah i{display:block;width:0;height:0;border-left:13px solid var(--c);border-top:7px solid transparent;border-bottom:7px solid transparent;margin:-7px 0 0 -13px;filter:drop-shadow(0 0 1px #fff)}
+.bd{display:grid;place-items:center;min-width:26px;height:26px;padding:0 7px;border-radius:99px;background:var(--c);color:#fff;font:700 13px/1 "DM Sans",system-ui,sans-serif;border:2px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.3);transform:translate(-50%,-50%);white-space:nowrap}
+.pl{position:absolute;left:0;top:0;width:0;height:0}
+.pl i,.pl b{position:absolute;left:-13px;top:-13px;width:26px;height:26px;border-radius:50%;border:3px solid var(--c);opacity:0;animation:plse 1.8s ease-out infinite}
+.pl b{animation-delay:.9s}
+@keyframes plse{0%{transform:scale(.4);opacity:.9}100%{transform:scale(2.6);opacity:0}}
+.leg{background:var(--acc);border-radius:12px;padding:9px 12px;font-size:.88rem;margin:10px 0}
+.lnk{border:0;background:transparent;color:var(--brand);font-weight:700;padding:0 0 0 6px;text-decoration:underline;font-size:.85rem}
+@media (prefers-reduced-motion:reduce){.fx,.fl,.pl i,.pl b{animation:none}.pl i{opacity:.5;transform:scale(1.4)}.pl b{display:none}}

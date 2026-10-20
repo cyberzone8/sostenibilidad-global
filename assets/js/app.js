@@ -7,7 +7,7 @@
   const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   const getJSON = async (u) => { const r = await fetch(u, { cache: "no-cache" }); if (!r.ok) throw new Error(`${u} (${r.status})`); return r.json(); };
 
-  const S = { cfg: null, grupos: [], servicios: [], secciones: [], empresas: [], emp: null, empMissing: false, empNear: null, empCob: null, pick: null, pickMk: null, picking: false, map: null, demo: null, tiles: { ok: 0, err: 0 }, lastFocus: null };
+  const S = { cfg: null, grupos: [], servicios: [], secciones: [], empresas: [], emp: null, empMissing: false, empNear: null, empCob: null, pick: null, pickMk: null, picking: false, map: null, demo: null, demoT: [], cur: null, tiles: { ok: 0, err: 0 }, lastFocus: null };
   const narrow = () => matchMedia("(max-width:760px)").matches;
 
   /* ---------- Avisos ---------- */
@@ -124,7 +124,7 @@
   const activos = () => S.servicios.filter((s) => s.activo !== false);
 
   function renderServicio(s) {
-    return { t: s.titulo, h: `<span class="ey">${esc(grupoTitulo(s.grupo))}</span><p>${esc(s.resumen)}</p><h3>Qué hacemos</h3><ul>${(s.acciones || []).map((a) => `<li>${esc(a)}</li>`).join("")}</ul>${odsHtml(s.ods)}<button class="btn" type="button" data-need="${esc(s.titulo)}">Consultar por este servicio</button>${s.enlace && /^(https?:\/\/|[a-z0-9][a-z0-9\-\/]*\/?$)/i.test(s.enlace.url || "") ? ` <a class="btn alt" href="${esc(s.enlace.url)}">${esc(s.enlace.texto)}</a>` : ""}` };
+    return { t: s.titulo, h: `<span class="ey">${esc(grupoTitulo(s.grupo))}</span><p>${esc(s.resumen)}</p>${s.mapa && s.mapa.leyenda ? `<p class="leg"><b>En el mapa:</b> ${esc(s.mapa.leyenda)} <button class="lnk" type="button" data-replay>↻ Repetir</button></p>` : ""}<h3>Qué hacemos</h3><ul>${(s.acciones || []).map((a) => `<li>${esc(a)}</li>`).join("")}</ul>${odsHtml(s.ods)}<button class="btn" type="button" data-need="${esc(s.titulo)}">Consultar por este servicio</button>${s.enlace && /^(https?:\/\/|[a-z0-9][a-z0-9\-\/]*\/?$)/i.test(s.enlace.url || "") ? ` <a class="btn alt" href="${esc(s.enlace.url)}">${esc(s.enlace.texto)}</a>` : ""}` };
   }
   function renderSeccion(c, need) {
     let h = c.eyebrow ? `<span class="ey">${esc(c.eyebrow)}</span>` : "";
@@ -167,7 +167,7 @@
     p.inert = false; p.classList.add("open"); setMin(p, false); p.scrollTop = 0;
     document.body.classList.add("pop");
     $$("[data-k]").forEach((b) => b.classList.toggle("on", b.dataset.k === id && !b.classList.contains("brand")));
-    showRoute(sv && sv.mapa && sv.mapa.ruta);
+    S.cur = sv; showScene(sv);
     try { history.replaceState(null, "", "#" + id); } catch (e) { /* sin historial */ }
     if (fromUser) $("#pt").focus({ preventScroll: true });
   }
@@ -176,7 +176,7 @@
     S.picking = false; $("#aviso").hidden = true;
     p.classList.remove("open"); p.inert = true; document.body.classList.remove("pop");
     $$(".on").forEach((b) => b.classList.remove("on"));
-    showRoute(null);
+    S.cur = null; clearScene();
     try { history.replaceState(null, "", location.pathname + location.search); } catch (e) { /* sin historial */ }
     if (S.lastFocus && S.lastFocus.focus) S.lastFocus.focus();
   }
@@ -225,8 +225,30 @@
     });
     addEventListener("resize", () => m.invalidateSize());
   }
+  function clearScene() {
+    S.demoT.forEach(clearTimeout); S.demoT = [];
+    if (S.demo && S.map) S.map.removeLayer(S.demo);
+    S.demo = null;
+  }
+  /* Escena geométrica del servicio (assets/js/escenas.js): aparece por etapas sobre el mapa */
+  function showScene(sv) {
+    clearScene();
+    if (!sv || !sv.mapa || !S.map) return;
+    if (sv.mapa.ruta) return showRoute(sv.mapa.ruta);
+    const lib = window.SG_ESC, f = lib && lib.escenas[sv.mapa.escena || sv.id];
+    if (!f) return;
+    const h = lib.ctx(); f(h);
+    const grp = (S.demo = L.layerGroup().addTo(S.map));
+    const reduce = matchMedia("(prefers-reduced-motion:reduce)").matches;
+    const dt = Math.min(420, 2400 / Math.max(1, h.st.length - 1));
+    h.st.forEach((layers, i) => {
+      const go = () => layers.forEach((l) => l.addTo(grp));
+      if (i === 0 || reduce) go(); else S.demoT.push(setTimeout(go, i * dt));
+    });
+    if (h.pts.length) fit(L.latLngBounds(h.pts).pad(0.18));
+  }
   function showRoute(ruta) {
-    if (S.demo) { S.map.removeLayer(S.demo); S.demo = null; }
+    clearScene();
     if (!ruta || !S.map) return;
     const mk = (ll, col) => L.circleMarker(ll, { radius: 8, color: "#fff", weight: 2, fillColor: col, fillOpacity: 1 });
     S.demo = L.layerGroup([
@@ -239,10 +261,11 @@
 
   /* ---------- Eventos ---------- */
   document.addEventListener("click", (e) => {
-    const b = e.target.closest(".min, #x, [data-k], [data-need], [data-zoom], #send, #pick, #reg");
+    const b = e.target.closest(".min, #x, [data-k], [data-need], [data-replay], [data-zoom], #send, #pick, #reg");
     if (!b) return;
     if (b.id === "x") return closeP();
     if (b.dataset.zoom) return zoomEmp(b.dataset.zoom);
+    if (b.hasAttribute("data-replay")) return showScene(S.cur);
     if (b.classList.contains("min")) { const card = b.closest(".card"); return setMin(card, !card.classList.contains("is-min")); }
     if (b.id === "send") {
       const cuerpo = `Tipo de organización: ${$("#f1").value}\nNecesidad: ${$("#f2").value}\nUbicación: ${$("#f3").value}\n\n${$("#f4").value}`;

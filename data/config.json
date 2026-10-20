@@ -50,5 +50,9 @@
   "registro": {
     "precioUF": null,
     "textoPrecio": "El valor del registro se expresa en UF y se informa por WhatsApp antes de publicar."
+  },
+  "contador": {
+    "_ayuda": "Crea una cuenta gratis en goatcounter.com, elige un código (por ejemplo 'sostenibilidadglobal') y escríbelo en 'goatcounter'. Mientras esté vacío no se cuenta ni se muestra nada.",
+    "goatcounter": ""
   }
 }

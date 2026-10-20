@@ -6,9 +6,9 @@
 <meta name="description" content="Piloto de control predictivo para plantas de valorización de residuos: mapa de pérdidas y ganancias por residuo."><title>Sostenibilidad Global · Piloto predictivo para plantas de valorización</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;800&family=Inter:wght@400;600&display=swap">
 <style>
-:root{--bg:#f3f1ea;--tx:#17211b;--mu:#55605a;--card:#fff;--ln:#d9d6cb;--g:#1f7a4d;--r:#b8402f;--ink:#12382a;--on:#fff}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1713;--tx:#eef1ec;--mu:#a3b0a8;--card:#18231d;--ln:#2c3a32;--g:#4cc58a;--r:#ef7b6a;--ink:#4cc58a;--on:#0f1713}}
-:root[data-theme="dark"]{--bg:#0f1713;--tx:#eef1ec;--mu:#a3b0a8;--card:#18231d;--ln:#2c3a32;--g:#4cc58a;--r:#ef7b6a;--ink:#4cc58a;--on:#0f1713}
+:root{--bg:#f3f1ea;--tx:#17211b;--mu:#55605a;--card:#fff;--ln:#d9d6cb;--g:#1f7a4d;--r:#b8402f;--ink:#12382a;--on:#fff;--am:#a98a2a}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1713;--tx:#eef1ec;--mu:#a3b0a8;--card:#18231d;--ln:#2c3a32;--g:#4cc58a;--r:#ef7b6a;--ink:#4cc58a;--on:#0f1713;--am:#d9b94a}}
+:root[data-theme="dark"]{--bg:#0f1713;--tx:#eef1ec;--mu:#a3b0a8;--card:#18231d;--ln:#2c3a32;--g:#4cc58a;--r:#ef7b6a;--ink:#4cc58a;--on:#0f1713;--am:#d9b94a}
 *{box-sizing:border-box}
 :root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
@@ -59,9 +59,95 @@ small{color:var(--mu)}
 .meter i{position:absolute;top:0;left:0;height:100%;width:0;background:var(--r);transition:width .6s}
 .meter .sv{background:repeating-linear-gradient(135deg,var(--g) 0 4px,transparent 4px 8px);transition:left .6s,width .6s}
 .msg{min-height:3.2em;margin:12px 0 0;font-weight:600}
-.ctl{margin-top:12px;display:flex;flex-wrap:wrap;gap:10px;align-items:center}.ctl .q{font-weight:600;margin-right:4px}
-.ctl .btn{padding:10px 16px;font-size:16px}.btn[aria-pressed="true"]{background:var(--ink);color:var(--on);border-color:var(--ink)}
+.ctl{position:sticky;top:0;z-index:20;margin:-12px -12px 16px;padding:10px 12px;background:var(--card);border-bottom:1px solid var(--ln);border-radius:12px 12px 0 0;display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;box-shadow:0 4px 10px -8px rgba(0,0,0,.35)}
+.ctl .btn{padding:10px 16px;font-size:16px;min-height:44px}
+.when{display:flex;flex-wrap:nowrap;align-items:center;gap:6px 12px}
+.when .q{font-weight:600;font-size:15px}
+.seg{display:inline-flex;border:2px solid var(--ln);border-radius:10px;overflow:hidden}
+.seg button{font:600 16px Inter,system-ui,sans-serif;min-height:40px;min-width:84px;padding:6px 14px;background:transparent;color:var(--tx);border:0;cursor:pointer}
+.seg button+button{border-left:2px solid var(--ln)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--on)}
+.seg button{display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.15}
+.seg button small{font-size:12px;font-weight:400;color:inherit;opacity:.85}
+.when .q em{font-style:normal;font-weight:400;font-size:13px;color:var(--mu)}
+.offer{margin:16px 0 0;padding:16px 18px;border:1px solid var(--ln);border-left:6px solid var(--oc,var(--ln));border-radius:10px;background:color-mix(in srgb,var(--oc,var(--ln)) 8%,var(--card))}
+.of-n{font-size:16px}
+.of-h{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px}
+.of-x{font:800 clamp(40px,9vw,56px)/1 Fraunces,Georgia,serif;color:var(--oc)}
+.of-t{font-size:16px;font-weight:600}
+.of-k{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:12px 0}
+.of-k div{background:var(--card);border:1px solid var(--ln);border-radius:8px;padding:10px 12px;font-size:13px;color:var(--mu)}
+.of-k b{display:block;font-size:20px;color:var(--tx);font-variant-numeric:tabular-nums}
+.of-w{display:flex;flex-wrap:wrap;gap:8px;font-size:14px}
+.of-w span{border:1px solid var(--oc);border-radius:999px;padding:4px 12px}
+.of-w em{font-style:normal;color:var(--mu)}
+.how{margin:0 0 6px;padding-left:22px;color:var(--mu);font-size:16px}.how b{color:var(--tx)}
+.scope{margin:0 0 14px;display:grid;gap:6px}
+.scope .q{font-weight:600;font-size:15px}.scope .q em{font-style:normal;font-weight:400;font-size:13px;color:var(--mu)}
+.chips{display:flex;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:4px}
+.chips button{flex:0 0 auto;font:600 15px Inter,system-ui,sans-serif;min-height:44px;padding:6px 14px;border-radius:999px;border:2px solid var(--ln);background:transparent;color:var(--tx);cursor:pointer;white-space:nowrap}
+.chips button[aria-pressed="true"]{background:var(--ink);color:var(--on);border-color:var(--ink)}
+.chips button:focus-visible,.seg button:focus-visible{outline:3px solid var(--g);outline-offset:2px}
+#net .band{fill:var(--g);opacity:.12}
+#net .ln.pil{font-weight:800}
+.of-p{margin:0 0 10px;font-size:14px}
+.of-cta{margin-top:14px}
+.of-cta .btn{display:block;text-align:center;width:100%}
+@media(min-width:601px){.of-cta .btn{display:inline-block;width:auto}}
+.alt3,.alt4{display:grid;gap:12px;margin-top:14px}
+.alt3{grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}.alt4{grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+.al{position:relative;background:var(--card);border:1px solid var(--ln);border-top:5px solid var(--c,var(--ln));border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:6px}
+.al.rec{border-top-color:var(--g);box-shadow:0 0 0 2px color-mix(in srgb,var(--g) 40%,transparent)}
+.al h3,.al b{margin:0;font-size:18px;color:var(--tx)}.al p{margin:0;color:var(--mu);font-size:15px;flex:1}
+.al .btn{padding:10px 14px;font-size:15px;min-height:44px;margin-top:6px}
+.tg{align-self:flex-start;font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--c,var(--g))}
+.ref{font-size:14px;color:var(--mu);margin:12px 0 0}.ref a{color:var(--ink)}
+.vis{font-size:14px;color:var(--mu)}
+.mini{font-size:14px;color:var(--mu)}.mini b{color:var(--r);font-size:16px}
+@media(max-width:600px){
+ .ctl{display:grid;gap:8px;padding:8px 10px;margin:-12px -12px 12px}
+ .ctl .btn{width:100%;padding:8px 12px}
+ .when{display:grid;grid-template-columns:1fr auto;gap:6px 10px}
+ .when .q{font-size:14px}
+ .mini{text-align:right}
+ .seg{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,1fr);width:100%}
+ .seg button{min-width:0;min-height:44px;padding:6px 4px;font-size:15px}
+}
 @media(prefers-reduced-motion:reduce){.cube{animation:none}.tile,.face,.meter i{transition:none}}
+
+.fig.lab{overflow:visible}.lab-row>*{min-width:0}.mh{display:none}@media(max-width:600px){.mh{display:inline}}.nets{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.net{margin-top:18px;border-top:1px solid var(--ln);padding-top:14px}
+.net-h{display:flex;flex-wrap:wrap;gap:6px 16px;justify-content:space-between;align-items:baseline;font-size:15px;margin-bottom:4px}
+.lg{font-size:13px;color:var(--mu)}.lg i{display:inline-block;width:10px;height:10px;border-radius:50%;margin:0 4px 0 10px;vertical-align:-1px}
+.lg i.ok,.nd .c.ok{background:var(--g);fill:var(--g)}.lg i.ca{background:var(--am)}.lg i.fa{background:var(--r)}
+#net{width:100%;min-width:600px;height:auto;display:block}
+#net text{font:600 13px Inter,system-ui,sans-serif;fill:var(--tx)}
+#net .hd{font-size:12.5px;fill:var(--mu);text-anchor:middle}
+#net .ln{text-anchor:end;font-size:13px}
+#net .eg{fill:none;stroke-linecap:butt;transition:stroke .5s,stroke-width .6s;opacity:.88}
+#net .fw{fill:none;stroke:var(--card);stroke-width:2;stroke-dasharray:3 10;opacity:.75;animation:flow 1.6s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-13}}
+#net .ok{stroke:var(--g)}#net .ca{stroke:var(--am)}#net .fa{stroke:var(--r)}
+#net .nd{cursor:pointer;outline:none}
+#net .nd .c{stroke:var(--card);stroke-width:3;transition:fill .5s}
+#net .nd .c.ok{fill:var(--g)}#net .nd .c.ca{fill:var(--am)}#net .nd .c.fa{fill:var(--r)}
+#net .nd .hit{fill:transparent}
+#net .nd:hover .c,#net .nd:focus-visible .c{stroke:var(--tx)}
+#net .cj{font-size:15px;text-anchor:middle;fill:#fff;pointer-events:none}#net .cu{font-size:10.5px;text-anchor:middle;fill:#fff;pointer-events:none;font-weight:400}
+.bal{margin-top:6px;padding-top:12px;border-top:1px solid var(--ln)}
+.bal h3{font-size:16px;margin:0 0 8px}
+.br{display:grid;grid-template-columns:130px 1fr 64px;gap:10px;align-items:center;margin:7px 0;font-size:14px}
+.bt{position:relative;height:14px;background:color-mix(in srgb,var(--ln) 55%,transparent);border-radius:7px;overflow:hidden}
+.bt::after{content:"";position:absolute;left:50%;top:0;bottom:0;width:2px;background:var(--mu);opacity:.6}
+.bt .fl{position:absolute;top:0;height:100%;transition:left .6s,width .6s,background .4s}
+.bt .fl.p{background:var(--g)}.bt .fl.n{background:var(--r)}
+.bt .bs0{position:absolute;top:-2px;bottom:-2px;width:3px;background:var(--tx);opacity:.75;z-index:1;border-radius:2px}
+.bv{text-align:right;font-variant-numeric:tabular-nums}.bv.n{color:var(--r)}.bv.p{color:var(--g)}
+.btot{margin:10px 0 0;font-size:14px;color:var(--mu)}.btot b{color:var(--tx)}
+.bsum{margin:6px 0 0;font-weight:600;min-height:2.6em}
+.hint{font-size:13px;color:var(--mu);margin:6px 0 0}
+@media(max-width:600px){.br{grid-template-columns:96px 1fr 56px;font-size:13px}}
+@media(prefers-reduced-motion:reduce){#net .fw{animation:none}#net .eg,#net .nd .c,.bt .fl{transition:none}}
 </style>
 </head>
 <body>
@@ -70,9 +156,22 @@ small{color:var(--mu)}
 
 <h1>Su planta recibe de todo. ¿Sabe cuál residuo le hace ganar y cuál le hace perder?</h1>
 <p class="lead">En un piloto de 30 días tomamos una sola línea de su planta, la mapeamos completa y le mostramos qué pasará con su margen antes de que usted decida. No solo el síntoma: el motivo.</p>
-<p><a class="btn" href="#diagnostico">Hacer el diagnóstico de 2 minutos</a></p>
+<p style="display:flex;flex-wrap:wrap;gap:10px"><a class="btn" href="#sim">Ver la simulación</a> <a class="btn alt" href="#diagnostico">Diagnóstico de 2 minutos</a></p>
 
-<div class="fig lab">
+<p class="lead" style="margin-top:34px">Intervenimos en <b>tres momentos</b>: <b>antes</b>, <b>durante</b> o <b>después</b> de que la falla se encadene. Mientras antes se actúa, más devuelve cada $1 invertido: <b>×6 · ×3 · ×2</b>. Y no hace falta tocar toda la planta: puede empezar por <b>una sola línea</b> como piloto.</p>
+<ol class="how"><li>Pulse <b>▶</b> y vea cómo se encadena la falla.</li><li>Elija el <b>alcance</b>: toda la planta o solo una línea.</li><li>Elija <b>cuándo intervenir</b> y vea el retorno.</li></ol>
+<div class="fig lab" id="sim">
+<div class="ctl" role="group" aria-label="Controles de la simulación">
+<button class="btn" id="play" type="button">▶ Ver qué le pasa a la planta</button>
+<div class="when" id="when" role="group" aria-label="¿Cuándo intervenir?">
+<span class="q">¿Cuándo intervenir? <em>retorno por cada $1</em></span><span class="mini" aria-hidden="true">Pérdida <b id="ix2">0</b>/100</span>
+<span class="seg"><button type="button" data-m="a" aria-pressed="false"><b>Antes</b><small>×6 · prevenir</small></button><button type="button" data-m="d" aria-pressed="false"><b>Durante</b><small>×3 · controlar</small></button><button type="button" data-m="r" aria-pressed="false"><b>Después</b><small>×2 · recuperar</small></button></span>
+</div>
+</div>
+<div class="scope" id="scope" role="group" aria-label="Alcance de la intervención">
+<span class="q">¿Dónde intervenir? <em>piloto = una sola línea, 30 días</em></span>
+<span class="chips"><button type="button" data-sc="all" aria-pressed="true">Toda la planta</button><button type="button" data-sc="0" aria-pressed="false">Piloto · Orgánicos</button><button type="button" data-sc="1" aria-pressed="false">Piloto · Cartón y plástico</button><button type="button" data-sc="2" aria-pressed="false">Piloto · Aceites usados</button></span>
+</div>
 <div class="lab-row">
 <div class="cubebox" role="img" aria-label="Cubo de seis colores: ordenado cuando la planta está bajo control, desordenado cuando las pérdidas se encadenan"><div class="cube" id="cube"></div></div>
 <div class="board">
@@ -84,13 +183,21 @@ small{color:var(--mu)}
 </div>
 <div class="lbl">Pérdida del sistema (índice): <b id="ix">0</b> de 100</div>
 <div class="meter"><i id="mi"></i><i class="sv" id="sv"></i></div>
-<p class="msg" id="msg" aria-live="polite">Una planta es un cubo: si se mueve una pieza, se mueven las otras. Pulsa el botón y mira qué pasa.</p>
+<p class="msg" id="msg" aria-live="polite">La planta es un cubo: ordenado, todo está bajo control; desordenado, las pérdidas se encadenan. Pulse ▶ arriba, o elija directamente alcance y momento.</p>
 </div>
 </div>
-<div class="ctl"><button class="btn" id="play" type="button">▶ Ver qué le pasa a la planta</button>
-<span id="when" hidden><span class="q">¿Cuándo intervenir?</span>
-<button class="btn alt" data-m="a" type="button">Antes</button><button class="btn alt" data-m="d" type="button">Durante</button><button class="btn alt" data-m="r" type="button">Después</button></span></div>
-<p class="cap">Ejemplo ilustrativo de una planta tipo. El índice de 0 a 100 no corresponde a ninguna planta real: en el piloto lo reemplazamos por sus datos.</p>
+<div class="offer" id="offer" aria-live="polite"></div>
+<p class="ref"><b>Por qué importa el momento.</b> Revlon informó en 2018 unos US$64 M de ventas netas perdidas por interrupciones de servicio tras implementar un sistema SAP: una decisión de sistema que se encadenó hacia producción, despacho y clientes. Caso externo, no es cliente nuestro (<a href="https://www.sec.gov/Archives/edgar/data/887921/000088792119000004/rev201810-k.htm" target="_blank" rel="noopener">informe anual 2018 ante la SEC</a>).</p>
+<div class="net">
+<div class="net-h"><b>Mapa de la cadena · cómo se propaga la falla</b><span class="lg"><i class="ok"></i>sana<i class="ca"></i>arrastrada<i class="fa"></i>falla</span></div>
+<div class="nets"><svg id="net" viewBox="0 0 680 300" role="group" aria-label="Red de la planta: tres residuos recorren recepción, proceso, producto y caja. Cada nodo se puede activar para simular una falla en ese punto."></svg></div>
+<p class="hint">Toca un nodo para provocar una falla ahí y ver qué arrastra hacia la derecha.<span class="mh"> Desliza la red de lado para verla completa.</span></p>
+</div>
+<div class="bal"><h3>Balance · quién gana y quién pierde <small>(M$ = millones de pesos por mes)</small></h3>
+<div id="bal"></div>
+<p class="btot" id="btot"></p>
+<p class="bsum" id="bsum"></p></div>
+<p class="cap">Ejemplo ilustrativo de una planta tipo. Los dos modelos son uno solo: la red muestra cómo se propaga la falla y el balance muestra cuánto cuesta en cada residuo. Los retornos (×6, ×3, ×2), los porcentajes de pérdida evitada y las cifras son ilustrativos: no son una garantía. El índice de 0 a 100 y las cifras no corresponden a ninguna planta real: en el piloto los reemplazamos por sus datos.</p>
 </div>
 
 <h2>Lo que pasa en una planta que recibe múltiples residuos</h2>
@@ -113,13 +220,24 @@ small{color:var(--mu)}
 
 <div class="step s"><h3>4 · La solución</h3>
 <p><b>Piloto de control predictivo en una línea de su planta.</b> Usted decide con el efecto a la vista, antes de gastar.</p>
-<div class="prod">
-<div><b>Mapa de la planta</b>Dónde se gana y dónde se pierde, por tipo de residuo.</div>
-<div><b>Simulador de decisiones</b>Qué le pasa al margen y a la caja si cambia un precio, un proceso o un cliente.</div>
-<div><b>Control de cambios</b>Alertas tempranas cuando una mejora en un punto daña otro.</div>
-<div><b>Análisis de repetición</b>Por qué el mismo problema vuelve y qué lo mantiene.</div>
-</div></div>
+<p>Puede elegir <b>dónde</b> empezar (una línea, varias o toda la planta) y <b>con qué producto</b>. Las alternativas están más abajo.</p></div>
 </div>
+
+<h2 id="alternativas">Alternativas: usted elige dónde y con qué empezar</h2>
+<p class="lead">No hay que intervenir toda la planta. Un piloto en una sola línea cuesta una fracción, da resultados en 30 días y le permite decidir con datos si lo extiende.</p>
+<div class="alt3">
+<div class="al rec"><span class="tg">Recomendado</span><h3>1 · Piloto en una línea</h3><p>Una sola línea (por ejemplo, Orgánicos), 30 días. Menor inversión y menor riesgo, con resultado medible.</p><button class="btn" type="button" data-go="pilot">Ver el piloto en la simulación ↑</button></div>
+<div class="al"><h3>2 · Varias líneas</h3><p>Repetir el método en las líneas donde el piloto funcionó, una a una.</p></div>
+<div class="al"><h3>3 · Toda la planta</h3><p>Mapa completo y control continuo, cuando ya se vio el retorno en una línea.</p><button class="btn alt" type="button" data-go="all">Ver toda la planta ↑</button></div>
+</div>
+<h3 style="margin-top:26px">Productos: cada uno responde una pregunta en un momento distinto</h3>
+<div class="alt4">
+<div class="al" style="--c:var(--g)"><span class="tg">Antes · ×6</span><b>Mapa de la planta</b><p>Diagnóstico. ¿Dónde se gana y dónde se pierde, por tipo de residuo?</p><button class="btn alt" type="button" data-go="a">Ver «Antes» ↑</button></div>
+<div class="al" style="--c:var(--g)"><span class="tg">Antes · ×6</span><b>Simulador de decisiones</b><p>Evaluación. ¿Qué le pasa al margen y a la caja si cambia un precio, un proceso o un cliente?</p><button class="btn alt" type="button" data-go="a">Ver «Antes» ↑</button></div>
+<div class="al" style="--c:var(--am)"><span class="tg">Durante · ×3</span><b>Control de cambios</b><p>Seguimiento. Alerta temprana cuando una mejora en un punto daña otro.</p><button class="btn alt" type="button" data-go="d">Ver «Durante» ↑</button></div>
+<div class="al" style="--c:var(--r)"><span class="tg">Después · ×2</span><b>Análisis de repetición</b><p>Resultados. ¿Por qué vuelve el mismo problema y qué lo mantiene?</p><button class="btn alt" type="button" data-go="r">Ver «Después» ↑</button></div>
+</div>
+<p class="hint">Retornos ilustrativos por cada $1 invertido, no son una garantía. En el piloto se reemplazan con los datos de su planta.</p>
 
 <h2>La diferencia: explicamos el porqué, no solo el síntoma</h2>
 <p class="lead">Un indicador le dice que el costo subió. Nuestro modelo le dice qué conexión lo hizo subir y qué pasaría con escalabilidad, margen y caja si usted interviene en otro lugar. Es la lógica de mi investigación doctoral en sostenibilidad, aplicada como gerencia predictiva y contada en lenguaje de negocio.</p>
@@ -139,6 +257,7 @@ small{color:var(--mu)}
 
 <h2>Cómo sigue</h2>
 <p>Conversación de 30 minutos → elegimos la línea del piloto → 30 días de mapeo y simulación → decisión sobre extenderlo a toda la planta.</p>
+<p class="vis" id="visitas" hidden></p>
 <p><small>Sostenibilidad Global · Piloto de control predictivo para plantas de valorización de residuos.</small></p>
 </div>
 <script>
@@ -154,6 +273,7 @@ $("yes").onclick=()=>ans(false);$("no").onclick=()=>ans(true);show();
 
 (()=>{
 const $=id=>document.getElementById(id);
+/* ===== Cubo (desorden visual) ===== */
 const COL=["#e8c547","#f4f4ef","#3aa6d8","#c77be0","#5b6bd6","#ee8a3a"],TH=[.15,.3,.45,.6,.75,.9],TW=[90,-90,180,90,-90,180];
 let s=11;const rnd=()=>(s=s*16807%2147483647,(s-1)/2147483646);
 const cube=$("cube"),sts=[],fc=[];
@@ -163,24 +283,174 @@ const st={e,a:COL[f],b:o[Math.floor(rnd()*o.length)],r:k===4?2:rnd(),on:false};e
 cube.appendChild(el)}
 const dis=d=>{sts.forEach(t=>{const x=t.r<d;if(x!==t.on){t.on=x;t.e.style.background=x?t.b:t.a}});
 fc.forEach((f,j)=>{const x=d>TH[j];if(x!==f.on){f.on=x;f.el.style.setProperty("--tw",(x?TW[j]:0)+"deg")}})};
-const P=[...document.querySelectorAll(".pc")],CUM=[15,35,60,100],tm=[];
-function show(n,rec=0){P.forEach((p,i)=>p.classList.toggle("fell",i<n));
-const net=(n?CUM[n-1]:0)-rec;$("ix").textContent=net;$("mi").style.width=(net+rec)+"%";
-$("sv").style.left=net+"%";$("sv").style.width=rec+"%";dis(net/100*.85)}
-const M=["Llega un residuo distinto al previsto y el proceso se ajusta tarde.","El proceso trata todo igual y parte del material se pierde.","Se produce algo sin comprador confirmado y se acumula.","La caja se agota antes de cobrar. La cadena completa quedó en rojo."];
-const END="Cuatro piezas, una sola cadena. Elige cuándo intervenir:";
-const W={a:[1,0,"Antes: se corrige en la decisión y el diseño. Cae una pieza y la cascada se detiene. Se conserva casi todo el valor."],
-d:[3,0,"Durante: se detecta a mitad de camino. Caen tres piezas, pero se evita que arrastren la caja."],
-r:[4,20,"Después: ya cayó todo. Solo se contiene y se recupera una parte (zona verde rayada)."]};
-const stop=()=>{tm.forEach(clearTimeout);tm.length=0};
-$("play").onclick=()=>{stop();$("when").hidden=true;show(0);$("msg").textContent="Una planta funciona bien…";
-const reduce=matchMedia("(prefers-reduced-motion:reduce)").matches,gap=reduce?200:1500;
-M.forEach((t,i)=>tm.push(setTimeout(()=>{show(i+1);$("msg").textContent=t},900+i*gap)));
-tm.push(setTimeout(()=>{$("msg").textContent=END;$("when").hidden=false;$("play").textContent="↺ Ver de nuevo"},900+M.length*gap))};
-document.querySelectorAll("#when [data-m]").forEach(b=>b.onclick=()=>{stop();const w=W[b.dataset.m];show(w[0],w[1]);$("msg").textContent=w[2];
-document.querySelectorAll("#when [data-m]").forEach(x=>x.setAttribute("aria-pressed",x===b))});
-show(0);
+
+/* ===== Datos de la planta tipo (ilustrativos, M$ por mes) ===== */
+const LANES=[{n:"Orgánicos",y:90,w:11,T:4,V:6,F:4,P:5},{n:"Cartón y plástico",y:170,w:8,T:3,V:12,F:2,P:4},{n:"Aceites usados",y:250,w:9,T:6,V:8,F:4,P:4}];
+const ADMIN=2,X=[135,245,355,465],CJ={x:610,y:170,r:27};
+const STAGE=["Recepción","Proceso","Producto","Caja"];
+const AFF=[null,[1,1,1],[1,1,1],[1,0,1],[1,1,1]];          /* a qué residuos afecta cada etapa */
+const nf=new Intl.NumberFormat("es-CL",{minimumFractionDigits:1,maximumFractionDigits:1,signDisplay:"exceptZero"});
+const nz=new Intl.NumberFormat("es-CL",{minimumFractionDigits:1,maximumFractionDigits:1});
+
+/* Un solo modelo: dada la lista de etapas caídas f[1..4], calcula flujos y balance por residuo */
+function model(f){
+ return LANES.map((L,i)=>{
+  const v1=f[1]&&i===2?.85:1, y=f[2]?.85:1, sale=f[3]?[.5,1,.7][i]:1, cash=f[4]?.6:1;
+  const ing=L.T*v1+L.V*v1*y*sale*cash;
+  const cos=L.F*(f[1]?1.35:1)+L.P*(f[2]?1.15:1)*v1+ADMIN+(f[4]?1:0);
+  return{ing,cos,m:ing-cos,seg:[1,v1,v1*y,v1*y*sale*cash]};
+ });
+}
+const sum=a=>a.reduce((x,y)=>x+y,0);
+const NONE=[0,0,0,0,0],ALL=[0,1,1,1,1];
+const B=model(NONE),W0=model(ALL),BASE=sum(B.map(r=>r.m)),WORST=sum(W0.map(r=>r.m));
+
+/* ===== Red (SVG) ===== */
+const NS="http://www.w3.org/2000/svg",svg=$("net"),el=(t,a={},p=svg)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);p.appendChild(e);return e};
+const edges=[],nodes=[];let cjC,cjT;
+["Residuo",...STAGE.slice(0,3)].forEach((t,k)=>{const h=el("text",{x:X[k],y:22,class:"hd"});h.textContent=(k?k+" · ":"")+t});
+{const h=el("text",{x:CJ.x,y:22,class:"hd"});h.textContent="4 · Caja"}
+LANES.forEach((L,i)=>{
+ const t=el("text",{x:X[0]-20,y:L.y+4,class:"ln"});t.textContent=L.n;
+ for(let k=0;k<4;k++){
+  const x1=X[k]+(k?13:12),y=L.y;
+  const d=k<3?`M${x1},${y} L${X[k+1]-13},${y}`:`M${x1},${y} C${x1+75},${y} ${CJ.x-CJ.r-70},${CJ.y} ${CJ.x-CJ.r},${CJ.y}`;
+  const e=el("path",{d,class:"eg ok","stroke-width":L.w});const w=el("path",{d,class:"fw"});
+  edges.push({i,k,e});
+ }
+});
+LANES.forEach((L,i)=>{for(let k=0;k<4;k++){
+ const g=el("g",{class:"nd",tabindex:k?0:-1,role:k?"button":"presentation","aria-label":k?`Simular falla en ${STAGE[k-1]}, ${L.n}`:""});
+ el("circle",{cx:X[k],cy:L.y,r:20,class:"hit"},g);
+ const c=el("circle",{cx:X[k],cy:L.y,r:k?12:8,class:"c ok"},g);
+ if(k){const tt=el("title",{},g);tt.textContent=`${STAGE[k-1]} · ${L.n}: tocar para simular falla`;g.dataset.st=k}
+ nodes.push({i,k,c,g});
+}});
+{const g=el("g",{class:"nd",tabindex:0,role:"button","aria-label":"Simular falla en Caja"});g.dataset.st=4;
+ el("circle",{cx:CJ.x,cy:CJ.y,r:CJ.r+8,class:"hit"},g);
+ cjC=el("circle",{cx:CJ.x,cy:CJ.y,r:CJ.r,class:"c ok"},g);
+ cjT=el("text",{x:CJ.x,y:CJ.y+2,class:"cj"},g);const u=el("text",{x:CJ.x,y:CJ.y+15,class:"cu"},g);u.textContent="M$/mes";
+ const tt=el("title",{},g);tt.textContent="Caja: tocar para simular falla"}
+
+/* ===== Balance (HTML) ===== */
+const balEl=$("bal"),rows=LANES.map(L=>{
+ const r=document.createElement("div");r.className="br";
+ r.innerHTML=`<span>${L.n}</span><span class="bt"><i class="bs0"></i><i class="fl p"></i></span><b class="bv"></b>`;
+ balEl.appendChild(r);return{r,fl:r.querySelector(".fl"),b0:r.querySelector(".bs0"),v:r.querySelector(".bv")};
+});
+const SC=10; /* 10 M$ = media barra */
+const pos=m=>Math.max(0,Math.min(100,50+m/SC*50));
+
+/* ===== Estado único: f = etapas caídas, rec = recuperación ===== */
+const P=[...document.querySelectorAll(".pc")];
+let cur=[...NONE],curRec=0,focus=null;
+const band=(()=>{const r=document.createElementNS(NS,"rect");r.setAttribute("class","band");r.setAttribute("x",0);r.setAttribute("width",680);r.setAttribute("height",64);r.setAttribute("rx",8);r.style.display="none";svg.insertBefore(r,svg.firstChild);return r})();
+const lnT=[...svg.querySelectorAll("text.ln")];
+function show(f,rec=0,lane=null,fc=focus){
+ cur=f;curRec=rec;focus=fc;
+ const lf=i=>lane===null||i===lane?f:ALL;
+ let R=model(f);if(lane!==null)R=R.map((r,i)=>i===lane?r:W0[i]);
+ const tot=sum(R.map(r=>r.m)),idx=Math.round((BASE-tot)/(BASE-WORST)*100);
+ const loss=R.map((r,i)=>B[i].m-r.m),sl=sum(loss);
+ const recM=lane===null?rec/100*(BASE-WORST):rec/100*(B[lane].m-W0[lane].m),recP=recM/(BASE-WORST)*100;
+ const M=R.map((r,i)=>r.m+(lane===null?(sl>0?loss[i]/sl*recM:0):(i===lane?recM:0)));
+ const net=Math.round(Math.max(0,idx-recP)),mt=sum(M);
+ P.forEach((p,i)=>p.classList.toggle("fell",!!f[i+1]));
+ $("ix").textContent=net;$("ix2").textContent=net;$("mi").style.width=Math.min(100,net+recP)+"%";
+ $("sv").style.left=net+"%";$("sv").style.width=recP+"%";dis(net/100*.85);
+ /* red */
+ const st=(i,k)=>{const g=lf(i);if(k===0)return"ok";
+  if(g[k]&&AFF[k][i])return"fa";
+  for(let t=1;t<k;t++)if(g[t]&&AFF[t][i])return"ca";
+  return"ok"};
+ nodes.forEach(({i,k,c,g})=>{c.setAttribute("class","c "+st(i,k));g.style.opacity=focus!==null&&i!==focus?.3:""});
+ edges.forEach(({i,k,e})=>{const s=st(i,k),w=Math.max(2.5,LANES[i].w*R[i].seg[k]);
+  e.setAttribute("class","eg "+s);e.setAttribute("stroke-width",w.toFixed(1));
+  e.style.opacity=focus!==null&&i!==focus?.25:"";e.nextSibling.style.opacity=focus!==null&&i!==focus?.25:"";
+  e.nextSibling.setAttribute("class","fw")});
+ lnT.forEach((t,i)=>{t.classList.toggle("pil",focus===i);t.style.opacity=focus!==null&&i!==focus?.4:""});
+ if(focus===null)band.style.display="none";else{band.style.display="";band.setAttribute("y",LANES[focus].y-32)}
+ const fu=lane===null?f:ALL,anyL=fu.slice(1,4).some(Boolean);
+ cjC.setAttribute("class","c "+(fu[4]?"fa":anyL?"ca":"ok"));
+ cjT.textContent=nf.format(mt);
+ /* balance */
+ rows.forEach((o,i)=>{const m=M[i],a=pos(0),b=pos(m);
+  o.r.style.opacity=focus!==null&&i!==focus?.4:"";
+  o.fl.className="fl "+(m<0?"n":"p");o.fl.style.left=Math.min(a,b)+"%";o.fl.style.width=Math.abs(b-a)+"%";
+  o.b0.style.left="calc("+pos(B[i].m)+"% - 1px)";
+  o.v.textContent=nf.format(m);o.v.className="bv "+(m<0?"n":"p")});
+ const ing=sum(R.map(r=>r.ing)),cos=sum(R.map(r=>r.cos));
+ $("btot").innerHTML=`Ingresos <b>${nz.format(ing)}</b> · Costos <b>${nz.format(cos)}</b> · Margen total <b>${nf.format(mt)}</b> (línea oscura = situación normal: ${nf.format(BASE)})`;
+ const pr=LANES.filter((L,i)=>M[i]<0).map(L=>L.n),gn=LANES.filter((L,i)=>M[i]>=0).map(L=>L.n);
+ $("bsum").textContent=!pr.length?`Los tres residuos dejan margen.`:
+  !gn.length?`Los tres residuos pierden: la planta consume su caja.`:
+  `Hoy ${pr.join(" y ")} ${pr.length>1?"restan":"resta"} y ${gn.join(" y ")} ${gn.length>1?"sostienen":"sostiene"} la planta.`;
+}
+const CUMSTAGE=k=>[...NONE].map((_,j)=>j>=1&&j<=k?1:0);
+const FROM=k=>[...NONE].map((_,j)=>j>=k?1:0);
+const MSG=["Llega un residuo distinto al previsto y el proceso se ajusta tarde.","El proceso trata todo igual y parte del material se pierde.","Se produce algo sin comprador confirmado y se acumula.","La caja se agota antes de cobrar. La cadena completa quedó en rojo."];
+const END="Cuatro piezas, una sola cadena. Elige arriba cuándo intervenir: Antes, Durante o Después.";
+const WH={a:[CUMSTAGE(1),0,"Antes: se corrige en la decisión y el diseño. Cae una pieza y la cascada se detiene. Se conserva casi todo el valor."],
+d:[CUMSTAGE(3),0,"Durante: se detecta a mitad de camino. Caen tres piezas, pero se evita que arrastren la caja."],
+r:[CUMSTAGE(4),25,"Después: ya cayó todo. Solo se contiene y se recupera una parte (zona verde rayada)."]};
+const OFR={a:{n:"Antes",v:"prevenir",x:6,col:"var(--g)",t:[["Diagnóstico","riesgos y puntos críticos"],["Evaluación","consecuencias y alternativas"]]},
+d:{n:"Durante",v:"controlar",x:3,col:"var(--am)",t:[["Seguimiento","avance y desviaciones"]]},
+r:{n:"Después",v:"recuperar",x:2,col:"var(--r)",t:[["Resultados","objetivo vs. observado"]]}};
+const WA="https://wa.me/56985947020?text=";
+const calc=(k,lane)=>{const w=WH[k];let R=model(w[0]);if(lane!==null)R=R.map((r,i)=>i===lane?r:W0[i]);
+ const t=sum(R.map(r=>r.m)),recM=lane===null?w[1]/100*(BASE-WORST):w[1]/100*(B[lane].m-W0[lane].m),
+ mt=t+recM,av=mt-WORST,tope=lane===null?BASE-WORST:B[lane].m-W0[lane].m;
+ return{mt,av,pc:Math.round(av/tope*100)}};
+let mode=null,scope=null;
+const scopeTxt=()=>scope===null?"toda la planta":"el piloto en la línea "+LANES[scope].n;
+function offer(k){
+ const o=$("offer");
+ if(!k){o.style.removeProperty("--oc");
+  o.innerHTML=`<div class="of-n">Elija el <b>alcance</b> (toda la planta o solo una línea) y <b>cuándo intervenir</b> arriba: <b>Antes</b>, <b>Durante</b> o <b>Después</b>. Cada momento devuelve una cantidad distinta por cada $1 invertido: <b>×6 · ×3 · ×2</b>.</div>
+  <div class="of-cta"><a class="btn" target="_blank" rel="noopener" href="${WA+encodeURIComponent("Hola, vi la simulación y quiero conversar sobre un piloto en una línea de mi planta.")}">Quiero un piloto en una línea</a></div>`;return}
+ const O=OFR[k],c=calc(k,scope),ca=calc(k,null),inv=c.av/O.x,share=Math.round(c.av/ca.av*100),
+  ml=scope===null?"de toda la planta":"de la línea "+LANES[scope].n;
+ o.style.setProperty("--oc",O.col);
+ o.innerHTML=`<div class="of-h"><span class="of-x">×${O.x}</span><span class="of-t">por cada $1 invertido en intervenir <b>${O.n.toLowerCase()}</b> (${O.v}) · ${scope===null?"toda la planta":"piloto en "+LANES[scope].n}</span></div>
+ ${scope===null?"":`<p class="of-p">Piloto: se trabaja solo una línea, con cerca del <b>${share} %</b> de la inversión de toda la planta y resultados en 30 días. Las otras líneas siguen como hoy. Si funciona, se repite el método en ellas.</p>`}
+ <div class="of-k"><div><b>${c.pc} %</b>de la pérdida ${ml} se evita</div><div><b>${nz.format(c.av)} M$/mes</b>de pérdida evitada</div><div><b>${nz.format(inv)} M$</b>inversión equivalente (ilustrativa)</div><div><b>${nf.format(c.mt)} M$/mes</b>${scope===null?"margen resultante":"margen de la planta con solo esta línea protegida"} (normal ${nf.format(BASE)}; sin intervenir ${nf.format(WORST)})</div></div>
+ <div class="of-w"><em>Qué hacemos:</em>${O.t.map(x=>`<span><b>${x[0]}</b> · ${x[1]}</span>`).join("")}</div>
+ <div class="of-cta"><a class="btn" target="_blank" rel="noopener" href="${WA+encodeURIComponent("Hola, vi la simulación: me interesa "+scopeTxt()+", interviniendo "+O.n.toLowerCase()+" ("+O.v+"). Quiero conversar sobre el piloto.")}">${scope===null?"Quiero conversar sobre esto":"Quiero este piloto en una línea"}</a></div>`;
+}
+const tm=[];const stop=()=>{tm.forEach(clearTimeout);tm.length=0};
+function run(from){
+ stop();mode=null;offer(null);
+ document.querySelectorAll("#when [data-m]").forEach(x=>x.setAttribute("aria-pressed","false"));
+ show([...NONE],0,null);
+ $("msg").textContent=from===1?"Una planta funciona bien…":`Falla en ${STAGE[from-1]}: miremos qué arrastra hacia la caja…`;
+ const reduce=matchMedia("(prefers-reduced-motion:reduce)").matches,gap=reduce?200:1500;
+ for(let k=from;k<=4;k++)tm.push(setTimeout(()=>{show(FROM(from).map((v,j)=>v&&j<=k?1:0),0,null);$("msg").textContent=MSG[k-1]},900+(k-from)*gap));
+ tm.push(setTimeout(()=>{$("msg").textContent=END;$("play").textContent="↺ Ver de nuevo"},900+(5-from)*gap));
+}
+$("play").onclick=()=>run(1);
+function apply(){
+ stop();
+ document.querySelectorAll("#when [data-m]").forEach(x=>x.setAttribute("aria-pressed",String(x.dataset.m===mode)));
+ document.querySelectorAll("#scope [data-sc]").forEach(x=>x.setAttribute("aria-pressed",String((x.dataset.sc==="all"?null:+x.dataset.sc)===scope)));
+ if(mode){const w=WH[mode];show(w[0],w[1],scope,scope);
+  $("msg").textContent=(scope===null?"":"Piloto en "+LANES[scope].n+". ")+w[2]+(scope===null?"":" Las otras dos líneas siguen como hoy hasta que decida extender el método.");
+  offer(mode)}
+ else{show(cur,curRec,null,scope);offer(null)}
+}
+document.querySelectorAll("#when [data-m]").forEach(b=>b.onclick=()=>{mode=b.dataset.m;apply()});
+document.querySelectorAll("#scope [data-sc]").forEach(b=>b.onclick=()=>{scope=b.dataset.sc==="all"?null:+b.dataset.sc;apply()});
+const reduceM=matchMedia("(prefers-reduced-motion:reduce)").matches;
+document.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>{
+ const g=b.dataset.go;
+ if(g==="pilot"){scope=scope===null?0:scope;mode=mode||"a"}
+ else if(g==="all"){scope=null;mode=mode||"a"}
+ else{mode=g}
+ apply();$("sim").scrollIntoView({behavior:reduceM?"auto":"smooth",block:"start"})});
+svg.addEventListener("click",e=>{const g=e.target.closest(".nd[data-st]");if(g)run(+g.dataset.st)});
+svg.addEventListener("keydown",e=>{if(e.key!=="Enter"&&e.key!==" ")return;const g=e.target.closest(".nd[data-st]");if(g){e.preventDefault();run(+g.dataset.st)}});
+show([...NONE],0,null,null);offer(null);
 })();
 </script>
+<script src="../assets/js/contador.js" data-config="../data/config.json" data-show="visitas" defer></script>
 </body>
 </html>

@@ -49,7 +49,11 @@
         9,
         12,
         17
-      ]
+      ],
+      "mapa": {
+        "leyenda": "Cada punto es una industria. Las flechas muestran cómo el residuo de una se vuelve materia prima de la siguiente.",
+        "escena": "simbiosis"
+      }
     },
     {
       "id": "valorizacion",
@@ -69,6 +73,10 @@
       "enlace": {
         "texto": "Ver el piloto para plantas de valorización",
         "url": "valorizacion/"
+      },
+      "mapa": {
+        "leyenda": "Los residuos de muchos generadores convergen en la planta y salen como productos hacia compradores.",
+        "escena": "valorizacion"
       }
     },
     {
@@ -84,7 +92,11 @@
       ],
       "ods": [
         12
-      ]
+      ],
+      "mapa": {
+        "leyenda": "Entre varias opciones, solo una cuenta con autorización: ese es el destino habilitado para su residuo.",
+        "escena": "destino"
+      }
     },
     {
       "id": "trazabilidad",
@@ -113,7 +125,8 @@
             -73.0503
           ],
           "etiqueta": "Ejemplo ilustrativo de una ruta"
-        }
+        },
+        "leyenda": "Ejemplo de una ruta registrada desde el origen hasta el destino."
       }
     },
     {
@@ -130,7 +143,11 @@
       "ods": [
         13,
         15
-      ]
+      ],
+      "mapa": {
+        "leyenda": "Focos de impacto sobre el territorio, medidos por intensidad y conectados para ver qué los une.",
+        "escena": "problemas"
+      }
     },
     {
       "id": "politica",
@@ -146,7 +163,11 @@
       "ods": [
         12,
         17
-      ]
+      ],
+      "mapa": {
+        "leyenda": "Zonas concéntricas con incentivos y tarifas distintas según el costo ambiental de cada área.",
+        "escena": "politica"
+      }
     },
     {
       "id": "ecologia",
@@ -161,7 +182,11 @@
       ],
       "ods": [
         15
-      ]
+      ],
+      "mapa": {
+        "leyenda": "Parches de ecosistema unidos por un corredor biológico que mantiene vivo el territorio.",
+        "escena": "ecologia"
+      }
     },
     {
       "id": "decisiones",
@@ -177,7 +202,11 @@
       "ods": [
         9,
         13
-      ]
+      ],
+      "mapa": {
+        "leyenda": "Varias alternativas comparadas con criterios ambientales; la mejor queda destacada.",
+        "escena": "decisiones"
+      }
     },
     {
       "id": "evaluacion",
@@ -193,7 +222,11 @@
       "ods": [
         11,
         15
-      ]
+      ],
+      "mapa": {
+        "leyenda": "Tres trazados posibles entre dos puntos: se evalúan y se elige el de menor impacto.",
+        "escena": "evaluacion"
+      }
     },
     {
       "id": "gestion",
@@ -208,7 +241,11 @@
       ],
       "ods": [
         12
-      ]
+      ],
+      "mapa": {
+        "leyenda": "Cada punto de control de la operación se revisa hasta quedar en cumplimiento.",
+        "escena": "gestion"
+      }
     },
     {
       "id": "proyectos",
@@ -223,7 +260,11 @@
       ],
       "ods": [
         17
-      ]
+      ],
+      "mapa": {
+        "leyenda": "Un proyecto avanza por etapas: idea, diseño, obra y operación, cada una en su lugar.",
+        "escena": "proyectos"
+      }
     },
     {
       "id": "clima",
@@ -239,7 +280,11 @@
       "ods": [
         13,
         11
-      ]
+      ],
+      "mapa": {
+        "leyenda": "Zonas de calor que crecen alrededor de un punto crítico y orientan la adaptación.",
+        "escena": "clima"
+      }
     },
     {
       "id": "riesgos",
@@ -255,7 +300,11 @@
       "ods": [
         11,
         13
-      ]
+      ],
+      "mapa": {
+        "leyenda": "Un río, su zona inundable y las rutas de evacuación hacia puntos seguros.",
+        "escena": "riesgos"
+      }
     },
     {
       "id": "rehab",
@@ -271,7 +320,11 @@
       "ods": [
         15,
         13
-      ]
+      ],
+      "mapa": {
+        "leyenda": "Del centro hacia afuera, el suelo degradado se va recuperando por capas.",
+        "escena": "rehab"
+      }
     },
     {
       "id": "asentamientos",
@@ -286,7 +339,11 @@
       ],
       "ods": [
         11
-      ]
+      ],
+      "mapa": {
+        "leyenda": "Un barrio compacto con servicios cerca, conectado al resto por transporte.",
+        "escena": "asentamientos"
+      }
     },
     {
       "id": "turismo",
@@ -303,7 +360,11 @@
         8,
         11,
         12
-      ]
+      ],
+      "mapa": {
+        "leyenda": "Un circuito con paradas que une atractivos y hace que el visitante se quede más tiempo.",
+        "escena": "turismo"
+      }
     },
     {
       "id": "investigacion",
@@ -319,7 +380,11 @@
       "ods": [
         9,
         17
-      ]
+      ],
+      "mapa": {
+        "leyenda": "Una malla de muestreo: de muchos puntos sale el dato que explica el problema.",
+        "escena": "investigacion"
+      }
     },
     {
       "id": "nbs",
@@ -336,7 +401,11 @@
         11,
         13,
         15
-      ]
+      ],
+      "mapa": {
+        "leyenda": "Humedal y bosque que frenan el agua antes de que llegue a la ciudad.",
+        "escena": "nbs"
+      }
     },
     {
       "id": "biomimetica",
@@ -352,7 +421,11 @@
       "ods": [
         9,
         12
-      ]
+      ],
+      "mapa": {
+        "leyenda": "Un patrón de la naturaleza (el panal) repetido como solución de diseño.",
+        "escena": "biomimetica"
+      }
     },
     {
       "id": "produccion-limpia",
@@ -368,7 +441,11 @@
       "ods": [
         9,
         12
-      ]
+      ],
+      "mapa": {
+        "leyenda": "Un ciclo cerrado: lo que sale del uso vuelve como insumo, sin perder valor en el camino.",
+        "escena": "produccion-limpia"
+      }
     },
     {
       "id": "metabolismo",
@@ -384,7 +461,11 @@
       "ods": [
         11,
         12
-      ]
+      ],
+      "mapa": {
+        "leyenda": "Qué entra a la ciudad (agua, energía, alimentos) y qué sale como residuo.",
+        "escena": "metabolismo"
+      }
     },
     {
       "id": "impacto",
@@ -400,7 +481,11 @@
       "ods": [
         13,
         15
-      ]
+      ],
+      "mapa": {
+        "leyenda": "El proyecto, su área de influencia, los puntos sensibles y las medidas de control.",
+        "escena": "impacto"
+      }
     },
     {
       "id": "sig",
@@ -416,7 +501,11 @@
       "ods": [
         9,
         11
-      ]
+      ],
+      "mapa": {
+        "leyenda": "Capas de información (suelo, agua, uso, riesgo) apiladas sobre un mismo punto del mapa.",
+        "escena": "sig"
+      }
     },
     {
       "id": "decision-geo",
@@ -433,7 +522,11 @@
         9,
         11,
         13
-      ]
+      ],
+      "mapa": {
+        "leyenda": "Una grilla donde cada celda recibe una nota; la mejor ubicación queda marcada.",
+        "escena": "decision-geo"
+      }
     },
     {
       "id": "tierra",
@@ -449,7 +542,11 @@
       "ods": [
         9,
         15
-      ]
+      ],
+      "mapa": {
+        "leyenda": "El satélite captura imágenes del territorio y las convierte en un mapa de píxeles.",
+        "escena": "tierra"
+      }
     },
     {
       "id": "software",
@@ -465,7 +562,11 @@
       "ods": [
         9,
         17
-      ]
+      ],
+      "mapa": {
+        "leyenda": "Su sistema al centro, conectado con cada usuario y cada área de la organización.",
+        "escena": "software"
+      }
     },
     {
       "id": "automatizacion",
@@ -481,7 +582,11 @@
       "ods": [
         9,
         12
-      ]
+      ],
+      "mapa": {
+        "leyenda": "Sensores que reportan a un centro de control y disparan una alerta a tiempo.",
+        "escena": "automatizacion"
+      }
     },
     {
       "id": "web",
@@ -496,7 +601,11 @@
       ],
       "ods": [
         9
-      ]
+      ],
+      "mapa": {
+        "leyenda": "Una plataforma que conecta con clientes y usuarios en cada localidad.",
+        "escena": "web"
+      }
     },
     {
       "id": "energia",
@@ -512,7 +621,11 @@
       "ods": [
         7,
         13
-      ]
+      ],
+      "mapa": {
+        "leyenda": "Paneles solares y aerogeneradores alimentando una operación, con la línea de transmisión.",
+        "escena": "energia"
+      }
     },
     {
       "id": "agro",
@@ -529,7 +642,11 @@
         8,
         12,
         15
-      ]
+      ],
+      "mapa": {
+        "leyenda": "Parcelas, laboreo guiado y riego puntual, decididos con datos del propio terreno.",
+        "escena": "agro"
+      }
     },
     {
       "id": "industria",
@@ -545,7 +662,11 @@
       "ods": [
         9,
         12
-      ]
+      ],
+      "mapa": {
+        "leyenda": "Una línea de producción de insumo a despacho, con un bucle de mejora continua.",
+        "escena": "industria"
+      }
     },
     {
       "id": "abastecimiento",
@@ -562,7 +683,11 @@
         8,
         9,
         17
-      ]
+      ],
+      "mapa": {
+        "leyenda": "La ruta optimizada (verde) frente a las entregas por tramos separados (gris).",
+        "escena": "abastecimiento"
+      }
     },
     {
       "id": "profesionales",
@@ -578,7 +703,11 @@
       "ods": [
         8,
         17
-      ]
+      ],
+      "mapa": {
+        "leyenda": "Especialistas de distintas áreas conectados a su proyecto desde el primer día.",
+        "escena": "profesionales"
+      }
     },
     {
       "id": "personas",
@@ -593,7 +722,11 @@
       ],
       "ods": [
         8
-      ]
+      ],
+      "mapa": {
+        "leyenda": "De muchos candidatos se filtran los perfiles que calzan con su empresa.",
+        "escena": "personas"
+      }
     },
     {
       "id": "mercado",
@@ -609,7 +742,11 @@
       "ods": [
         8,
         9
-      ]
+      ],
+      "mapa": {
+        "leyenda": "Anillos de alcance y sectores donde se concentran sus clientes.",
+        "escena": "mercado"
+      }
     },
     {
       "id": "marca",
@@ -625,7 +762,11 @@
       "ods": [
         8,
         17
-      ]
+      ],
+      "mapa": {
+        "leyenda": "Su producto sale por puerto y llega a varios mercados internacionales.",
+        "escena": "marca"
+      }
     },
     {
       "id": "video",
@@ -640,7 +781,11 @@
       ],
       "ods": [
         9
-      ]
+      ],
+      "mapa": {
+        "leyenda": "Una cámara, varios ángulos del territorio y las historias que vale la pena contar.",
+        "escena": "video"
+      }
     }
   ]
 }

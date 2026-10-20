@@ -46,3 +46,22 @@ La misma página se muestra con la marca y el mapa de una empresa agregando `?e=
 - `"prototipo": true` marca la ficha como datos de ejemplo. Quítalo cuando la empresa confirme sus datos. Si no quieres mostrar el prototipo al publicar, pon `"activo": false`.
 - Diesel J.J: los textos, el horario, los servicios y la ubicación (centro de Mulchén) son ejemplos por confirmar con el taller.
 - La ficha se arma con JavaScript. Para que Google indexe cada ficha en el futuro conviene generar una página estática por empresa.
+
+## Página del piloto (valorizacion/)
+La maqueta de la página tiene dos modelos que funcionan a la vez sobre un mismo estado:
+- **Modelo de red (efecto en cadena):** tres residuos recorren Recepción → Proceso → Producto → Caja. Al tocar un nodo (o pulsar «Ver qué le pasa a la planta») la falla se propaga hacia la derecha: nodos y tramos pasan de verde (sana) a ámbar (arrastrada) y rojo (falla), y el grosor del tramo baja con el flujo que se pierde.
+- **Modelo de balance:** el mismo estado calcula ingresos, costos y margen por residuo (M$ por mes). Muestra quién gana, quién resta y cuánto cambia contra la situación normal (línea oscura).
+- Cubo, piezas e índice 0–100 se calculan con ese mismo balance. Los botones Antes / Durante / Después cortan la cadena en distinto punto.
+- **Alcance:** selector «Toda la planta» o «Piloto · una línea». En el piloto solo esa línea recibe la intervención; las otras siguen como hoy (se atenúan en la red y en el balance).
+- **Panel de ofrecimiento:** al elegir Antes / Durante / Después muestra el retorno por cada $1 (×6, ×3, ×2, constantes `OFR`), % de pérdida evitada, inversión equivalente y margen, calculados con el mismo modelo. Incluye un botón de WhatsApp con el alcance y el momento elegidos.
+- **Sección «Alternativas»:** alcances (una línea, varias, toda la planta) y los cuatro productos, cada uno ligado a un momento; los botones «Ver … ↑» llevan a la simulación con esa selección.
+- Las cifras están al inicio del script (`LANES`, `ADMIN`, `AFF`): son ilustrativas y se reemplazan con datos reales en el piloto.
+
+## Ilustraciones del mapa por servicio
+Al abrir cualquier servicio, el mapa dibuja una escena geométrica propia (puntos, flechas, anillos, polígonos) que aparece por etapas, igual que la ruta de «Trazabilidad con mapa». El botón «↻ Repetir» del panel la vuelve a dibujar.
+- Las escenas están en `assets/js/escenas.js` (una función por servicio, con el mismo `id` de `servicios.json`).
+- El texto «En el mapa: …» sale de `servicios.json` → `mapa.leyenda`.
+- Son ejemplos ilustrativos, no datos reales. Para crear una nueva: agrega `E["mi-id"] = (h) => { ... }` usando `h.dot`, `h.arrow`, `h.curve`, `h.ring`, `h.hex`, `h.badge`, `h.pulse` y `h.step()` para separar etapas.
+
+## Contador de visitas
+`assets/js/contador.js` usa GoatCounter (sin cookies). Crea la cuenta en goatcounter.com, escribe el código en `data/config.json` → `contador.goatcounter` y activa en GoatCounter «permitir mostrar el conteo en páginas públicas» para que se vea el total al pie de `valorizacion/`. Vacío = no cuenta ni muestra nada.
