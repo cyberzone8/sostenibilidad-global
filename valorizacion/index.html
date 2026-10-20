@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Piloto de control predictivo para plantas de valorización de residuos: mapa de pérdidas y ganancias por residuo."><title>Sostenibilidad Global · Piloto predictivo para plantas de valorización</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;800&family=Inter:wght@400;600&display=swap">
+<style>
+:root{--bg:#f3f1ea;--tx:#17211b;--mu:#55605a;--card:#fff;--ln:#d9d6cb;--g:#1f7a4d;--r:#b8402f;--ink:#12382a;--on:#fff}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1713;--tx:#eef1ec;--mu:#a3b0a8;--card:#18231d;--ln:#2c3a32;--g:#4cc58a;--r:#ef7b6a;--ink:#4cc58a;--on:#0f1713}}
+:root[data-theme="dark"]{--bg:#0f1713;--tx:#eef1ec;--mu:#a3b0a8;--card:#18231d;--ln:#2c3a32;--g:#4cc58a;--r:#ef7b6a;--ink:#4cc58a;--on:#0f1713}
+*{box-sizing:border-box}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font:17px/1.6 Inter,system-ui,sans-serif}
+.w{max-width:880px;margin:0 auto;padding:28px 20px 60px}
+h1,h2,h3{font-family:Fraunces,Georgia,serif;line-height:1.15;margin:0 0 12px}
+h1{font-size:clamp(30px,6vw,48px);font-weight:800}
+h2{font-size:clamp(24px,4vw,32px);margin-top:56px}
+h3{font-size:19px}
+.lead{font-size:19px;color:var(--mu);max-width:60ch}
+.brand{font-weight:600;color:var(--ink);margin-bottom:28px}
+.btn{display:inline-block;background:var(--ink);color:var(--on);padding:14px 22px;border-radius:8px;font-weight:600;text-decoration:none;border:0;font-size:17px;cursor:pointer}
+.btn.alt{background:transparent;color:var(--tx);border:2px solid var(--ln)}
+.btn:focus-visible,button:focus-visible{outline:3px solid var(--g);outline-offset:3px}
+.fig{background:var(--card);border:1px solid var(--ln);border-radius:12px;padding:12px;margin:28px 0;overflow-x:auto}
+.fig svg{width:100%;min-width:560px;height:auto;display:block}
+.cap{font-size:14px;color:var(--mu);margin:6px 4px 0}
+.steps{display:grid;gap:16px;margin-top:20px}
+.step{background:var(--card);border:1px solid var(--ln);border-left:6px solid var(--ln);border-radius:8px;padding:18px 20px}
+.step.p{border-left-color:var(--r)}.step.h{border-left-color:#a98a2a}.step.q{border-left-color:var(--g)}.step.s{border-left-color:var(--ink)}
+.step ul{margin:8px 0 0;padding-left:20px;color:var(--mu)}
+.prod{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));margin-top:14px}
+.prod div{background:var(--card);border:1px solid var(--ln);border-radius:8px;padding:14px}
+.prod b{display:block;color:var(--ink)}
+.q-box{background:var(--card);border:1px solid var(--ln);border-radius:12px;padding:22px}
+.q-box p.q{font-weight:600;font-size:19px;margin:10px 0 18px}
+.q-box .row{display:flex;gap:12px;flex-wrap:wrap}
+.bar{height:6px;background:var(--ln);border-radius:3px;overflow:hidden}.bar i{display:block;height:100%;background:var(--g);width:0;transition:width .3s}
+.res{display:none}.res.on{display:block}
+small{color:var(--mu)}
+@media (prefers-reduced-motion:reduce){.bar i{transition:none}}
+.lab-row{display:grid;grid-template-columns:200px 1fr;gap:22px;align-items:center}
+@media(max-width:600px){.lab-row{grid-template-columns:1fr}}
+.cubebox{height:190px;display:grid;place-items:center;perspective:700px}
+.cube{--s:120px;position:relative;width:var(--s);height:var(--s);transform-style:preserve-3d;animation:spin 14s linear infinite}
+@keyframes spin{from{transform:rotateX(-24deg) rotateY(0)}to{transform:rotateX(-24deg) rotateY(360deg)}}
+.face{position:absolute;inset:0;display:grid;grid:repeat(3,1fr)/repeat(3,1fr);gap:4px;padding:4px;background:#0a1410;border-radius:5px;transition:transform .9s}
+.face:nth-child(1){transform:translateZ(60px) rotate(var(--tw,0deg))}.face:nth-child(2){transform:rotateY(90deg) translateZ(60px) rotate(var(--tw,0deg))}
+.face:nth-child(3){transform:rotateY(180deg) translateZ(60px) rotate(var(--tw,0deg))}.face:nth-child(4){transform:rotateY(-90deg) translateZ(60px) rotate(var(--tw,0deg))}
+.face:nth-child(5){transform:rotateX(90deg) translateZ(60px) rotate(var(--tw,0deg))}.face:nth-child(6){transform:rotateX(-90deg) translateZ(60px) rotate(var(--tw,0deg))}
+.face i{border-radius:2px;transition:background .5s}
+.pieces{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}
+.pc{text-align:center;font-size:13px;line-height:1.25}.pc b{display:block}.pc small{color:var(--mu)}
+.tile{display:block;width:34px;height:60px;margin:0 auto 6px;border-radius:7px;border:2px solid var(--g);background:color-mix(in srgb,var(--g) 25%,var(--card));transform-origin:100% 100%;transition:transform .6s cubic-bezier(.5,0,.9,.6),border-color .4s,background .4s}
+.pc.fell .tile{transform:rotate(62deg);border-color:var(--r);background:color-mix(in srgb,var(--r) 30%,var(--card))}
+.lbl{font-size:15px;margin-bottom:6px}.lbl b{color:var(--r);font-size:20px}
+.meter{position:relative;height:12px;border-radius:9px;background:var(--ln);overflow:hidden}
+.meter i{position:absolute;top:0;left:0;height:100%;width:0;background:var(--r);transition:width .6s}
+.meter .sv{background:repeating-linear-gradient(135deg,var(--g) 0 4px,transparent 4px 8px);transition:left .6s,width .6s}
+.msg{min-height:3.2em;margin:12px 0 0;font-weight:600}
+.ctl{margin-top:12px;display:flex;flex-wrap:wrap;gap:10px;align-items:center}.ctl .q{font-weight:600;margin-right:4px}
+.ctl .btn{padding:10px 16px;font-size:16px}.btn[aria-pressed="true"]{background:var(--ink);color:var(--on);border-color:var(--ink)}
+@media(prefers-reduced-motion:reduce){.cube{animation:none}.tile,.face,.meter i{transition:none}}
+</style>
+</head>
+<body>
+<div class="w">
+<div class="brand"><a href="../" style="color:inherit;text-decoration:none">← Sostenibilidad Global</a> · Valorización de residuos</div>
+
+<h1>Su planta recibe de todo. ¿Sabe cuál residuo le hace ganar y cuál le hace perder?</h1>
+<p class="lead">En un piloto de 30 días tomamos una sola línea de su planta, la mapeamos completa y le mostramos qué pasará con su margen antes de que usted decida. No solo el síntoma: el motivo.</p>
+<p><a class="btn" href="#diagnostico">Hacer el diagnóstico de 2 minutos</a></p>
+
+<div class="fig lab">
+<div class="lab-row">
+<div class="cubebox" role="img" aria-label="Cubo de seis colores: ordenado cuando la planta está bajo control, desordenado cuando las pérdidas se encadenan"><div class="cube" id="cube"></div></div>
+<div class="board">
+<div class="pieces">
+<div class="pc"><span class="tile"></span><b>Recepción</b><small>llega de todo</small></div>
+<div class="pc"><span class="tile"></span><b>Proceso</b><small>se trata igual</small></div>
+<div class="pc"><span class="tile"></span><b>Producto</b><small>sin comprador</small></div>
+<div class="pc"><span class="tile"></span><b>Caja</b><small>se agota</small></div>
+</div>
+<div class="lbl">Pérdida del sistema (índice): <b id="ix">0</b> de 100</div>
+<div class="meter"><i id="mi"></i><i class="sv" id="sv"></i></div>
+<p class="msg" id="msg" aria-live="polite">Una planta es un cubo: si se mueve una pieza, se mueven las otras. Pulsa el botón y mira qué pasa.</p>
+</div>
+</div>
+<div class="ctl"><button class="btn" id="play" type="button">▶ Ver qué le pasa a la planta</button>
+<span id="when" hidden><span class="q">¿Cuándo intervenir?</span>
+<button class="btn alt" data-m="a" type="button">Antes</button><button class="btn alt" data-m="d" type="button">Durante</button><button class="btn alt" data-m="r" type="button">Después</button></span></div>
+<p class="cap">Ejemplo ilustrativo de una planta tipo. El índice de 0 a 100 no corresponde a ninguna planta real: en el piloto lo reemplazamos por sus datos.</p>
+</div>
+
+<h2>Lo que pasa en una planta que recibe múltiples residuos</h2>
+<div class="steps">
+<div class="step p"><h3>1 · El problema</h3>
+<p>La planta trabaja a tope y aun así el margen no aparece. Cada residuo llega distinto, se trata distinto y se vende distinto, pero se gestiona como si fuera uno solo.</p>
+<ul><li>Se cobra por tonelada sin conocer el costo real completo (flete, mantención, análisis, administración).</li>
+<li>Se produce algo para lo que todavía no hay comprador confirmado.</li>
+<li>Hay margen positivo en papel, pero la caja se agota antes de cobrar.</li>
+<li>El intermediario no gana lo suficiente y deja de traer volumen.</li></ul></div>
+
+<div class="step h"><h3>2 · Lo que hoy se hace</h3>
+<ul><li>Informes de consultoría que describen el problema y quedan en un PDF.</li>
+<li>Indicadores y planillas que muestran lo que ya pasó, no lo que va a pasar.</li>
+<li>Cada área mejora lo suyo, sin ver el efecto en el resto.</li>
+<li>El cumplimiento y los certificados se revisan aparte del negocio.</li></ul></div>
+
+<div class="step q"><h3>3 · Lo que proponemos</h3>
+<p>Convertir su planta en un mapa vivo: del residuo que entra a la plata que queda, pasando por proceso, comprador, certificación y caja. Empezamos por una línea. Si ahí logramos anticipar qué decisión mejora el resultado, repetimos el método en toda la empresa.</p></div>
+
+<div class="step s"><h3>4 · La solución</h3>
+<p><b>Piloto de control predictivo en una línea de su planta.</b> Usted decide con el efecto a la vista, antes de gastar.</p>
+<div class="prod">
+<div><b>Mapa de la planta</b>Dónde se gana y dónde se pierde, por tipo de residuo.</div>
+<div><b>Simulador de decisiones</b>Qué le pasa al margen y a la caja si cambia un precio, un proceso o un cliente.</div>
+<div><b>Control de cambios</b>Alertas tempranas cuando una mejora en un punto daña otro.</div>
+<div><b>Análisis de repetición</b>Por qué el mismo problema vuelve y qué lo mantiene.</div>
+</div></div>
+</div>
+
+<h2>La diferencia: explicamos el porqué, no solo el síntoma</h2>
+<p class="lead">Un indicador le dice que el costo subió. Nuestro modelo le dice qué conexión lo hizo subir y qué pasaría con escalabilidad, margen y caja si usted interviene en otro lugar. Es la lógica de mi investigación doctoral en sostenibilidad, aplicada como gerencia predictiva y contada en lenguaje de negocio.</p>
+
+<h2 id="diagnostico">Diagnóstico de 2 minutos</h2>
+<div class="q-box" id="quiz">
+<div class="bar" aria-hidden="true"><i id="pb"></i></div>
+<small id="pc"></small>
+<p class="q" id="qt"></p>
+<div class="row"><button class="btn" id="yes" type="button">Sí</button><button class="btn alt" id="no" type="button">No / No estoy seguro</button></div>
+</div>
+<div class="q-box res" id="res" aria-live="polite">
+<h3 id="rt"></h3><p id="rp"></p>
+<p><a class="btn" id="cta" href="https://wa.me/56985947020?text=Hola%2C%20hice%20el%20diagn%C3%B3stico%20y%20quiero%20conversar%20sobre%20el%20piloto%20en%20mi%20planta." target="_blank" rel="noopener">Quiero el piloto en mi planta</a></p>
+<small>También: <a href="mailto:sostenibilidadglobalspa@gmail.com">sostenibilidadglobalspa@gmail.com</a></small>
+</div>
+
+<h2>Cómo sigue</h2>
+<p>Conversación de 30 minutos → elegimos la línea del piloto → 30 días de mapeo y simulación → decisión sobre extenderlo a toda la planta.</p>
+<p><small>Sostenibilidad Global · Piloto de control predictivo para plantas de valorización de residuos.</small></p>
+</div>
+<script>
+const Q=["¿Sabe cuánto le cuesta realmente cada tonelada que recibe, con flete, mantención y administración incluidos?","¿Sabe qué residuo le deja margen y cuál se lo come?","¿Tiene compradores confirmados para lo que produce?","¿Puede mostrar a un cliente, lote por lote, qué pasó con su residuo?","¿Puede anticipar qué pasa con su caja si cambia un proceso o un precio?"];
+let i=0,no=0;
+const $=id=>document.getElementById(id);
+function show(){$("qt").textContent=Q[i];$("pc").textContent="Pregunta "+(i+1)+" de "+Q.length;$("pb").style.width=(i/Q.length*100)+"%"}
+function ans(isNo){no+=isNo?1:0;i++;if(i<Q.length){show();return}
+$("quiz").style.display="none";$("res").classList.add("on");
+const t=no>=4?["Su planta probablemente opera a ciegas","Hay varios puntos donde hoy no puede ver el efecto de sus decisiones. Un piloto en una línea le daría el mapa y el control que falta."]:no>=2?["Tiene buena base, pero con puntos ciegos","Conoce parte de su negocio. El piloto conectaría lo que ya sabe y mostraría qué decisión mueve más el resultado."]:["Está más avanzado que la mayoría","Falta anticipar. El piloto le permitiría simular decisiones antes de tomarlas y escalar con control."];
+$("rt").textContent=t[0];$("rp").textContent=t[1]}
+$("yes").onclick=()=>ans(false);$("no").onclick=()=>ans(true);show();
+
+(()=>{
+const $=id=>document.getElementById(id);
+const COL=["#e8c547","#f4f4ef","#3aa6d8","#c77be0","#5b6bd6","#ee8a3a"],TH=[.15,.3,.45,.6,.75,.9],TW=[90,-90,180,90,-90,180];
+let s=11;const rnd=()=>(s=s*16807%2147483647,(s-1)/2147483646);
+const cube=$("cube"),sts=[],fc=[];
+for(let f=0;f<6;f++){const el=document.createElement("div");el.className="face";fc.push({el,on:false});
+for(let k=0;k<9;k++){const e=document.createElement("i"),o=COL.filter(c=>c!==COL[f]);
+const st={e,a:COL[f],b:o[Math.floor(rnd()*o.length)],r:k===4?2:rnd(),on:false};e.style.background=st.a;sts.push(st);el.appendChild(e)}
+cube.appendChild(el)}
+const dis=d=>{sts.forEach(t=>{const x=t.r<d;if(x!==t.on){t.on=x;t.e.style.background=x?t.b:t.a}});
+fc.forEach((f,j)=>{const x=d>TH[j];if(x!==f.on){f.on=x;f.el.style.setProperty("--tw",(x?TW[j]:0)+"deg")}})};
+const P=[...document.querySelectorAll(".pc")],CUM=[15,35,60,100],tm=[];
+function show(n,rec=0){P.forEach((p,i)=>p.classList.toggle("fell",i<n));
+const net=(n?CUM[n-1]:0)-rec;$("ix").textContent=net;$("mi").style.width=(net+rec)+"%";
+$("sv").style.left=net+"%";$("sv").style.width=rec+"%";dis(net/100*.85)}
+const M=["Llega un residuo distinto al previsto y el proceso se ajusta tarde.","El proceso trata todo igual y parte del material se pierde.","Se produce algo sin comprador confirmado y se acumula.","La caja se agota antes de cobrar. La cadena completa quedó en rojo."];
+const END="Cuatro piezas, una sola cadena. Elige cuándo intervenir:";
+const W={a:[1,0,"Antes: se corrige en la decisión y el diseño. Cae una pieza y la cascada se detiene. Se conserva casi todo el valor."],
+d:[3,0,"Durante: se detecta a mitad de camino. Caen tres piezas, pero se evita que arrastren la caja."],
+r:[4,20,"Después: ya cayó todo. Solo se contiene y se recupera una parte (zona verde rayada)."]};
+const stop=()=>{tm.forEach(clearTimeout);tm.length=0};
+$("play").onclick=()=>{stop();$("when").hidden=true;show(0);$("msg").textContent="Una planta funciona bien…";
+const reduce=matchMedia("(prefers-reduced-motion:reduce)").matches,gap=reduce?200:1500;
+M.forEach((t,i)=>tm.push(setTimeout(()=>{show(i+1);$("msg").textContent=t},900+i*gap)));
+tm.push(setTimeout(()=>{$("msg").textContent=END;$("when").hidden=false;$("play").textContent="↺ Ver de nuevo"},900+M.length*gap))};
+document.querySelectorAll("#when [data-m]").forEach(b=>b.onclick=()=>{stop();const w=W[b.dataset.m];show(w[0],w[1]);$("msg").textContent=w[2];
+document.querySelectorAll("#when [data-m]").forEach(x=>x.setAttribute("aria-pressed",x===b))});
+show(0);
+})();
+</script>
+</body>
+</html>

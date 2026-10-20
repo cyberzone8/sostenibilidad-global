@@ -65,7 +65,11 @@
       "ods": [
         12,
         15
-      ]
+      ],
+      "enlace": {
+        "texto": "Ver el piloto para plantas de valorización",
+        "url": "valorizacion/"
+      }
     },
     {
       "id": "destino",

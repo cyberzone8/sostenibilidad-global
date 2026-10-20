@@ -124,7 +124,7 @@
   const activos = () => S.servicios.filter((s) => s.activo !== false);
 
   function renderServicio(s) {
-    return { t: s.titulo, h: `<span class="ey">${esc(grupoTitulo(s.grupo))}</span><p>${esc(s.resumen)}</p><h3>Qué hacemos</h3><ul>${(s.acciones || []).map((a) => `<li>${esc(a)}</li>`).join("")}</ul>${odsHtml(s.ods)}<button class="btn" type="button" data-need="${esc(s.titulo)}">Consultar por este servicio</button>` };
+    return { t: s.titulo, h: `<span class="ey">${esc(grupoTitulo(s.grupo))}</span><p>${esc(s.resumen)}</p><h3>Qué hacemos</h3><ul>${(s.acciones || []).map((a) => `<li>${esc(a)}</li>`).join("")}</ul>${odsHtml(s.ods)}<button class="btn" type="button" data-need="${esc(s.titulo)}">Consultar por este servicio</button>${s.enlace && /^(https?:\/\/|[a-z0-9][a-z0-9\-\/]*\/?$)/i.test(s.enlace.url || "") ? ` <a class="btn alt" href="${esc(s.enlace.url)}">${esc(s.enlace.texto)}</a>` : ""}` };
   }
   function renderSeccion(c, need) {
     let h = c.eyebrow ? `<span class="ey">${esc(c.eyebrow)}</span>` : "";
