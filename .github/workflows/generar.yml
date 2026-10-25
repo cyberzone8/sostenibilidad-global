@@ -1,0 +1,23 @@
+# Cada vez que cambias datos de empresas, fotos o la taxonomía, se regeneran las fichas, el directorio y el sitemap.
+name: Generar fichas y directorio
+on:
+  push:
+    paths: ["data/empresas.json", "data/taxonomia.json", "data/config.json", "data/servicios.json", "assets/empresas/**", "tools/generar.py"]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  generar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install segno
+      - run: python3 tools/generar.py
+      - name: Guardar cambios
+        run: |
+          git config user.name "generador-de-fichas"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A empresas directorio sitemap.xml robots.txt
+          git diff --cached --quiet || (git commit -m "Regenerar fichas y directorio" && git push)
