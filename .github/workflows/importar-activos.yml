@@ -1,0 +1,20 @@
+# Se ejecuta a mano: Actions → «Importar activos» → Run workflow. Guarda data/activos.json con postas, CESFAM y espacios comunitarios.
+name: Importar activos
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  importar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: python3 tools/importar-activos.py
+      - name: Guardar cambios
+        run: |
+          git config user.name "importador-de-activos"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/activos.json
+          git diff --cached --quiet || (git commit -m "Importar activos comunitarios" && git push)
