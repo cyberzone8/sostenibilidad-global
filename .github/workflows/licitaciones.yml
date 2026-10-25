@@ -1,0 +1,26 @@
+# Actualiza data/licitaciones.json cada día (y a mano: Actions → «Actualizar licitaciones» → Run workflow).
+# Requiere el secreto MP_TICKET (Settings → Secrets and variables → Actions → New repository secret).
+name: Actualizar licitaciones
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "30 10 * * *"   # 07:30 hora de Chile (aprox.)
+permissions:
+  contents: write
+jobs:
+  importar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: python3 tools/importar-licitaciones.py
+        env:
+          MP_TICKET: ${{ secrets.MP_TICKET }}
+      - name: Guardar cambios
+        run: |
+          git config user.name "importador-de-licitaciones"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/licitaciones.json data/.licitaciones-cache.json
+          git diff --cached --quiet || (git commit -m "Actualizar licitaciones por comuna" && git push)
