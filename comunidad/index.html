@@ -69,7 +69,7 @@ ol.carta{padding-left:1.3em}ol.carta li{margin:4px 0}
   if (com) { $("unirse").href = com; $("unirse").hidden = false; }
   if (/^https:\/\//i.test(formG || "")) { $("registrar").href = formG; $("registrar").hidden = false; }
   const unir = (g) => { const e = R.https(g.enlace) || com; return g.cerrado ? "" : e ? `<a class="btn${g.ingreso === "Solicitud" ? " alt" : ""}" href="${esc(e)}" target="_blank" rel="noopener" data-ev="comunidad/${esc(g.id)}">${g.ingreso === "Solicitud" ? "Pedir ingreso" : "Entrar"}</a>` : `<span class="tag">Se activa pronto</span>`; };
-  $("grupos").innerHTML = (D.grupos || []).map((g) => `<div class="card"><span class="tag">${esc(g.ingreso)}</span><h3>${esc(g.nombre)}</h3><p>${esc(g.hace)}</p><span class="meta">Escribe: ${esc(g.escribe)} · Responde: ${esc(g.dueno)}</span>${unir(g)}</div>`).join("");
+  $("grupos").innerHTML = (D.grupos || []).map((g) => `<div class="card"><span class="tag">${esc(g.ingreso)}</span><h3>${esc(g.nombre)}</h3><p>${esc(g.hace)}</p><span class="meta">Escribe: ${esc(g.escribe)} · Responde: ${esc(g.dueno)}</span>${g.qr ? `<img src="../${esc(g.qr)}" alt="Código QR del grupo ${esc(g.nombre)}" width="120" height="120" style="background:#fff;border-radius:8px;padding:4px;align-self:flex-start">` : ""}${unir(g)}</div>`).join("");
   $("carta").innerHTML = (D.carta || []).map((x) => `<li>${esc(x)}</li>`).join("");
   $("umbral").textContent = D.umbralActivo || 10;
   const gr = (G.grupos || []);

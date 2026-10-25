@@ -1,0 +1,49 @@
+{
+  "_ayuda": "Modelo de la matriz de estructura de diseño (DSM) del sitio. La fila entrega a la columna (de → a). 'cond' es la condición que debe cumplirse para que el flujo esté activo (la evalúa tools/estado-red.py); sin 'cond' el flujo siempre está activo. 'objetivo' son los flujos que se agregarían con la Comunidad, la voz y las licitaciones reales conectadas. 'admin' es la pieza que representa a la persona administradora: en el diseño objetivo queda fuera de los bucles, midiéndolos. Para agregar un flujo, copia una línea de 'aristas'.",
+  "admin": 11,
+  "nodos": [
+    {"id": 1,  "nombre": "QR de la charla"},
+    {"id": 2,  "nombre": "Portada y mapa"},
+    {"id": 3,  "nombre": "Servicios y escenas"},
+    {"id": 4,  "nombre": "Laboratorio"},
+    {"id": 5,  "nombre": "Aporta (marcar punto)"},
+    {"id": 6,  "nombre": "Formulario Google"},
+    {"id": 7,  "nombre": "Hoja y Aprobado"},
+    {"id": 8,  "nombre": "Capa aportes en vivo"},
+    {"id": 9,  "nombre": "Directorio y fichas"},
+    {"id": 10, "nombre": "Registro de empresa"},
+    {"id": 11, "nombre": "Administrador (WhatsApp y moderación)"},
+    {"id": 12, "nombre": "Radio"},
+    {"id": 13, "nombre": "Valorización"},
+    {"id": 14, "nombre": "Activos OSM"},
+    {"id": 15, "nombre": "Comunidad de WhatsApp (pares)"},
+    {"id": 16, "nombre": "Voz (notas y podcast)"},
+    {"id": 17, "nombre": "Licitaciones reales"}
+  ],
+  "aristas": [
+    {"de": 1,  "a": 5},
+    {"de": 2,  "a": 3},  {"de": 2,  "a": 4},  {"de": 2,  "a": 5},  {"de": 2,  "a": 9},
+    {"de": 2,  "a": 10}, {"de": 2,  "a": 11}, {"de": 2,  "a": 12},
+    {"de": 3,  "a": 11}, {"de": 3,  "a": 12},
+    {"de": 5,  "a": 2},
+    {"de": 5,  "a": 6,  "cond": "formulario_aporte"},
+    {"de": 6,  "a": 7,  "cond": "csv_aportes"},
+    {"de": 7,  "a": 8,  "cond": "aprobado_col"},
+    {"de": 8,  "a": 2,  "cond": "csv_aportes"},
+    {"de": 9,  "a": 2},  {"de": 9,  "a": 11},
+    {"de": 10, "a": 11},
+    {"de": 11, "a": 7,  "cond": "csv_aportes"},
+    {"de": 11, "a": 9},  {"de": 11, "a": 14},
+    {"de": 12, "a": 2},
+    {"de": 13, "a": 2},  {"de": 13, "a": 11},
+    {"de": 14, "a": 2},  {"de": 14, "a": 3},  {"de": 14, "a": 4}
+  ],
+  "objetivo": [
+    {"de": 12, "a": 5},  {"de": 12, "a": 15},
+    {"de": 5,  "a": 15}, {"de": 15, "a": 5},
+    {"de": 15, "a": 7},  {"de": 15, "a": 2},  {"de": 15, "a": 9},
+    {"de": 5,  "a": 16}, {"de": 16, "a": 12}, {"de": 16, "a": 15},
+    {"de": 2,  "a": 17}, {"de": 17, "a": 10}, {"de": 17, "a": 9},
+    {"de": 3,  "a": 15}, {"de": 9,  "a": 15}, {"de": 10, "a": 15}, {"de": 13, "a": 15}
+  ]
+}

@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Activos comunitarios · Charla Sostenibilidad Global</title>
+<meta name="description" content="Charla breve sobre activos comunitarios y práctica en vivo: agrega un lugar al mapa desde tu teléfono.">
+<link rel="icon" href="../assets/img/logo-cubo-256.png">
+<style>
+:root{--bg:#06210b;--bg2:#0d3a14;--g1:#1B5E20;--g2:#2E7D32;--g3:#66BB6A;--g4:#A5D6A7;--am:#FFC83D;--tx:#f2fbf3;--mu:#b6d9b9;
+--c1:#2b6cb0;--c2:#7b4fb0;--c3:#65a30d;--c4:#c2410c;--c5:#be185d}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-tap-highlight-color:transparent}
+body{background:radial-gradient(1200px 700px at 80% -10%,#1d6b27 0,transparent 60%),radial-gradient(900px 600px at -10% 110%,#145a1c 0,transparent 55%),linear-gradient(160deg,var(--bg),var(--bg2))}
+.top{position:fixed;inset:0 0 auto 0;height:52px;display:flex;align-items:center;gap:10px;padding:0 14px;z-index:20;background:linear-gradient(#06210bcc,#06210b00)}
+.top img{height:30px;width:30px}
+.brand{font-weight:900;letter-spacing:.04em;font-size:13px;text-transform:uppercase}
+.chip{font-size:11px;font-weight:800;padding:4px 9px;border-radius:99px;background:#ffffff14;border:1px solid #ffffff22;color:var(--g4);white-space:nowrap}
+.chip.b{background:var(--am);color:#2a1d00;border-color:var(--am)}
+.sp{flex:1}
+.clk{font-variant-numeric:tabular-nums;font-weight:800;font-size:13px;color:var(--mu)}
+.bar{position:fixed;top:0;left:0;height:4px;width:0;background:linear-gradient(90deg,var(--g3),var(--am));z-index:30;transition:width .35s}
+.stage{position:fixed;inset:52px 0 64px 0}
+.scene{position:absolute;inset:0;display:none;flex-direction:column;justify-content:center;padding:clamp(14px,3.2vw,48px) clamp(18px,6vw,110px);overflow:auto}
+.scene.on{display:flex;animation:in .45s ease}
+@keyframes in{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.eb{font-size:clamp(11px,1.5vw,16px);font-weight:900;letter-spacing:.16em;text-transform:uppercase;color:var(--g3);margin-bottom:10px}
+h1,h2{font-weight:900;line-height:1.04;letter-spacing:-.02em}
+h1{font-size:clamp(34px,7.2vw,92px)}
+h2{font-size:clamp(26px,5vw,62px);max-width:20ch}
+h2.w{max-width:26ch}
+h1 em,h2 em{font-style:normal;color:var(--am)}
+p.l{font-size:clamp(15px,2.3vw,27px);line-height:1.35;color:var(--mu);margin-top:16px;max-width:36ch}
+p.l b,li b{color:var(--tx)}
+.rv{opacity:0;transform:translateY(12px);transition:.45s;pointer-events:none}
+.rv.in{opacity:1;transform:none;pointer-events:auto}
+.row{display:flex;gap:clamp(12px,2vw,28px);flex-wrap:wrap;align-items:center;margin-top:18px}
+.grid{display:grid;gap:12px;margin-top:18px;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr))}
+.card{background:#ffffff10;border:1px solid #ffffff1f;border-radius:16px;padding:14px 16px;font-size:clamp(13px,1.7vw,19px);line-height:1.3;color:var(--mu)}
+.card b{display:block;color:var(--tx);font-size:1.12em;margin-bottom:3px}
+.card .dot{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:7px}
+ul.k{list-style:none;margin-top:16px;display:grid;gap:10px;max-width:46ch}
+ul.k li{font-size:clamp(15px,2.2vw,25px);line-height:1.3;color:var(--mu);padding-left:30px;position:relative}
+ul.k li:before{content:"";position:absolute;left:0;top:.35em;width:15px;height:15px;border-radius:5px;background:var(--g3)}
+.qr{background:#fff;padding:10px;border-radius:18px;width:clamp(150px,30vmin,330px);aspect-ratio:1}
+.qr img{width:100%;height:100%;display:block}
+.qrb{display:flex;flex-direction:column;align-items:center;gap:8px;font-weight:800;font-size:clamp(12px,1.7vw,18px);text-align:center;color:var(--g4)}
+.btn{display:inline-flex;align-items:center;gap:8px;background:var(--am);color:#2a1d00;font-weight:900;text-decoration:none;padding:11px 18px;border-radius:99px;font-size:clamp(13px,1.7vw,18px)}
+.btn.o{background:transparent;color:var(--g4);border:2px solid var(--g3)}
+.tag{display:inline-block;font-size:11px;font-weight:900;letter-spacing:.06em;padding:3px 9px;border-radius:99px;background:#66BB6A33;color:var(--g4);border:1px solid #66BB6A66;margin-right:6px}
+.big{font-size:clamp(60px,15vw,190px);font-weight:900;color:var(--am);line-height:.9}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:clamp(12px,3vw,40px);margin-top:16px}
+@media(max-width:700px){.two{grid-template-columns:1fr}}
+.no{color:#ff9a8a}.si{color:var(--g3)}
+.loop{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.loop a,.loop span{font-weight:900;font-size:clamp(12px,1.6vw,17px);padding:9px 14px;border-radius:12px;background:#ffffff12;border:1px solid #ffffff26;color:var(--tx);text-decoration:none}
+.loop a:hover{background:var(--g2)}
+.loop small{display:block;font-weight:600;color:var(--mu);font-size:.8em}
+iframe.live{width:100%;flex:1;min-height:260px;border:2px solid #ffffff30;border-radius:16px;background:#fff;margin-top:12px}
+.banner{width:100%;max-width:900px;border-radius:18px;margin-top:18px;border:1px solid #ffffff30}
+.ctrl{position:fixed;inset:auto 0 0 0;height:64px;display:flex;align-items:center;justify-content:center;gap:10px;z-index:20;background:linear-gradient(#06210b00,#06210bee);padding:0 12px}
+.ctrl button,.ctrl a{white-space:nowrap;font:inherit;font-weight:900;font-size:14px;border:0;border-radius:99px;padding:11px 18px;background:#ffffff1c;color:var(--tx);cursor:pointer;text-decoration:none}
+.ctrl button.p{background:var(--am);color:#2a1d00}
+.ctrl .n{min-width:64px;text-align:center;font-weight:800;color:var(--mu);font-variant-numeric:tabular-nums}
+.notes{position:fixed;left:12px;right:12px;bottom:72px;max-height:42vh;overflow:auto;background:#000d;border:1px solid var(--g3);border-radius:14px;padding:12px 16px;z-index:40;display:none;font-size:15px;line-height:1.4}
+.notes.on{display:block}.notes b{color:var(--am)}
+.hint{position:fixed;right:14px;top:58px;font-size:11px;color:var(--mu);z-index:20}
+.url{font-family:ui-monospace,Menlo,monospace;color:var(--am);font-weight:700;word-break:break-all}
+@media print{.top,.ctrl,.bar,.hint{display:none}.scene{display:flex!important;position:static;page-break-after:always;height:100vh}.rv{opacity:1!important;transform:none!important}html,body{overflow:visible;height:auto}.stage{position:static}}
+</style>
+</head>
+<body>
+<div class="bar" id="bar"></div>
+<div class="top"><img src="../assets/img/logo-cubo-256.png" alt=""><span class="brand">Sostenibilidad Global</span><span class="chip b" id="chip">Activos comunitarios</span><span class="sp"></span><span class="chip" id="lp">B1</span><span class="clk" id="clk">00:00</span></div>
+<div class="hint" id="hint">← → navegar · F pantalla completa · N notas · R reiniciar reloj</div>
+<div class="stage" id="stage"></div>
+<div class="notes" id="notes"></div>
+<div class="ctrl"><button id="prev" aria-label="Anterior">◀</button><span class="n" id="num">1/1</span><button class="p" id="next">Siguiente ▶</button><button id="nb">Notas</button><button id="fs">⛶</button></div>
+
+<script>
+(function(){
+var SITE='../',O='?o=charla';
+var QRW='../aporta/qr/comunidad.svg',QRA='../aporta/qr/qr.svg';
+var WA='https://chat.whatsapp.com/DbvWEJ9eC2B1rKrYXSEhiG';
+function qr(src,t){return '<div class="qrb"><div class="qr"><img src="'+src+'" alt="QR '+t+'"></div>'+t+'</div>'}
+function go(href,t,o){return '<a class="btn'+(o?' o':'')+'" href="'+href+'" target="_blank" rel="noopener">'+t+' ↗</a>'}
+var S=[
+/* 0 */{chip:'Sala de espera',lp:'B4',min:0,
+ h:'<div class="eb">Antes de empezar</div><h2 class="w">Entra al grupo <em>Asamblea</em> de WhatsApp</h2><div class="row">'+qr(QRW,'Asamblea · grupo abierto')+'<div><p class="l">Escanea con la cámara. Ahí llegan los enlaces de hoy y ahí seguimos después.</p><p class="l rv" data-s>El grupo es <b>abierto</b>: no hace falta que nadie te apruebe.</p></div></div>',
+ n:'<b>Pantalla fija mientras entra la gente (3–5 min antes).</b> Pide que levanten la mano quienes ya estén dentro: es el primer contagio (B4). <b>Plan de la charla: 10 min hablando, 15–20 min usando el sitio.</b>'},
+/* 1 */{chip:'Apertura',lp:'',min:1.5,
+ h:'<div class="eb">Charla · Los Ángeles, Biobío</div><h1>Activos <em>comunitarios</em></h1><p class="l rv" data-s>¿Qué de tu barrio <b>no podría faltar</b>? Algo que se toca o algo que se vive.</p><p class="l rv" data-s>Una plaza o una sede (tecnosfera). Una fiesta, un saber o una red de vecinos (psicosfera).</p>',
+ n:'Aclara de entrada: hoy no solo van a escuchar, van a <b>aportar al mapa desde el teléfono</b>. Recoge 3–4 respuestas en voz alta; vuelven en «Ahora tú».'},
+/* 2 */{chip:'Qué es',lp:'',min:2.5,
+ h:'<div class="eb">Qué es un activo comunitario</div><h2 class="w">Algo que <em>ya existe</em> y le sirve a la comunidad</h2><div class="grid"><div class="card rv" data-s><b><span class="dot" style="background:var(--c1)"></span>Institucional</b>CESFAM, escuela, municipio</div><div class="card rv" data-s><b><span class="dot" style="background:var(--c2)"></span>Social</b>Juntas de vecinos, clubes</div><div class="card rv" data-s><b><span class="dot" style="background:var(--c3)"></span>Físico</b>Plazas, sedes, ríos, árboles</div><div class="card rv" data-s><b><span class="dot" style="background:var(--c4)"></span>Económico</b>Ferias, almacenes, talleres</div><div class="card rv" data-s><b><span class="dot" style="background:var(--c5)"></span>Cultural</b>Fiestas, patrimonio, murales</div></div><p class="l rv" data-s>Se mapea lo <b>tangible</b> (tecnosfera) y lo <b>intangible</b> (psicosfera). <b>Nunca personas</b>, casas ni datos sensibles.</p>',
+ n:'Enfoque de activos (Morgan y Ziglio 2007): partir de lo que protege y suma, sin negar los problemas. Los colores son los del Laboratorio. Regla de oro: Ley 21.719; es la razón de que el sitio sea seguro de abrir en público. Pide un ejemplo de cada tipo del barrio de la sala.'},
+/* 3 */{chip:'Para qué',lp:'B7',min:2,
+ h:'<div class="eb">Para qué sirve mapear</div><h2>Un mapa que <em>decide mejor</em></h2><ul class="k"><li class="rv" data-s>Saber a dónde ir en una emergencia</li><li class="rv" data-s>Ver zonas sin cobertura de servicios</li><li class="rv" data-s>Postular proyectos y licitaciones con evidencia local</li></ul><div class="row rv" data-s>'+go(SITE+O,'Abrir el mapa')+go(SITE+O+'#licitaciones-biobio','Licitaciones (ejemplo)',1)+'</div>',
+ n:'Paso A: utilidad real. Abre el mapa con los 54 servicios y muestra las licitaciones. <b>Las licitaciones son demostración</b> hasta activar el ticket de Mercado Público; dilo. Si hay tiempo, 1 minuto del caso del corte de luz (en el sitio: «Caso»).'},
+/* 4 */{chip:'Efecto de red',lp:'B1–B4',min:2,
+ h:'<div class="eb">Cómo crece sola</div><h2 class="w">Cada aporte invita al <em>siguiente</em></h2><div class="loop rv" data-s><a href="'+SITE+'aporta/'+O+'">1 · Aporto<small>un activo al mapa</small></a><a href="'+SITE+O+'">2 · Confirmo<small>el de otra persona</small></a><a href="'+WA+'">3 · Invito<small>a mi grupo</small></a><a href="'+SITE+'radio/'+O+'">4 · Suena<small>mi voz en la radio</small></a></div><div class="grid rv" data-s><div class="card"><b>10 personas</b>45 conexiones posibles</div><div class="card"><b>40 (hoy)</b>780 conexiones</div><div class="card"><b>200 (8 líderes × 25)</b>19.900 conexiones</div><div class="card"><b>400</b>79.800 conexiones</div></div><p class="l rv" data-s>Ley de Metcalfe: n(n−1)/2. Quien <b>lidera un grupo</b> trae a todo su grupo.</p>',
+ n:'Paso B: no te quedes en la teoría. Pregunta quién lidera un grupo, organización o club y pídeles que lo inviten hoy: sembrar en líderes pesa tanto como mejorar el efecto de contagio. Cada botón abre el bucle real. Metcalfe cuenta conexiones <b>posibles</b>, no reales: solo se concretan si la gente aporta y confirma. Nadie depende de un WhatsApp personal: todo entra por la Asamblea y el formulario.'},
+/* 5 */{chip:'Ahora tú',lp:'B1',min:8,
+ h:'<div class="eb">Ahora tú · 8 minutos</div><h2>Aporta <em>un activo</em> al mapa</h2><div class="row">'+qr(QRA,'Aporta al mapa')+'<div><ul class="k"><li class="rv" data-s>Escanea y marca el punto en el mapa</li><li class="rv" data-s>Descríbelo en el formulario</li><li class="rv" data-s>Envía: lo revisa la comunidad</li></ul><div class="row rv" data-s>'+go(SITE+'aporta/'+O,'Abrir Aporta al mapa')+'</div></div></div>',
+ n:'<b>Aquí termina la parte expositiva (~10 min).</b> Pausa de 8 min: camina entre las filas ayudando. Usa los ejemplos de la apertura. Al terminar cada persona, el sitio le ofrece invitar a 3 personas y unirse a la Comunidad.'},
+/* 6 */{chip:'En vivo',lp:'B1·B2',min:5,live:1,
+ h:'<div class="eb">En vivo</div><h2 class="w">Mira cómo <em>aparecen</em>. Confirma dos.</h2><iframe class="live" data-src="'+SITE+'en-vivo/" title="Pantalla en vivo" loading="lazy"></iframe><div class="row">'+go(SITE+'en-vivo/','Pantalla completa',1)+'</div>',
+ n:'Los aportes aparecen con unos minutos de retraso (Google publica el CSV con demora). Pide que cada persona toque un punto de otra y presione «Lo confirmo»: es la verificación entre pares (B2) y baja tu carga de revisión. Requiere el enlace CSV en config.json → aportes.csvUrl.'},
+/* 7 */{chip:'Cierre',lp:'B4·B6',min:2,
+ h:'<div class="eb">Esta semana</div><h2>Tres <em>pasos</em></h2><ul class="k"><li class="rv" data-s><b>1.</b> Confirma dos aportes de otras personas</li><li class="rv" data-s><b>2.</b> Invita a tu grupo a la Asamblea</li><li class="rv" data-s><b>3.</b> Cuenta tu barrio con una <b>nota de voz de 2–3 min</b> en la Asamblea</li></ul><div class="row">'+qr(QRW,'Asamblea · WhatsApp')+qr(QRA,'Aporta al mapa')+'</div><div class="row"><span class="url">cyberzone8.github.io/sostenibilidad-global</span></div>',
+ n:'Paso C: cierre en la Comunidad. Invita a grabar una nota de voz de 2–3 min: las mejores van a la radio, con autorización. Nadie da consejo médico; es testimonio. Deja esta diapositiva durante las preguntas; ambos QR siguen activos.'}
+];
+
+var st=document.getElementById('stage'),cur=0,rv=0,t0=Date.now(),els=[];
+S.forEach(function(s,i){var d=document.createElement('section');d.className='scene';d.innerHTML=s.h;st.appendChild(d);els.push(d)});
+function steps(d){return d.querySelectorAll('[data-s]')}
+function show(i,back){
+ cur=Math.max(0,Math.min(S.length-1,i));
+ els.forEach(function(e,k){e.classList.toggle('on',k===cur)});
+ var ss=steps(els[cur]);ss.forEach(function(e){e.classList.toggle('in',!!back)});rv=back?ss.length:0;
+ var s=S[cur];
+ document.getElementById('chip').textContent=s.chip;
+ var lp=document.getElementById('lp');lp.textContent=s.lp;lp.style.display=s.lp?'':'none';
+ document.getElementById('num').textContent=(cur+1)+'/'+S.length;
+ document.getElementById('bar').style.width=((cur+1)/S.length*100)+'%';
+ document.getElementById('notes').innerHTML='<b>Diapositiva '+(cur+1)+' · ~'+s.min+' min</b><br>'+s.n;
+ var f=els[cur].querySelector('iframe[data-src]');if(f&&!f.src)f.src=f.dataset.src;
+ try{history.replaceState(null,'','#'+(cur+1))}catch(e){}
+}
+function next(){var ss=steps(els[cur]);if(rv<ss.length){ss[rv].classList.add('in');rv++}else if(cur<S.length-1)show(cur+1)}
+function prev(){var ss=steps(els[cur]);if(rv>0){rv--;ss[rv].classList.remove('in')}else if(cur>0)show(cur-1,true)}
+document.getElementById('next').onclick=next;document.getElementById('prev').onclick=prev;
+document.getElementById('nb').onclick=function(){document.getElementById('notes').classList.toggle('on')};
+function fs(){var d=document.documentElement;if(document.fullscreenElement)document.exitFullscreen();else if(d.requestFullscreen)d.requestFullscreen()}
+document.getElementById('fs').onclick=fs;
+document.addEventListener('keydown',function(e){
+ var k=e.key;
+ if(k==='ArrowRight'||k===' '||k==='PageDown'){e.preventDefault();next()}
+ else if(k==='ArrowLeft'||k==='PageUp'){e.preventDefault();prev()}
+ else if(k==='Home')show(0);else if(k==='End')show(S.length-1);
+ else if(k==='f'||k==='F')fs();
+ else if(k==='n'||k==='N')document.getElementById('notes').classList.toggle('on');
+ else if(k==='r'||k==='R')t0=Date.now();
+});
+var x0=null;
+st.addEventListener('touchstart',function(e){x0=e.touches[0].clientX},{passive:true});
+st.addEventListener('touchend',function(e){if(x0===null)return;var dx=e.changedTouches[0].clientX-x0;x0=null;if(Math.abs(dx)>50)(dx<0?next:prev)()});
+setInterval(function(){var s=Math.floor((Date.now()-t0)/1000),m=Math.floor(s/60);s%=60;document.getElementById('clk').textContent=(m<10?'0':'')+m+':'+(s<10?'0':'')+s},1000);
+var h=parseInt((location.hash||'').slice(1),10);show(h>0?h-1:0);
+setTimeout(function(){document.getElementById('hint').style.display='none'},8000);
+})();
+</script>
+</body>
+</html>

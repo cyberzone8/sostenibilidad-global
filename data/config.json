@@ -8,7 +8,7 @@
     "telefono": "+56 9 8594 7020",
     "whatsapp": "56985947020",
     "linkedin": "https://www.linkedin.com/in/gustavo-godoy-phd-confidential-strategic-advisor-9b505029",
-    "url": "https://cyberzone8.github.io/sostenibilidad-global/",
+    "url": "",
     "_urlAyuda": "Dirección pública del sitio, con / al final (ej.: https://usuario.github.io/repositorio/). Se usa para el código QR de cada ficha, el sitemap y los enlaces para compartir. Vacío = esas funciones se omiten."
   },
   "textos": {
@@ -66,9 +66,9 @@
     "residuo_generador": "",
     "planta_gestor": "",
     "contacto": "",
-    "aporte": "https://docs.google.com/forms/d/e/1FAIpQLSdsWK5_Hi-fzoou8UP7BqsSffwQhx7sQ2BLi5ex9Ha3965w0Q/viewform?usp=dialog",
+    "aporte": "https://docs.google.com/forms/d/e/1FAIpQLSdsWK5_Hi-fzoou8UP7BqsSffwQhx7sQ2BLi5ex9Ha3965w0Q/viewform",
     "aporteCampos": {
-      "_ayuda": "Para que el sitio rellene el formulario con lo que la persona marcó en el mapa: en tu Formulario de Google, menú ⋮ → «Obtener enlace prellenado», llena una respuesta de ejemplo, presiona «Obtener enlace» y copia de la dirección cada código «entry.123456789». Vacío = se abre el formulario sin rellenar. Agrega también una pregunta corta «Origen» (de dónde llegó la persona) y pon su entry.… en «origen».",
+      "_ayuda": "Para que el sitio rellene el formulario con lo que la persona marcó en el mapa: en tu Formulario de Google, menú ⋮ → «Obtener enlace prellenado», llena una respuesta de ejemplo, presiona «Obtener enlace» y copia de la dirección cada código «entry.123456789». Desde v26 la página aporta/ solo captura el punto del mapa: basta con llenar «lat», «lng» y «origen» (los demás datos se piden en el formulario). Vacío = el formulario se abre sin rellenar y la persona puede copiar las coordenadas.",
       "tipo": "",
       "nombre": "",
       "descripcion": "",
@@ -115,7 +115,7 @@
   },
   "aportes": {
     "_ayuda": "Mapa en vivo con las respuestas del formulario. En la hoja de respuestas: Archivo → Compartir → Publicar en la web → pestaña de respuestas, formato CSV → Publicar; pega aquí el enlace https. Agrega una columna «Aprobado» y escribe SI en las filas que quieras mostrar. Google actualiza el CSV publicado cada pocos minutos.",
-    "csvUrl": "",
+    "csvUrl": "https://docs.google.com/spreadsheets/d/e/2PACX-1vQzPx5e-7G5699ArNReXg0VHmCiHpvk9EUC2u5n7Ptoe8KSgsM_hL9tYhh5KsA14Slv5Cc1H7YJB8Zs/pub?gid=426386440&single=true&output=csv",
     "moderacion": true,
     "refrescoSeg": 30,
     "confirmacionesParaMostrar": 0,
@@ -123,9 +123,8 @@
     "hojaUrl": ""
   },
   "comunidad": {
-    "_ayuda": "Comunidad de WhatsApp de la red (WhatsApp → Comunidades → Invitar con un enlace). Vacío = los botones «Únete a la Comunidad» no aparecen. NO pongas aquí tu número personal.",
+    "_ayuda": "Comunidad de WhatsApp de la red (WhatsApp → Comunidades → Invitar con un enlace). Vacío = los botones «Únete a la Comunidad» no aparecen. NO pongas aquí tu número personal. Hoy apunta al grupo abierto «Asamblea», que es la puerta de entrada a la Comunidad.",
     "nombre": "Comunidad Sostenibilidad Global",
-    "asamblea": "https://chat.whatsapp.com/DbvWEJ9eC2B1rKrYXSEhiG",
     "url": "https://chat.whatsapp.com/DbvWEJ9eC2B1rKrYXSEhiG"
   }
 }

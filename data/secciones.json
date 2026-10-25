@@ -292,5 +292,12 @@
     "principal": true,
     "grupo": "contacto",
     "destacado": true
+  },
+  {
+    "id": "charla",
+    "activo": true,
+    "grupo": "aprende",
+    "titulo": "Ver la charla (diapositivas)",
+    "enlaceDirecto": "charla/?o=menu"
   }
 ]

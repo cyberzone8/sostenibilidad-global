@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Agrega al mapa un árbol, una plaza, un evento o una organización de tu comunidad. Sostenibilidad Global.">
-<title>Aporta al mapa · Sostenibilidad Global</title>
+<meta name="description" content="Aporta al mapa lo que tu comunidad tiene: lo tangible (tecnosfera) y lo intangible (psicosfera). Sostenibilidad Global.">
+<title>Aporta un activo al mapa · Sostenibilidad Global</title>
 <link rel="stylesheet" href="../vendor/leaflet/leaflet.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;800&family=Inter:wght@400;600&display=swap">
 <style>
@@ -33,41 +33,57 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{
 .nota{font-size:14px;color:var(--mu)}
 .aviso{background:var(--card);border:1px solid var(--ln);border-left:6px solid var(--g);border-radius:8px;padding:12px 14px;margin:14px 0;font-size:15px}
 .fila{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.dos{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
+@media(max-width:560px){.dos{grid-template-columns:1fr}}
+.dos .c{background:var(--card);border:1px solid var(--ln);border-radius:12px;padding:12px 14px;font-size:15px}
+.dos .c b{display:block;font-size:16px;margin-bottom:2px}
+.dos .c small{display:block;color:var(--mu);font-size:13px;margin-top:6px}
+.por{background:var(--ink);color:var(--on);border-radius:12px;padding:14px 16px;margin:14px 0;font-size:16px}
+.por b{display:block;margin-bottom:4px}
+.cc{font-family:ui-monospace,Menlo,monospace;font-size:15px}
+.cp{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;background:var(--card);border:1px solid var(--ln);border-radius:10px;padding:8px 12px;margin:6px 0}
+.cp button{min-height:40px;padding:8px 14px;font-size:15px}
 </style>
 </head>
 <body>
 <div class="w">
   <p class="brand"><a href="../">← Sostenibilidad Global</a></p>
-  <h1>Agrega algo al mapa</h1>
-  <p class="lead">Un árbol especial, una plaza, un evento, una organización, un lugar que tu comunidad quiere que se vea. Toma 1 minuto.</p>
+  <h1>Aporta un activo al mapa</h1>
+  <p class="lead">Un activo es algo que ya existe y le sirve a tu comunidad. Puede tocarse o solo vivirse. Toma 1 minuto.</p>
 
-  <div class="aviso"><b>Cuida a tu comunidad:</b> no escribas nombres de personas, direcciones de casas ni teléfonos. Solo lugares, organizaciones y actividades públicas. Un equipo revisa cada aporte antes de mostrarlo.</div>
+  <div class="dos">
+    <div class="c"><b>Tangible · Tecnosfera</b>Una plaza, una sede, un árbol, una huerta, una ciclovía, una antena, un pozo, una feria.<small>Se ve y se toca.</small></div>
+    <div class="c"><b>Intangible · Psicosfera</b>Un saber local, una fiesta, la memoria de un terremoto, una red de vecinos, un club, una costumbre, una forma de organizarse.<small>Se vive y se practica. Márcalo donde ocurre.</small></div>
+  </div>
+  <div class="por"><b>Lo que no está en el mapa no se ve, y lo que no se ve no se cuida ni se financia.</b>Tu aporte ayuda a decidir dónde invertir, a saber a quién recurrir en una emergencia y a que otra persona de tu barrio se anime. <span id="prueba" hidden></span></div>
 
-  <h2 class="paso"><b>1</b> Toca el lugar en el mapa</h2>
+  <div class="aviso"><b>Cuida a tu comunidad:</b> no escribas nombres de personas, direcciones de casas ni teléfonos. Solo lugares, organizaciones, saberes y actividades públicas. Un equipo revisa cada aporte antes de mostrarlo.</div>
+
+  <h2 class="paso"><b>1</b> Toca en el mapa dónde está o dónde ocurre</h2>
   <div id="map" role="application" aria-label="Mapa: toca para marcar el lugar"></div>
-  <p class="nota" id="prueba" hidden></p>
-  <p class="coord" id="coord" role="status">Aún no marcaste ningún lugar.</p>
+  <p class="coord" id="coord" role="status">Aún no marcaste ningún punto.</p>
+  <div id="copia" hidden>
+    <div class="cp"><span>Latitud: <b class="cc" id="vlat"></b></span><button type="button" class="btn alt" id="copiarLat">Copiar latitud</button></div>
+    <div class="cp"><span>Longitud: <b class="cc" id="vlng"></b></span><button type="button" class="btn alt" id="copiarLng">Copiar longitud</button></div>
+    <p class="nota">Si el formulario no trae el punto, copia cada dato por separado y pégalo en su campo (Latitud y Longitud).</p>
+  </div>
   <button class="btn alt" type="button" id="gps">Usar mi ubicación</button>
 
-  <h2 class="paso"><b>2</b> ¿Qué es?</h2>
-  <div class="tipos" id="tipos" role="group" aria-label="Tipo de aporte"></div>
-  <label for="nombre">Nombre del lugar o actividad</label>
-  <input type="text" id="nombre" maxlength="80" autocomplete="off" placeholder="Ej.: Roble de la plaza vieja">
-  <label for="desc">Cuéntanos un poco (opcional)</label>
-  <textarea id="desc" rows="3" maxlength="240" placeholder="Ej.: Más de 100 años, aquí se juntan los vecinos"></textarea>
-
-  <h2 class="paso"><b>3</b> Envíalo</h2>
-  <div class="fila"><button class="btn" type="button" id="enviar" disabled>Continuar al formulario</button><a class="btn alt" href="../" id="vermapa">Ver el mapa</a></div>
-  <p class="nota" id="msg" role="status">Marca el lugar y elige qué es para continuar.</p>
+  <h2 class="paso"><b>2</b> Cuéntalo en el formulario</h2>
+  <p class="nota">Ahí eliges el tipo, le pones nombre y lo describes. Aquí solo guardamos el punto del mapa.</p>
+  <div class="fila"><button class="btn" type="button" id="enviar" disabled>Continuar al formulario</button></div>
+  <p class="nota" id="msg" role="status">Marca el punto en el mapa para continuar.</p>
   <section id="gracias" class="aviso" hidden aria-live="polite">
     <h2 style="margin-top:0">¡Gracias por aportar!</h2>
     <p>Confirma el envío en la pestaña del formulario. Un equipo lo revisa y, cuando se apruebe, aparecerá en el mapa. <b>Lo mejor que puedes hacer ahora:</b></p>
     <div class="fila">
       <button class="btn" type="button" id="invitar">Invita a 3 personas</button>
       <a class="btn alt" id="unirse" href="#" target="_blank" rel="noopener" hidden>Únete a la Comunidad</a>
-      <button class="btn alt" type="button" id="otro">Aporta otro lugar</button>
+      <button class="btn alt" type="button" id="otro">Aporta otro activo</button>
     </div>
-    <p id="dir" hidden class="nota" style="margin-top:12px">¿Es tu negocio u organización? <a href="../#empresas">Aparece también en el directorio</a>.</p>
+    <p class="nota" style="margin-top:12px"><b>¿Lideras un grupo, club u organización?</b> Invítalo completo: <button type="button" class="btn alt" id="invlid" style="min-height:40px;padding:8px 14px;font-size:15px">Invitar a mi grupo</button></p>
+    <p class="nota">¿Quieres contarlo con tu voz? Envía una nota de voz de 2 a 3 minutos a la Comunidad (sin consejos médicos ni datos de terceras personas).</p>
+    <p class="nota">¿Es tu negocio u organización? <a href="../#empresas">Aparece también en el directorio</a>.</p>
   </section>
   <p class="nota">Al enviar aceptas el <a href="../privacidad/">aviso de privacidad</a>. Este sitio no guarda lo que escribes: se abre un formulario de Google donde confirmas el envío.</p>
 </div>
@@ -77,48 +93,47 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{
 <script src="../assets/js/contador.js" data-config="../data/config.json" defer></script>
 <script>
 (async () => {
-  const TIPOS = ["Árbol o área verde", "Plaza o espacio público", "Evento o actividad", "Organización o club", "Servicio de salud", "Comercio o emprendimiento", "Otro"];
   const $ = (id) => document.getElementById(id);
   let cfg = {}; try { cfg = await (await fetch("../data/config.json", { cache: "no-cache" })).json(); } catch (e) {}
   const m = cfg.mapa || { centro: [-37.4697, -72.3537], teselas: { url: "https://tile.openstreetmap.org/{z}/{x}/{y}.png", atribucion: "© OpenStreetMap" } };
   const map = L.map("map", { zoomControl: true }).setView(m.centro, 12);
   L.tileLayer(m.teselas.url, { maxZoom: m.zoomMax || 19, attribution: m.teselas.atribucion, referrerPolicy: "origin" }).addTo(map);
-  let mk = null, pos = null, tipo = "";
-  const marcar = (ll, z) => { pos = [ll.lat, ll.lng]; if (mk) mk.setLatLng(ll); else mk = L.marker(ll).addTo(map); $("coord").textContent = "Lugar marcado: " + pos[0].toFixed(5) + ", " + pos[1].toFixed(5); if (z) map.setView(ll, 16); estado(); };
+  let mk = null, pos = null;
+  const marcar = (ll, z) => { pos = [ll.lat, ll.lng]; if (mk) mk.setLatLng(ll); else mk = L.marker(ll).addTo(map); $("coord").textContent = "Punto marcado en el mapa."; $("vlat").textContent = pos[0].toFixed(6); $("vlng").textContent = pos[1].toFixed(6); $("copia").hidden = false; $("copiarLat").textContent = "Copiar latitud"; $("copiarLng").textContent = "Copiar longitud"; if (z) map.setView(ll, 16); $("enviar").disabled = false; $("msg").textContent = "Listo. Se abrirá el formulario; allí lo describes y presionas «Enviar»."; };
   map.on("click", (e) => marcar(e.latlng));
   $("gps").addEventListener("click", () => {
     if (!navigator.geolocation) { $("coord").textContent = "Tu navegador no permite usar la ubicación. Toca el mapa."; return; }
     $("coord").textContent = "Buscando tu ubicación…";
     navigator.geolocation.getCurrentPosition((p) => marcar({ lat: p.coords.latitude, lng: p.coords.longitude }, true), () => { $("coord").textContent = "No pudimos obtener tu ubicación. Toca el mapa."; }, { enableHighAccuracy: true, timeout: 12000 });
   });
-  $("tipos").innerHTML = TIPOS.map((t) => `<button type="button" aria-pressed="false">${t}</button>`).join("");
-  $("tipos").addEventListener("click", (e) => { const b = e.target.closest("button"); if (!b) return; tipo = b.textContent; [...$("tipos").children].forEach((x) => x.setAttribute("aria-pressed", String(x === b))); estado(); });
-  $("nombre").addEventListener("input", estado);
-  function estado() {
-    const ok = !!pos && !!tipo && $("nombre").value.trim().length > 1;
-    $("enviar").disabled = !ok;
-    $("msg").textContent = ok ? "Listo. Se abrirá el formulario con tus datos; allí presionas «Enviar»." : "Marca el lugar, elige qué es y escribe un nombre para continuar.";
-  }
   const R = window.SG_RED, org = R.origen();
   SG.track("aporta/visita/" + (org || "directo"));
   $("enviar").addEventListener("click", () => {
-    const v = { tipo, nombre: $("nombre").value.trim(), descripcion: $("desc").value.trim(), lat: pos[0].toFixed(6), lng: pos[1].toFixed(6), origen: org || "directo" };
-    const url = R.formUrl(cfg, v);
-    if (!url) { $("msg").textContent = "El formulario aún no está activo. Copia estos datos: " + tipo + " · " + v.nombre + " · " + v.lat + ", " + v.lng; return; }
+    const lat = pos[0].toFixed(6), lng = pos[1].toFixed(6);
+    const url = R.formUrl(cfg, { lat, lng, origen: org || "directo" });
+    if (!url) { $("msg").textContent = "El formulario aún no está activo. Guarda estas coordenadas: latitud " + lat + " y longitud " + lng + "."; return; }
     window.open(url, "_blank", "noopener"); SG.track("aporta/envio/" + (org || "directo"));
-    $("msg").textContent = "Se abrió el formulario en otra pestaña. Revisa y presiona «Enviar».";
+    $("msg").textContent = "Se abrió el formulario en otra pestaña. Descríbelo y presiona «Enviar».";
     $("gracias").hidden = false; $("gracias").scrollIntoView({ behavior: "smooth", block: "center" });
-    $("dir").hidden = !(tipo.startsWith("Comercio") || tipo.startsWith("Organización"));
   });
+  const copiar = (texto, btn, etiqueta) => {
+    const listo = () => { btn.textContent = "Copiada ✓"; setTimeout(() => { btn.textContent = etiqueta; }, 2500); };
+    const respaldo = () => { const ta = document.createElement("textarea"); ta.value = texto; ta.style.position = "fixed"; ta.style.opacity = "0"; document.body.appendChild(ta); ta.select(); try { document.execCommand("copy"); listo(); } catch (e) { btn.textContent = "Selecciónala y cópiala"; } ta.remove(); };
+    if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(texto).then(listo, respaldo); else respaldo();
+    SG.track("aporta/copiar-" + (etiqueta.indexOf("lat") > -1 ? "lat" : "lng"));
+  };
+  $("copiarLat").addEventListener("click", () => copiar($("vlat").textContent, $("copiarLat"), "Copiar latitud"));
+  $("copiarLng").addEventListener("click", () => copiar($("vlng").textContent, $("copiarLng"), "Copiar longitud"));
   const com = R.comunidadUrl(cfg); if (com) { $("unirse").href = com; $("unirse").hidden = false; $("unirse").dataset.ev = "comunidad/aporta"; }
   const base = R.sitioBase(cfg) ? R.sitioBase(cfg) + "aporta/" : new URL("./", location.href).href;
-  $("invitar").addEventListener("click", () => { SG.track("aporta/invitar"); R.compartir("Agrega al mapa un árbol, una plaza, un evento o una organización de tu comunidad. Toma 1 minuto:", base + "?o=inv"); });
-  $("otro").addEventListener("click", () => { $("gracias").hidden = true; $("nombre").value = ""; $("desc").value = ""; tipo = ""; [...$("tipos").children].forEach((x) => x.setAttribute("aria-pressed", "false")); estado(); window.scrollTo({ top: 0, behavior: "smooth" }); });
-  /* aportes que ya existen: evita repetidos y muestra que otras personas ya participan */
+  $("invitar").addEventListener("click", () => { SG.track("aporta/invitar"); R.compartir("Suma al mapa lo que tu comunidad tiene, tangible o intangible: una plaza, un saber, una red de vecinos. Toma 1 minuto:", base + "?o=inv"); });
+  $("invlid").addEventListener("click", () => { SG.track("aporta/invitar-lider"); R.compartir("Sumemos a nuestro grupo al mapa comunitario: lo que tenemos, tangible o intangible. Toma 1 minuto:", base + "?o=inv-lider"); });
+  $("otro").addEventListener("click", () => { $("gracias").hidden = true; $("enviar").disabled = true; $("copia").hidden = true; $("coord").textContent = "Aún no marcaste ningún punto."; $("msg").textContent = "Marca el punto en el mapa para continuar."; window.scrollTo({ top: 0, behavior: "smooth" }); });
+  /* aportes que ya existen: prueba social y evita repetidos */
   R.cargar(cfg, { demo: /[?&]demo=1/.test(location.search) }).then((it) => {
     const v = it.filter((a) => a.visible); if (!v.length) return;
     v.forEach((a) => L.circleMarker([a.lat, a.lng], { radius: 7, color: "#fff", weight: 2, fillColor: R.TIPOS[a.tipo][1], fillOpacity: .95 }).bindTooltip(a.nombre).addTo(map));
-    $("prueba").textContent = "Ya hay " + v.length + (v.length === 1 ? " aporte" : " aportes") + " en el mapa. Revisa que el tuyo no esté repetido."; $("prueba").hidden = false;
+    $("prueba").textContent = "Ya hay " + v.length + (v.length === 1 ? " aporte" : " aportes") + " en el mapa: el tuyo suma."; $("prueba").hidden = false;
   }).catch(() => {});
   setTimeout(() => map.invalidateSize(), 300);
 })();

@@ -285,3 +285,12 @@ body.present .capas{display:block}
 .leaflet-container .gl-b a.btn{color:#fff;background:var(--brand)}
 .leaflet-container .gl-b a.btn.alt{color:var(--tx);background:transparent;border:2px solid var(--ln)}
 .leaflet-container .gl-b button.btn.alt{color:var(--tx)}
+
+/* v26: llamado a aportar dentro de la columna inferior (.mid): no se superpone con nada */
+.cta-ap{flex:none;display:flex;align-items:center;gap:12px;padding:10px 18px 10px 14px;border-radius:16px;background:#12382a;color:#fff;text-decoration:none;box-shadow:0 6px 20px rgba(0,0,0,.25);font-weight:700;font-size:.92rem;line-height:1.2}
+.cta-ap b{font-size:1.5rem;line-height:1;color:#5dbb8a}
+.cta-ap small{display:block;font-weight:400;font-size:.76rem;opacity:.85;margin-top:2px}
+.cta-ap:hover{background:#1a4d3a}
+.cta-ap:focus-visible{outline:3px solid #5dbb8a;outline-offset:2px}
+@media(max-width:760px){.cta-ap small{display:none}.cta-ap{padding:9px 14px}}
+@media(min-width:761px){.cta-ap{order:9}} /* en escritorio va al pie de la columna: no tapa los controles de zoom del mapa */

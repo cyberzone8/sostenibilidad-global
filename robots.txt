@@ -1,3 +1,2 @@
 User-agent: *
 Allow: /
-Sitemap: https://cyberzone8.github.io/sostenibilidad-global/sitemap.xml

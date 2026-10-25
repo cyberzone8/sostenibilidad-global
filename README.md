@@ -188,3 +188,29 @@ Responde a la auditoría de v23 y a la estructura «Comunidad, células y progra
 - **Rótulos honestos.** La radio avisa «Música de demostración» (`"demo": true` en `playlist.json`; quítalo con música real) y el menú dice «Licitaciones por comuna (ejemplo)» hasta conectar el ticket.
 - **Contacto.** La sección Contacto ofrece primero la Comunidad y las células, y deja WhatsApp personal como alternativa.
 - **Para el administrador:** `config.json` nuevo → `comunidad.url`, `formularios.grupo`, `aporteCampos.origen`, `aportes.hojaUrl`, `aportes.confirmacionesParaMostrar`. Pregunta nueva en el formulario: «Origen» (respuesta corta).
+
+## v25 · Charla (diapositivas)
+`charla/index.html`: presentación HTML de 23 diapositivas sobre activos comunitarios (flechas, deslizar, F pantalla completa, N notas con tiempos, R reinicia el reloj; `charla/#6` abre una diapositiva). Primera diapositiva: QR del grupo Asamblea. Los botones enlazan al sitio con `?o=charla` (origen) y a los bucles B1–B7. Se edita el arreglo `S` dentro del archivo. Menú: Aprende → «Ver la charla».
+
+## v26: charla corta y más efecto de red
+- `charla/`: 8 diapositivas (~10 min) y el resto del tiempo para usar el sitio. Incluye la ley de Metcalfe n(n−1)/2 (conexiones posibles).
+- Portada: llamado «＋ Aporta lo que tu comunidad tiene» dentro de la columna izquierda (no flota sobre el mapa), medido como `aporta/desde-portada`.
+- `aporta/`: solo captura el punto del mapa (el tipo, nombre y descripción se piden en el formulario de Google), explica qué se puede aportar (tangible = tecnosfera, intangible = psicosfera) y por qué importa. Si el formulario no trae el punto, hay un botón para copiar las coordenadas. Tras enviar, invitar a tu grupo (`?o=inv-lider`) y sugerencia de nota de voz.
+- Logo: `assets/img/logo-cubo-*.png` ahora con fondo transparente.
+- Pendiente tuyo (no se puede hacer desde el código): `aportes.csvUrl`, columna Aprobado, `contador.goatcounter` y los `entry.…` de `aporteCampos`.
+
+## Estado de la red (informe privado para la administración)
+`tools/estado-red.py` calcula, con la biblioteca estándar de Python, el estado de los efectos de red: eslabones conectados, ley de Metcalfe n(n−1)/2 y techo n/(1−K), aportes reales (si hay CSV), la DSM con su número de bucles y cuellos de botella, los llamados a la acción del código, las fuentes de datos reales y un **índice de red de 0 a 100** con pesos visibles. La DSM está en `data/red-dsm.json` (edítala para agregar piezas o flujos).
+
+**En tu computador (lo más privado):** `python3 tools/estado-red.py --miembros 40` (opcional `--k 0,9`).
+
+**En GitHub (Actions → «Estado de la red (privado)» → Run workflow):** corre solo cada lunes y a mano cuando quieras.
+- Si el repositorio es **público** (necesario para Pages gratis), los registros y resúmenes de Actions los puede leer cualquiera. Por eso el informe **solo se envía a tu correo** y nunca se imprime en el registro.
+- Si el repositorio es **privado**, además se escribe en el resumen de la ejecución.
+
+Configuración (Settings → Secrets and variables → Actions):
+1. Secrets: `SMTP_USER` (tu Gmail), `SMTP_PASS` (una **contraseña de aplicación** de Google, no la clave normal; requiere verificación en dos pasos) y, si quieres otro destino, `RED_DESTINO`. Sin `RED_DESTINO` se usa `sitio.correo` de `config.json`.
+2. Variables: `RED_MIEMBROS` (personas hoy en la Asamblea/Comunidad: es la n de Metcalfe; actualízala cuando cambie) y, opcional, `RED_K` (por defecto 0,6).
+3. Opcional: secret `GOATCOUNTER_TOKEN` (GoatCounter → Settings → API) para sumar las visitas de los últimos 30 días.
+
+Notas: Metcalfe cuenta conexiones **posibles**; solo se concretan si la gente aporta y confirma entre sí. Los llamados a la acción se cuentan en el código (puntos de llamado), no son clics; los clics los mide el contador. GitHub pausa los Actions programados tras 60 días sin actividad en el repositorio.
