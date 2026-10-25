@@ -58,7 +58,7 @@
         R.modo = "stream"; R.stream = rc.streamUrl;
         audio.addEventListener("error", () => { if (audio.getAttribute("src")) st("Se cortó la señal. Presiona para reconectar."); });
       } else {
-        try { R.pistas = ((await getJSON(base + "data/playlist.json")).pistas || []).filter((p) => p && p.archivo); } catch (e) { R.pistas = []; }
+        try { const pj = await getJSON(base + "data/playlist.json"); R.demo = !!pj.demo; R.pistas = (pj.pistas || []).filter((p) => p && p.archivo); } catch (e) { R.pistas = []; }
         if (R.pistas.length) {
           R.modo = "lista"; R.total = R.pistas.reduce((a, p) => a + (+p.duracion || 0), 0); R.sync = R.pistas.every((p) => +p.duracion > 0);
           audio.addEventListener("ended", () => reproducir(R.idx + 1, 0));

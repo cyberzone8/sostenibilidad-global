@@ -45,6 +45,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{
 
   <h2 class="paso"><b>1</b> Toca el lugar en el mapa</h2>
   <div id="map" role="application" aria-label="Mapa: toca para marcar el lugar"></div>
+  <p class="nota" id="prueba" hidden></p>
   <p class="coord" id="coord" role="status">Aún no marcaste ningún lugar.</p>
   <button class="btn alt" type="button" id="gps">Usar mi ubicación</button>
 
@@ -58,9 +59,22 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{
   <h2 class="paso"><b>3</b> Envíalo</h2>
   <div class="fila"><button class="btn" type="button" id="enviar" disabled>Continuar al formulario</button><a class="btn alt" href="../" id="vermapa">Ver el mapa</a></div>
   <p class="nota" id="msg" role="status">Marca el lugar y elige qué es para continuar.</p>
+  <section id="gracias" class="aviso" hidden aria-live="polite">
+    <h2 style="margin-top:0">¡Gracias por aportar!</h2>
+    <p>Confirma el envío en la pestaña del formulario. Un equipo lo revisa y, cuando se apruebe, aparecerá en el mapa. <b>Lo mejor que puedes hacer ahora:</b></p>
+    <div class="fila">
+      <button class="btn" type="button" id="invitar">Invita a 3 personas</button>
+      <a class="btn alt" id="unirse" href="#" target="_blank" rel="noopener" hidden>Únete a la Comunidad</a>
+      <button class="btn alt" type="button" id="otro">Aporta otro lugar</button>
+    </div>
+    <p id="dir" hidden class="nota" style="margin-top:12px">¿Es tu negocio u organización? <a href="../#empresas">Aparece también en el directorio</a>.</p>
+  </section>
   <p class="nota">Al enviar aceptas el <a href="../privacidad/">aviso de privacidad</a>. Este sitio no guarda lo que escribes: se abre un formulario de Google donde confirmas el envío.</p>
 </div>
 <script src="../vendor/leaflet/leaflet.js"></script>
+<script src="../assets/js/comun.js"></script>
+<script src="../assets/js/red.js"></script>
+<script src="../assets/js/contador.js" data-config="../data/config.json" defer></script>
 <script>
 (async () => {
   const TIPOS = ["Árbol o área verde", "Plaza o espacio público", "Evento o actividad", "Organización o club", "Servicio de salud", "Comercio o emprendimiento", "Otro"];
@@ -85,15 +99,27 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{
     $("enviar").disabled = !ok;
     $("msg").textContent = ok ? "Listo. Se abrirá el formulario con tus datos; allí presionas «Enviar»." : "Marca el lugar, elige qué es y escribe un nombre para continuar.";
   }
+  const R = window.SG_RED, org = R.origen();
+  SG.track("aporta/visita/" + (org || "directo"));
   $("enviar").addEventListener("click", () => {
-    const f = cfg.formularios || {}, base = /^https:\/\/docs\.google\.com\/forms\//i.test(f.aporte || "") ? f.aporte : "";
-    if (!base) { $("msg").textContent = "El formulario aún no está activo. Copia estos datos: " + tipo + " · " + $("nombre").value.trim() + " · " + pos[0].toFixed(5) + ", " + pos[1].toFixed(5); return; }
-    const c = f.aporteCampos || {}, q = new URLSearchParams({ usp: "pp_url" });
-    const set = (k, v) => { if (c[k] && /^entry\.\d+$/.test(c[k])) q.set(c[k], v); };
-    set("tipo", tipo); set("nombre", $("nombre").value.trim()); set("descripcion", $("desc").value.trim()); set("lat", pos[0].toFixed(6)); set("lng", pos[1].toFixed(6));
-    window.open(base + (base.includes("?") ? "&" : "?") + q.toString(), "_blank", "noopener");
-    $("msg").textContent = "Se abrió el formulario en otra pestaña. Revisa y presiona «Enviar». ¡Gracias por aportar!";
+    const v = { tipo, nombre: $("nombre").value.trim(), descripcion: $("desc").value.trim(), lat: pos[0].toFixed(6), lng: pos[1].toFixed(6), origen: org || "directo" };
+    const url = R.formUrl(cfg, v);
+    if (!url) { $("msg").textContent = "El formulario aún no está activo. Copia estos datos: " + tipo + " · " + v.nombre + " · " + v.lat + ", " + v.lng; return; }
+    window.open(url, "_blank", "noopener"); SG.track("aporta/envio/" + (org || "directo"));
+    $("msg").textContent = "Se abrió el formulario en otra pestaña. Revisa y presiona «Enviar».";
+    $("gracias").hidden = false; $("gracias").scrollIntoView({ behavior: "smooth", block: "center" });
+    $("dir").hidden = !(tipo.startsWith("Comercio") || tipo.startsWith("Organización"));
   });
+  const com = R.comunidadUrl(cfg); if (com) { $("unirse").href = com; $("unirse").hidden = false; $("unirse").dataset.ev = "comunidad/aporta"; }
+  const base = R.sitioBase(cfg) ? R.sitioBase(cfg) + "aporta/" : new URL("./", location.href).href;
+  $("invitar").addEventListener("click", () => { SG.track("aporta/invitar"); R.compartir("Agrega al mapa un árbol, una plaza, un evento o una organización de tu comunidad. Toma 1 minuto:", base + "?o=inv"); });
+  $("otro").addEventListener("click", () => { $("gracias").hidden = true; $("nombre").value = ""; $("desc").value = ""; tipo = ""; [...$("tipos").children].forEach((x) => x.setAttribute("aria-pressed", "false")); estado(); window.scrollTo({ top: 0, behavior: "smooth" }); });
+  /* aportes que ya existen: evita repetidos y muestra que otras personas ya participan */
+  R.cargar(cfg, { demo: /[?&]demo=1/.test(location.search) }).then((it) => {
+    const v = it.filter((a) => a.visible); if (!v.length) return;
+    v.forEach((a) => L.circleMarker([a.lat, a.lng], { radius: 7, color: "#fff", weight: 2, fillColor: R.TIPOS[a.tipo][1], fillOpacity: .95 }).bindTooltip(a.nombre).addTo(map));
+    $("prueba").textContent = "Ya hay " + v.length + (v.length === 1 ? " aporte" : " aportes") + " en el mapa. Revisa que el tuyo no esté repetido."; $("prueba").hidden = false;
+  }).catch(() => {});
   setTimeout(() => map.invalidateSize(), 300);
 })();
 </script>

@@ -1,0 +1,27 @@
+{
+ "_ayuda": "Grupos creados por la gente que se registraron con su carta (formulario 'grupo'). Cada uno: nombre, comuna, afinidad, anfitrion, enlace, miembros, aportes, estado ('red' o 'activo'; con 10 aportes validados pasa a activo). Quita 'ejemplo' al agregar uno real. Solo grupos con autorización de su anfitrión; nunca números de teléfono.",
+ "grupos": [
+  {
+   "nombre": "Club de huerta Los Aromos",
+   "comuna": "Los Ángeles",
+   "afinidad": "Huertas y patrimonio",
+   "anfitrion": "Anfitriona de ejemplo",
+   "enlace": "",
+   "miembros": 24,
+   "aportes": 12,
+   "estado": "activo",
+   "ejemplo": true
+  },
+  {
+   "nombre": "Mujeres de Mulchén",
+   "comuna": "Mulchén",
+   "afinidad": "Mujeres",
+   "anfitrion": "Anfitriona de ejemplo",
+   "enlace": "",
+   "miembros": 18,
+   "aportes": 4,
+   "estado": "red",
+   "ejemplo": true
+  }
+ ]
+}

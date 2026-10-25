@@ -147,6 +147,13 @@
     "grupo": "red"
   },
   {
+    "id": "comunidad",
+    "activo": true,
+    "grupo": "red",
+    "titulo": "Comunidad y células",
+    "enlaceDirecto": "comunidad/"
+  },
+  {
     "id": "aporta",
     "activo": true,
     "grupo": "red",
@@ -184,7 +191,7 @@
     "id": "licitaciones-biobio",
     "activo": true,
     "grupo": "red",
-    "titulo": "Licitaciones por comuna"
+    "titulo": "Licitaciones por comuna (ejemplo)"
   },
   {
     "id": "caso-electro",

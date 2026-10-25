@@ -19,6 +19,7 @@ code{font-size:clamp(14px,2.2vw,26px);word-break:break-all}
 <img src="qr.svg" alt="Código QR que abre la página para aportar al mapa">
 <p>Un árbol, una plaza, un evento, una organización…</p>
 <code id="u"></code>
-<script>document.getElementById("u").textContent = new URL("../", location.href).href.replace(/^https?:\/\//, "");</script>
+<img id="cq" src="comunidad.svg" alt="Código QR para unirse a la Comunidad" style="width:min(24vh,40vw)" hidden onerror="this.hidden=true"><p id="ct" hidden>Y únete a la Comunidad</p>
+<script>fetch("../../data/config.json").then(r=>r.json()).then(c=>{if(c.comunidad&&/^https:/.test(c.comunidad.url||"")){document.getElementById("cq").hidden=false;document.getElementById("ct").hidden=false}}).catch(()=>{});document.getElementById("u").textContent = new URL("../", location.href).href.replace(/^https?:\/\//, "");</script>
 </body>
 </html>

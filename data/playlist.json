@@ -22,5 +22,6 @@
       "licencia": "Pista de demostración generada por síntesis, sin terceros. Reemplazar por música propia o con licencia.",
       "duracion": 49
     }
-  ]
+  ],
+  "demo": true
 }

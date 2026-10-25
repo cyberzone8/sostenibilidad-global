@@ -1,0 +1,291 @@
+{
+ "_ayuda": "Estructura de la red (Comunidad de WhatsApp con células). Cada grupo tiene un 'enlace' de invitación (WhatsApp → grupo → Invitar con enlace). Vacío = el botón usa el enlace de la Comunidad (config.json → comunidad.url) o avisa que se activa pronto. Los grupos con ingreso 'solicitud' piden aprobación a un administrador.",
+ "grupos": [
+  {
+   "id": "anuncios",
+   "nombre": "Anuncios",
+   "ingreso": "Automático",
+   "escribe": "Solo administradores",
+   "hace": "Avisos, convocatorias y la devolución mensual del mapa. Es el «activo de la semana».",
+   "bucles": "B3, B5",
+   "dueno": "Directiva",
+   "enlace": ""
+  },
+  {
+   "id": "asamblea",
+   "nombre": "Asamblea",
+   "ingreso": "Abierto, por QR",
+   "escribe": "Todos",
+   "hace": "Dudas, networking, eventos y primeros aportes. Entra aquí si no sabes por dónde empezar.",
+   "bucles": "B4",
+   "dueno": "Anfitriones rotativos",
+   "enlace": ""
+  },
+  {
+   "id": "aportes",
+   "nombre": "Célula Aportes y Validación",
+   "ingreso": "Solicitud",
+   "escribe": "Célula",
+   "hace": "Aportar lugares, revisarlos y verificarlos en terreno. Aquí se decide qué entra al mapa.",
+   "bucles": "B1, B2, B3",
+   "dueno": "Líder de validadores",
+   "enlace": ""
+  },
+  {
+   "id": "datos",
+   "nombre": "Célula Datos y Mapa",
+   "ingreso": "Solicitud",
+   "escribe": "Célula",
+   "hace": "Formulario, hoja, capa en vivo, activos de OpenStreetMap y calidad de los datos.",
+   "bucles": "B1",
+   "dueno": "Líder de datos",
+   "enlace": ""
+  },
+  {
+   "id": "voz",
+   "nombre": "Célula Voz y Radio",
+   "ingreso": "Solicitud",
+   "escribe": "Célula",
+   "hace": "Notas de voz, podcast, cápsulas y la radio digital: la voz de la comunidad como aporte.",
+   "bucles": "B6",
+   "dueno": "Líder de comunicaciones",
+   "enlace": ""
+  },
+  {
+   "id": "empresas",
+   "nombre": "Célula Empresas y Licitaciones",
+   "ingreso": "Solicitud",
+   "escribe": "Célula",
+   "hace": "Directorio, registro de empresas, aporte a la red y apoyo para postular a licitaciones.",
+   "bucles": "B7",
+   "dueno": "Líder comercial",
+   "enlace": ""
+  },
+  {
+   "id": "territorio",
+   "nombre": "Célula Territorio y Anfitriones",
+   "ingreso": "Solicitud",
+   "escribe": "Célula",
+   "hace": "El QR, invitar, encuentros presenciales y grupos propios: mujeres, clubes, comunas.",
+   "bucles": "B4, B5",
+   "dueno": "Líder de territorio",
+   "enlace": ""
+  },
+  {
+   "id": "directiva",
+   "nombre": "Directiva",
+   "ingreso": "Cerrado",
+   "escribe": "Directiva",
+   "hace": "Tablero mensual de bucles y decisiones. No recibe solicitudes.",
+   "bucles": "Todos",
+   "dueno": "Directiva",
+   "enlace": "",
+   "cerrado": true
+  }
+ ],
+ "programa": [
+  {
+   "cuando": "Lunes",
+   "que": "«Activo de la semana» en Anuncios",
+   "quien": "Directiva con Voz",
+   "bucle": "B3, B6",
+   "dia": 1
+  },
+  {
+   "cuando": "Martes y viernes",
+   "que": "Ventana de validación de aportes",
+   "quien": "Aportes",
+   "bucle": "B1, B2",
+   "dia": [
+    2,
+    5
+   ]
+  },
+  {
+   "cuando": "Miércoles",
+   "que": "Atención de la Asamblea, una hora",
+   "quien": "Anfitrión de turno",
+   "bucle": "B4",
+   "dia": 3
+  },
+  {
+   "cuando": "Jueves",
+   "que": "Grabación de notas de voz y cápsulas",
+   "quien": "Voz",
+   "bucle": "B6",
+   "dia": 4
+  },
+  {
+   "cuando": "Domingo",
+   "que": "Cápsulas programadas en la playlist",
+   "quien": "Voz",
+   "bucle": "B4, B6",
+   "dia": 7
+  },
+  {
+   "cuando": "Cada semana",
+   "que": "Reunión de 30 minutos de cada célula",
+   "quien": "Líder de célula",
+   "bucle": "Su bucle"
+  },
+  {
+   "cuando": "Primer lunes del mes",
+   "que": "Tablero de bucles y decisiones",
+   "quien": "Directiva",
+   "bucle": "Todos"
+  },
+  {
+   "cuando": "Último jueves del mes",
+   "que": "Encuentro y devolución: lo mapeado y lo que falta",
+   "quien": "Territorio",
+   "bucle": "B5"
+  },
+  {
+   "cuando": "Cada tres meses",
+   "que": "Informe de comuna (licitaciones y activos)",
+   "quien": "Empresas y Datos",
+   "bucle": "B7"
+  }
+ ],
+ "carta": [
+  "Un anfitrión con nombre y un segundo anfitrión de respaldo.",
+  "El enlace de la Comunidad y el QR de aportes fijados en la descripción del grupo.",
+  "Reglas mínimas: respeto, sin datos sensibles ni de terceros, sin ventas fuera de lo permitido.",
+  "Un informe mensual de dos líneas: miembros y aportes nuevos."
+ ],
+ "umbralActivo": 10,
+ "celulas": [
+  "Aportes",
+  "Datos",
+  "Voz",
+  "Empresas",
+  "Territorio",
+  "Directiva"
+ ],
+ "piezas": [
+  [
+   "1 QR de la charla",
+   "Territorio",
+   "Datos"
+  ],
+  [
+   "2 Portada y mapa",
+   "Datos",
+   ""
+  ],
+  [
+   "3 Servicios y escenas",
+   "Directiva",
+   "Empresas"
+  ],
+  [
+   "4 Laboratorio",
+   "Datos",
+   ""
+  ],
+  [
+   "5 Aporta (elegir lugar)",
+   "Aportes",
+   "Territorio"
+  ],
+  [
+   "6 Formulario Google",
+   "Datos",
+   "Aportes"
+  ],
+  [
+   "7 Hoja y Aprobado",
+   "Aportes",
+   "Datos"
+  ],
+  [
+   "8 Capa aportes en vivo",
+   "Datos",
+   ""
+  ],
+  [
+   "9 Directorio y fichas",
+   "Empresas",
+   "Datos"
+  ],
+  [
+   "10 Registro de empresa",
+   "Empresas",
+   ""
+  ],
+  [
+   "11 Contacto y Anuncios",
+   "Directiva",
+   "Territorio"
+  ],
+  [
+   "12 Radio",
+   "Voz",
+   ""
+  ],
+  [
+   "13 Valorización",
+   "Empresas",
+   ""
+  ],
+  [
+   "14 Activos OSM",
+   "Datos",
+   ""
+  ],
+  [
+   "15 Licitaciones",
+   "Empresas",
+   "Datos"
+  ],
+  [
+   "16 Voz",
+   "Voz",
+   "Aportes"
+  ]
+ ],
+ "bucles": [
+  {
+   "id": "B1",
+   "nombre": "Aporte",
+   "dueno": "Aportes",
+   "mide": "Aportes por persona, % validados, repetidos"
+  },
+  {
+   "id": "B2",
+   "nombre": "Verificación",
+   "dueno": "Aportes",
+   "mide": "Confirmaciones por aporte"
+  },
+  {
+   "id": "B3",
+   "nombre": "Aviso",
+   "dueno": "Aportes",
+   "mide": "Aportes que llegan desde Anuncios"
+  },
+  {
+   "id": "B4",
+   "nombre": "Contagio",
+   "dueno": "Territorio",
+   "mide": "Aportes que llegan por invitación"
+  },
+  {
+   "id": "B5",
+   "nombre": "Presencial",
+   "dueno": "Territorio",
+   "mide": "Asistentes que luego aportan"
+  },
+  {
+   "id": "B6",
+   "nombre": "Voz",
+   "dueno": "Voz",
+   "mide": "Notas de voz y escuchas por cápsula"
+  },
+  {
+   "id": "B7",
+   "nombre": "Cliente",
+   "dueno": "Empresas",
+   "mide": "Fichas nuevas, aportes de 0,25 UF, postulaciones"
+  }
+ ]
+}

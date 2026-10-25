@@ -61,10 +61,13 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(-
   <section class="player" aria-label="Reproductor">
     <button id="playBtn" type="button" aria-label="Reproducir radio">&#9654;</button>
     <div class="now" id="now" aria-live="polite"></div>
+    <p id="acc" class="nota" hidden></p>
     <div class="status" id="status" role="status">Presiona para escuchar</div>
     <div class="trans"><button type="button" id="prev" class="tb" aria-label="Pista anterior" hidden>&#9198;</button><button type="button" id="next" class="tb" aria-label="Pista siguiente" hidden>&#9197;</button></div>
     <div class="vol"><label for="vol">Volumen</label><input id="vol" type="range" min="0" max="1" step="0.05" value="0.8"></div>
   </section>
+
+  <p id="demoN" class="nota" hidden><b>Música de demostración.</b> La programación real se arma con la comunidad: notas de voz, cápsulas y música con licencia.</p>
 
   <section id="progBox" hidden><h2>En la programación</h2><ol class="prog" id="prog"></ol></section>
 
@@ -90,6 +93,12 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(-
     <span>Antuco</span><span>Alto Biobío</span>
   </div>
 
+  <section class="cta" style="margin-bottom:0">
+    <h2 style="margin-top:0">¿Qué hay en tu barrio?</h2>
+    <p>La radio también es de la comunidad: aporta un lugar al mapa, cuéntalo con tu voz y súmate a la Comunidad.</p>
+    <a class="btn" href="../aporta/?o=radio" data-ev="aporta/desde-radio">Aporta un lugar al mapa</a>
+    <a class="btn alt" href="../comunidad/?o=radio">Comunidad y células</a>
+  </section>
   <section class="cta">
     <h2 style="margin-top:0">¿Necesitas sonido para un evento o difundir un aviso?</h2>
     <p>Cuéntanos qué necesitas y te respondemos por WhatsApp.</p>
@@ -114,10 +123,11 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(-
     base: "../",
     on: {
       state: ico, status: (m) => { status.textContent = m; },
-      track: (p, nombre) => { now.textContent = "Suena: " + nombre; pintarProg(R); },
+      track: (p, nombre) => { now.textContent = "Suena: " + nombre; pintarProg(R); const e = p.enlace && /^(\.\.\/)?[a-z0-9\/?=&._-]+$/i.test(p.enlace) && !/^(https?:|\/\/|javascript)/i.test(p.enlace) ? p.enlace : ""; $("acc").hidden = !e; if (e) $("acc").innerHTML = '<a class="btn" href="../' + esc(e) + '">' + esc(p.accion || "Participa") + '</a>'; },
       listo: (r) => {
         $("nombre").textContent = r.nombre; document.title = r.nombre + " · Sostenibilidad Global";
         $("wsp").href = "https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent("Hola, quiero consultar por sonido para eventos / difusión en " + r.nombre + ". Origen: página radio");
+        if (r.demo) { $("demoN").hidden = false; }
         if (r.modo === "lista") { $("progBox").hidden = false; pintarProg(r); now.textContent = r.pistas.length + (r.pistas.length === 1 ? " pista" : " pistas") + " en programación"; if (!r.sync) { $("prev").hidden = false; $("next").hidden = false; } }
       }
     }

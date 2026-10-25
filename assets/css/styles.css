@@ -278,3 +278,10 @@ body.present .capas{display:block}
 
 /* el menú desplegable siempre por encima de los paneles */
 .top{z-index:30}
+
+/* v24: globos de aportes con confirmar / corregir */
+.gl-b{margin-top:8px;display:flex;flex-wrap:wrap;gap:6px}
+.gl-b .btn{padding:8px 12px;font-size:.82rem;min-height:36px;text-decoration:none}
+.leaflet-container .gl-b a.btn{color:#fff;background:var(--brand)}
+.leaflet-container .gl-b a.btn.alt{color:var(--tx);background:transparent;border:2px solid var(--ln)}
+.leaflet-container .gl-b button.btn.alt{color:var(--tx)}

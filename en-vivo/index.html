@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>En vivo · Aporta al mapa</title>
+<link rel="stylesheet" href="../vendor/leaflet/leaflet.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;800&family=Inter:wght@400;600&display=swap">
+<style>
+:root{--bg:#0b1812;--card:#13271d;--ln:#244635;--tx:#f1f5ef;--mu:#a9bbb0;--g:#5dd49a;--am:#f0a43a}
+*{box-sizing:border-box}html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--tx);font:clamp(15px,1.5vw,22px)/1.4 Inter,system-ui,sans-serif;display:grid;grid-template-columns:minmax(260px,24vw) 1fr minmax(280px,26vw);gap:1.2vw;padding:1.2vw}
+@media (max-width:900px){body{grid-template-columns:1fr;height:auto}html,body{height:auto}}
+section{background:var(--card);border:1px solid var(--ln);border-radius:14px;padding:1.2vw;display:flex;flex-direction:column;gap:1vh;min-height:0}
+h1{font:800 clamp(24px,3vw,46px)/1.1 Fraunces,Georgia,serif;margin:0}h2{font:600 clamp(14px,1.3vw,20px) Inter;color:var(--mu);margin:0;text-transform:uppercase;letter-spacing:.08em}
+.qr{background:#fff;border-radius:12px;padding:1vw;align-self:center;width:100%;max-width:34vh}.qr img{width:100%;display:block}
+.url{word-break:break-all;color:var(--mu);font-size:.8em}
+#map{flex:1;min-height:60vh;border-radius:10px}
+.big{font:800 clamp(40px,7vw,110px)/1 Fraunces,Georgia,serif;color:var(--g)}
+.bar{display:flex;align-items:center;gap:.6vw;margin:.4vh 0}.bar span{width:44%;font-size:.85em}.bar i{display:block;height:1.6vh;border-radius:99px;min-width:4px;transition:width .6s}
+ul{list-style:none;margin:0;padding:0;display:grid;gap:.8vh;overflow:hidden}
+li{background:rgba(255,255,255,.05);border-left:5px solid var(--g);border-radius:8px;padding:.6vh .8vw}li small{color:var(--mu);display:block}
+li.nuevo{animation:ent 1.4s ease}@keyframes ent{0%{background:rgba(93,212,154,.5);transform:translateX(20px)}100%{background:rgba(255,255,255,.05);transform:none}}
+@media (prefers-reduced-motion:reduce){li.nuevo{animation:none}}
+.est{color:var(--mu);font-size:.75em}
+.com{font-weight:600;color:var(--am)}
+</style>
+</head>
+<body>
+<section>
+  <h1>Escanea y agrega algo al mapa</h1>
+  <div class="qr"><img src="../aporta/qr/qr.svg" alt="Código QR para aportar al mapa"></div>
+  <div class="url" id="url"></div>
+  <p id="comTxt" hidden class="com">Y únete a la Comunidad:</p>
+  <div class="qr" id="comQr" hidden style="max-width:20vh"><img src="../aporta/qr/comunidad.svg" alt="Código QR para unirse a la Comunidad" onerror="document.getElementById('comQr').hidden=true"></div>
+</section>
+<section>
+  <h2>Lo que va apareciendo en el mapa</h2>
+  <div id="map" role="application" aria-label="Mapa en vivo con los aportes"></div>
+  <div class="est" id="est" role="status"></div>
+</section>
+<section>
+  <h2>Aportes</h2>
+  <div class="big" id="total">0</div>
+  <div id="tipos"></div>
+  <h2 style="margin-top:1vh">Últimos</h2>
+  <ul id="ult"></ul>
+</section>
+<script src="../vendor/leaflet/leaflet.js"></script>
+<script src="../assets/js/red.js"></script>
+<script>
+(async () => {
+  const R = SG_RED, $ = (i) => document.getElementById(i), esc = R.esc, demo = /[?&]demo=1/.test(location.search);
+  const get = (u) => fetch(u, { cache: "no-cache" }).then((r) => r.json()).catch(() => ({}));
+  const [cfg, com] = await Promise.all([get("../data/config.json"), get("../data/comunas-biobio.json")]);
+  const base = R.sitioBase(cfg) ? R.sitioBase(cfg) + "aporta/" : new URL("../aporta/", location.href).href;
+  $("url").textContent = base.replace(/^https?:\/\//, "");
+  if (R.comunidadUrl(cfg)) { $("comTxt").hidden = false; $("comQr").hidden = false; }
+  const m = cfg.mapa || {}, map = L.map("map", { zoomControl: false }).setView(m.centro || [-37.47, -72.35], 11);
+  L.tileLayer((m.teselas || {}).url || "https://tile.openstreetmap.org/{z}/{x}/{y}.png", { maxZoom: 19, attribution: "© OpenStreetMap", referrerPolicy: "origin" }).addTo(map);
+  const capa = L.layerGroup().addTo(map); let vistos = null, primera = true;
+  async function ciclo() {
+    let items; try { items = await R.cargar(cfg, { demo, umbral: +(cfg.aportes || {}).confirmacionesParaMostrar || 0 }); $("est").textContent = (demo ? "MODO DE EJEMPLO · " : "") + "Actualizado " + new Date().toLocaleTimeString("es-CL", { hour: "2-digit", minute: "2-digit" }) + " · Google tarda unos minutos en publicar cada respuesta"; }
+    catch (e) { $("est").textContent = "Esperando datos… (revisa aportes.csvUrl) · usa ?demo=1 para ensayar"; return; }
+    const v = items.filter((a) => a.visible); capa.clearLayers();
+    v.forEach((a) => L.circleMarker([a.lat, a.lng], { radius: 11, color: "#fff", weight: 2, fillColor: R.TIPOS[a.tipo][1], fillOpacity: 1 }).bindTooltip(esc(a.nombre)).addTo(capa));
+    if (v.length && primera) { map.fitBounds(L.latLngBounds(v.map((a) => [a.lat, a.lng])).pad(.3), { maxZoom: 14 }); primera = false; }
+    $("total").textContent = v.length;
+    const c = {}; v.forEach((a) => { c[a.tipo] = (c[a.tipo] || 0) + 1; }); const mx = Math.max(1, ...Object.values(c));
+    $("tipos").innerHTML = Object.entries(c).sort((p, q) => q[1] - p[1]).map(([t, n]) => `<div class="bar"><span>${esc(R.TIPOS[t][0])}</span><i style="width:${Math.round(48 * n / mx)}%;background:${R.TIPOS[t][1]}"></i><b>${n}</b></div>`).join("");
+    const ids = new Set(v.map((a) => a.fila));
+    $("ult").innerHTML = v.slice(-4).reverse().map((a) => `<li class="${vistos && !vistos.has(a.fila) ? "nuevo" : ""}"><b>${esc(a.nombre)}</b><small>${esc(R.TIPOS[a.tipo][0])}${R.comunaDe(a.lat, a.lng, com.comunas) ? " · " + esc(R.comunaDe(a.lat, a.lng, com.comunas)) : ""}</small></li>`).join("");
+    vistos = ids;
+  }
+  ciclo(); setInterval(ciclo, 20000);
+})();
+</script>
+</body>
+</html>

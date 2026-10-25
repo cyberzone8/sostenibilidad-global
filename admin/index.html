@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Panel del administrador · Sostenibilidad Global</title>
+<link rel="stylesheet" href="../vendor/leaflet/leaflet.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;800&family=Inter:wght@400;600&display=swap">
+<style>
+:root{--bg:#f3f1ea;--tx:#17211b;--mu:#55605a;--card:#fff;--ln:#d9d6cb;--g:#1f7a4d;--ink:#12382a;--on:#fff;--r:#b8402f;--am:#a98a2a}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1713;--tx:#eef1ec;--mu:#a3b0a8;--card:#18231d;--ln:#2c3a32;--g:#4cc58a;--ink:#4cc58a;--on:#0f1713;--r:#ef7b6a;--am:#d9b94a}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.5 Inter,system-ui,sans-serif;padding-top:env(safe-area-inset-top,0px)}
+.w{max-width:1040px;margin:0 auto;padding:22px 18px 60px}
+h1,h2{font-family:Fraunces,Georgia,serif;line-height:1.15;margin:0 0 10px}h1{font-size:clamp(26px,5vw,38px);font-weight:800}h2{font-size:22px;margin-top:38px}
+.brand{font-weight:600;color:var(--ink);margin-bottom:14px}.brand a{color:inherit}
+.nota{font-size:14px;color:var(--mu)}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.kpi{background:var(--card);border:1px solid var(--ln);border-radius:10px;padding:12px 14px}.kpi b{display:block;font:800 30px Fraunces,Georgia,serif;color:var(--ink)}.kpi span{font-size:13px;color:var(--mu)}
+.kpi.al b{color:var(--r)}
+table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--ln);border-radius:8px;overflow:hidden;font-size:14px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--ln);vertical-align:top}th{font-size:12px;color:var(--mu);text-transform:uppercase;letter-spacing:.04em}
+.tw{overflow-x:auto}
+.chk{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+.chk li{background:var(--card);border:1px solid var(--ln);border-radius:8px;padding:10px 12px;display:grid;grid-template-columns:28px 1fr;gap:8px}
+.chk .i{font-weight:800;font-size:18px}.ok .i{color:var(--g)}.no .i{color:var(--r)}.ma .i{color:var(--am)}
+.chk small{display:block;color:var(--mu)}
+code{background:rgba(127,127,127,.15);padding:1px 5px;border-radius:4px;font-size:13px}
+.bar{display:flex;align-items:center;gap:8px;margin:4px 0}.bar i{display:block;height:14px;border-radius:7px;min-width:3px}
+#map{height:360px;border-radius:10px;border:1px solid var(--ln);margin:10px 0}
+.btn{display:inline-block;background:var(--ink);color:var(--on);padding:8px 14px;border-radius:8px;font:600 14px Inter,system-ui,sans-serif;text-decoration:none;border:0;cursor:pointer}
+.btn.alt{background:transparent;color:var(--tx);border:2px solid var(--ln)}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px}
+.tag{font-size:12px;border:1px solid var(--ln);border-radius:999px;padding:1px 8px;color:var(--mu)}.tag.w1{border-color:var(--am);color:var(--am)}
+a:focus-visible,button:focus-visible{outline:3px solid var(--g);outline-offset:2px}
+</style>
+</head>
+<body>
+<div class="w">
+  <p class="brand"><a href="../">← Sostenibilidad Global</a> · Panel del administrador</p>
+  <h1>Tablero de la red</h1>
+  <p class="nota">Aquí ves qué falta conectar, cuánto crece la comunidad y qué aportes esperan tu revisión. Este panel solo <b>lee</b> datos públicos: no guarda nada ni contiene claves. Para aprobar un aporte escribe <code>SI</code> en la columna <b>Aprobado</b> de tu hoja de Google. <a href="?demo=1">Ver con datos de ejemplo</a> (para ensayar la charla).</p>
+  <p id="estado" class="nota" role="status"></p>
+
+  <h2>1 · Circuito de aportes: ¿qué falta conectar?</h2>
+  <ul class="chk" id="chk"></ul>
+
+  <h2>2 · Cuánto crece la comunidad</h2>
+  <div class="kpis" id="kpis"></div>
+  <div class="cols" style="margin-top:16px">
+    <div><h3 style="margin:0 0 6px;font-size:16px">De dónde llegan los aportes (bucles B3, B4, B5)</h3><div id="orig"></div></div>
+    <div><h3 style="margin:0 0 6px;font-size:16px">Qué se aporta</h3><div id="tipos"></div></div>
+  </div>
+
+  <h2>3 · Cola de revisión</h2>
+  <p class="nota" id="colaNota"></p>
+  <div id="map" role="application" aria-label="Mapa de aportes pendientes y aprobados"></div>
+  <div class="tw"><table><thead><tr><th>Fila</th><th>Aporte</th><th>Comuna</th><th>Pares</th><th>Notas</th></tr></thead><tbody id="cola"></tbody></table></div>
+
+  <h2>4 · Informe por comuna</h2>
+  <p class="nota">Aportes de la comunidad + activos importados de OpenStreetMap + licitaciones activas. Es el producto base para municipios, CESFAM y servicios de salud (bucle B7).</p>
+  <div class="tw"><table><thead><tr><th>Comuna</th><th>Aportes</th><th>Activos OSM</th><th>Licitaciones</th></tr></thead><tbody id="com"></tbody></table></div>
+
+  <h2>5 · Bucles: quién responde y cómo se mide</h2>
+  <div class="tw"><table><thead><tr><th>Bucle</th><th>Responde</th><th>Se mide con</th><th>Hoy</th></tr></thead><tbody id="bucles"></tbody></table></div>
+
+  <h2>6 · Quién responde por cada pieza</h2>
+  <p class="nota">R = dueña de la pieza; A = apoya. Cada pieza tiene una sola dueña para que nada dependa de ti.</p>
+  <div class="tw"><table id="matriz"></table></div>
+
+  <h2>7 · Esta semana</h2>
+  <div class="tw"><table><tbody id="agenda"></tbody></table></div>
+</div>
+<script src="../vendor/leaflet/leaflet.js"></script>
+<script src="../assets/js/red.js"></script>
+<script>
+(async () => {
+  const R = SG_RED, $ = (i) => document.getElementById(i), esc = R.esc;
+  const demo = /[?&]demo=1/.test(location.search);
+  const get = (u) => fetch(u, { cache: "no-cache" }).then((r) => { if (!r.ok) throw 0; return r.json(); }).catch(() => ({}));
+  const [cfg, D, lic, act, emp, pl, com] = await Promise.all(["config", "comunidad", "licitaciones", "activos", "empresas", "playlist", "comunas-biobio"].map((n) => get("../data/" + n + ".json")));
+  const A = cfg.aportes || {}, F = cfg.formularios || {}, C = F.aporteCampos || {};
+  if (demo) $("estado").textContent = "MODO DE EJEMPLO: los datos de abajo son ficticios.";
+
+  /* 1 · checklist */
+  let items = [], csvMsg = "", csvOk = null, hayAprob = null;
+  try { items = await R.cargar(cfg, { demo, umbral: +A.confirmacionesParaMostrar || 0 }); csvOk = true; hayAprob = demo || (await (async () => { const t = await (await fetch(A.csvUrl, { cache: "no-store" })).text(); const f = R.filas(t); return f.length ? f[0].hayColumnaAprobado : null; })()); }
+  catch (e) { csvOk = R.https(A.csvUrl) ? false : null; }
+  const campos = ["tipo", "nombre", "lat", "lng"].filter((k) => !/^entry\.\d+$/.test(C[k] || ""));
+  const n = (x) => (Array.isArray(x) ? x.length : 0);
+  const filas = [
+    [/^https:\/\/docs\.google\.com\/forms\//.test(F.aporte || "") ? "ok" : "no", "Formulario de Google conectado", "Pega el enlace en <code>data/config.json → formularios.aporte</code>."],
+    [!campos.length ? "ok" : /^https:\/\/docs\.google\.com\/forms\//.test(F.aporte || "") ? "ma" : "no", "Relleno automático del formulario", campos.length ? "Faltan los códigos entry.… de: <b>" + campos.join(", ") + "</b> (<code>formularios.aporteCampos</code>). Sin ellos la persona escribe todo dos veces." : "Listo." + (/^entry\.\d+$/.test(C.origen || "") ? "" : " Opcional: agrega la pregunta «Origen» para medir de dónde llega cada aporte.")],
+    [csvOk === true ? "ok" : csvOk === false ? "no" : "no", "Hoja de respuestas publicada como CSV", csvOk === true ? (demo ? "Datos de ejemplo." : "Se lee bien.") : csvOk === false ? "El enlace no responde: revisa Archivo → Compartir → Publicar en la web (formato CSV)." : "Pega el enlace en <code>aportes.csvUrl</code>."],
+    [hayAprob === true ? "ok" : hayAprob === false ? "no" : "ma", "Columna «Aprobado» en la hoja", hayAprob === null ? "No se puede comprobar hasta que haya una respuesta." : hayAprob ? "Existe." : "Agrégala: sin ella no se muestra ningún aporte."],
+    [R.comunidadUrl(cfg) ? "ok" : "no", "Enlace de la Comunidad de WhatsApp", "Sin él, nadie puede sumarse a la red y todo vuelve a tu WhatsApp personal. <code>comunidad.url</code>."],
+    [R.sitioBase(cfg) ? "ok" : "ma", "Dirección pública del sitio", "<code>sitio.url</code> (con / al final). Se usa para los mensajes de «invita a 3 personas»."],
+    [/^[a-z0-9-]+$/i.test((cfg.contador || {}).goatcounter || "") ? "ok" : "no", "Contador de visitas (GoatCounter)", "Sin medición no puedes manejar los bucles. <code>contador.goatcounter</code>."],
+    [/^https:\/\//.test(F.grupo || "") ? "ok" : "ma", "Formulario de «Registrar mi grupo»", "<code>formularios.grupo</code>: para que la gente cree grupos y aparezcan en la página de la Comunidad."],
+    [n(act.activos) > 0 ? "ok" : "ma", "Activos de OpenStreetMap importados", n(act.activos) ? n(act.activos) + " activos." : "Hoy 0: ejecuta Actions → «Importar activos»."],
+    [lic.demo === false ? "ok" : "ma", "Licitaciones con datos reales", lic.demo === false ? "Actualizado " + esc(lic.actualizado) + "." : "Aún son cifras de ejemplo: guarda el secreto <code>MP_TICKET</code> y ejecuta Actions → «Actualizar licitaciones»."],
+    [pl.demo ? "ma" : "ok", "Música de la radio", pl.demo ? "Son pistas de demostración: reemplázalas (con licencia) y quita <code>demo</code> de <code>data/playlist.json</code>." : "Propia o con licencia."]
+  ];
+  $("chk").innerHTML = filas.map(([c, t, d]) => `<li class="${c}"><span class="i" aria-hidden="true">${c === "ok" ? "✓" : c === "no" ? "✗" : "•"}</span><span><b>${t}</b><small>${d}</small></span></li>`).join("");
+
+  /* 2 · KPIs */
+  const rep = R.repetidos(items), vis = items.filter((a) => a.visible), pen = items.filter((a) => !a.visible);
+  const conf = items.reduce((s, a) => s + a.confirm, 0), conC = items.filter((a) => a.confirm).length;
+  const pct = items.length ? Math.round(100 * vis.length / items.length) : 0;
+  const k = (b, s, al) => `<div class="kpi${al ? " al" : ""}"><b>${b}</b><span>${s}</span></div>`;
+  $("kpis").innerHTML = k(items.length, "aportes recibidos") + k(vis.length, "visibles en el mapa") + k(pen.length, "esperan revisión", pen.length > 10) + k(pct + "%", "validados") + k(conf, "confirmaciones de pares") + k(rep.size, "posibles repetidos", rep.size > 0);
+  const cuenta = (f) => { const m = {}; items.forEach((a) => { const x = f(a); m[x] = (m[x] || 0) + 1; }); return Object.entries(m).sort((p, q) => q[1] - p[1]); };
+  const barras = (arr, col) => { const mx = Math.max(1, ...arr.map((x) => x[1])); return arr.length ? arr.map(([t, c]) => `<div class="bar"><span style="width:150px;font-size:14px">${esc(t)}</span><i style="width:${Math.round(180 * c / mx)}px;background:${col}"></i><b>${c}</b></div>`).join("") : '<p class="nota">Sin datos todavía.</p>'; };
+  $("orig").innerHTML = barras(cuenta((a) => a.origen || "sin origen"), "#1f7a4d");
+  $("tipos").innerHTML = barras(cuenta((a) => R.TIPOS[a.tipo][0]), "#7b4fb0");
+
+  /* 3 · cola */
+  const comunas = com.comunas || [];
+  items.forEach((a) => { a.comuna = R.comunaDe(a.lat, a.lng, comunas); });
+  $("colaNota").innerHTML = pen.length ? `${pen.length} aportes esperan tu <code>SI</code> en la columna Aprobado.` + (R.https(A.hojaUrl) ? ` <a class="btn" href="${esc(A.hojaUrl)}" target="_blank" rel="noopener">Abrir la hoja</a>` : " Pon el enlace de tu hoja en <code>aportes.hojaUrl</code> para tener un botón aquí.") : "Nada pendiente. 🎉";
+  $("cola").innerHTML = pen.sort((a, b) => b.confirm - a.confirm).map((a) => `<tr><td><b>${a.fila}</b></td><td><b>${esc(a.nombre)}</b><br><span class="tag">${esc(R.TIPOS[a.tipo][0])}</span> ${rep.has(a.fila) ? '<span class="tag w1">posible repetido</span>' : ""}<br>${esc(a.desc)}</td><td>${esc(a.comuna || "—")}</td><td>${a.confirm ? "✓ " + a.confirm : "—"}${a.correc ? "<br>✎ " + a.correc : ""}</td><td>${esc(a.notas.join(" · "))}</td></tr>`).join("") || '<tr><td colspan="5">—</td></tr>';
+  const map = L.map("map").setView((cfg.mapa || {}).centro || [-37.47, -72.35], 10);
+  L.tileLayer(((cfg.mapa || {}).teselas || {}).url || "https://tile.openstreetmap.org/{z}/{x}/{y}.png", { maxZoom: 19, attribution: "© OpenStreetMap", referrerPolicy: "origin" }).addTo(map);
+  items.forEach((a) => L.circleMarker([a.lat, a.lng], { radius: 8, color: "#fff", weight: 2, fillColor: a.visible ? "#1f7a4d" : "#ef6c00", fillOpacity: 1 }).bindPopup(`<b>${esc(a.nombre)}</b><br>Fila ${a.fila} · ${a.visible ? "visible" : "pendiente"}`).addTo(map));
+  if (items.length) map.fitBounds(L.latLngBounds(items.map((a) => [a.lat, a.lng])).pad(.2));
+
+  /* 4 · informe por comuna */
+  const nA = {}, nO = {}; items.filter((a) => a.visible).forEach((a) => { if (a.comuna) nA[a.comuna] = (nA[a.comuna] || 0) + 1; });
+  (act.activos || []).forEach((a) => { const c = R.comunaDe(a.lat, a.lng, comunas); if (c) nO[c] = (nO[c] || 0) + 1; });
+  $("com").innerHTML = comunas.map((c) => [c.nombre, nA[c.nombre] || 0, nO[c.nombre] || 0, (lic.porComuna || {})[c.nombre] || 0]).sort((p, q) => (q[1] + q[2] + q[3]) - (p[1] + p[2] + p[3])).map(([c, a, o, l]) => `<tr><td>${esc(c)}</td><td>${a}</td><td>${o}</td><td>${l}${lic.demo ? ' <span class="tag w1">ejemplo</span>' : ""}</td></tr>`).join("");
+
+  /* 5 · bucles */
+  const po = (re) => items.filter((a) => re.test(a.origen)).length;
+  const hoy = { B1: items.length + " aportes · " + pct + "% validados · " + rep.size + " repetidos", B2: conf + " confirmaciones en " + conC + " aportes", B3: po(/anunc|aviso/) + " llegaron desde avisos", B4: po(/^inv/) + " llegaron por invitación (" + (items.length ? Math.round(100 * po(/^inv/) / items.length) : 0) + "%)", B5: po(/qr|encuentro|charla/) + " llegaron por QR o encuentros", B6: "Sin medición todavía (notas de voz y cápsulas)", B7: ((emp.empresas || emp || []).length ? "" : "") + "Fichas: " + (Array.isArray(emp.empresas) ? emp.empresas.filter((e) => e.activo !== false).length : Object.values(emp).filter((e) => e && e.activo !== false && e.nombre).length) + " · aportes de 0,25 UF y postulaciones: sin medición" };
+  $("bucles").innerHTML = (D.bucles || []).map((b) => `<tr><td><b>${esc(b.id)}</b> ${esc(b.nombre)}</td><td>${esc(b.dueno)}</td><td>${esc(b.mide)}</td><td>${esc(hoy[b.id] || "—")}</td></tr>`).join("");
+
+  /* 6 · matriz */
+  const cel = D.celulas || [];
+  $("matriz").innerHTML = "<thead><tr><th>Pieza</th>" + cel.map((c) => `<th>${esc(c)}</th>`).join("") + "</tr></thead><tbody>" + (D.piezas || []).map(([p, r, a]) => `<tr><td>${esc(p)}</td>` + cel.map((c) => `<td>${c === r ? "<b>R</b>" : c === a ? "A" : ""}</td>`).join("") + "</tr>").join("") + "</tbody>";
+
+  /* 7 · agenda */
+  const dow = ((new Date().getDay() + 6) % 7) + 1, dia = new Date().getDate(), sem = (D.programa || []);
+  $("agenda").innerHTML = sem.map((p) => { const ds = [].concat(p.dia || []); const hoyEs = ds.includes(dow) || (/Primer lunes/.test(p.cuando) && dow === 1 && dia <= 7); return `<tr style="${hoyEs ? "font-weight:700;background:rgba(31,122,77,.12)" : ""}"><td>${esc(p.cuando)}</td><td>${esc(p.que)}</td><td>${esc(p.quien)}</td></tr>`; }).join("");
+})();
+</script>
+</body>
+</html>

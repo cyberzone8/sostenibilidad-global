@@ -234,7 +234,8 @@ ${adv}
 <div class="acts"><button class="btn alt" type="button" id="mod-reset">Volver a los valores iniciales</button></div></details>
 <p class="nota">Modelo ilustrativo, no calibrado con datos reales. Sirve para conversar qué tendría que ser cierto para que mapear valga la pena, no para predecir.</p>
 </section>
-</div>`;
+</div>
+<p class="lab-cta"><a class="btn" data-ev="aporta/desde-laboratorio" href="aporta/?o=laboratorio">Aporta un activo al mapa de todos</a> <small>Lo que aprendes aquí vale más con lugares reales.</small></p>`;
   }
 
   /* ---------- Pestañas ---------- */

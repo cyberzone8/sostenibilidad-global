@@ -28,7 +28,7 @@
 
   /* ---------- Render ---------- */
   const wa = (texto, origen = "sitio") => window.SG.waUrl(S.cfg.sitio.whatsapp, texto, origen);
-  const contactoHtml = () => { const si = S.cfg.sitio; return `<div class="sec"><span class="ey">Contacto directo</span><br><a class="btn" data-ev="wa/sitio/contacto" href="${esc(wa("Hola, quiero conversar con Sostenibilidad Global.", "sitio · contacto"))}" target="_blank" rel="noopener">Escribir por WhatsApp</a><br><br><span>Teléfono: <a href="tel:+${esc(si.whatsapp)}">${esc(si.telefono)}</a></span><br><span>Correo: <a href="mailto:${esc(si.correo)}">${esc(si.correo)}</a></span></div>`; };
+  const contactoHtml = () => { const si = S.cfg.sitio, cu = safeUrl(((S.cfg.comunidad || {}).url)); return `<div class="sec"><span class="ey">Entra por la Comunidad</span><br>${cu ? `<a class="btn" data-ev="comunidad/contacto" href="${esc(cu)}" target="_blank" rel="noopener">Únete a la Comunidad</a> ` : ""}<a class="btn alt" href="comunidad/">Comunidad y células</a></div><div class="sec"><span class="ey">Contacto directo</span><br><a class="btn" data-ev="wa/sitio/contacto" href="${esc(wa("Hola, quiero conversar con Sostenibilidad Global.", "sitio · contacto"))}" target="_blank" rel="noopener">Escribir por WhatsApp</a><br><br><span>Teléfono: <a href="tel:+${esc(si.whatsapp)}">${esc(si.telefono)}</a></span><br><span>Correo: <a href="mailto:${esc(si.correo)}">${esc(si.correo)}</a></span></div>`; };
   const formUrl = (k) => safeUrl((S.cfg.formularios || {})[k]);
   const privHtml = () => `<p class="nota">Al enviar tus datos aceptas el <a href="privacidad/">aviso de privacidad</a>. Pedimos solo lo necesario para verificar y publicar tu empresa.</p>`;
   function registroHtml() {

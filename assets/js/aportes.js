@@ -1,64 +1,38 @@
-/* Aportes de la comunidad en vivo: lee las respuestas de un Formulario de Google (publicadas como CSV) y las dibuja en el mapa.
-   Solo se muestran las filas que tú apruebas (columna «Aprobado» = SI). Config: data/config.json → aportes {csvUrl, moderacion, refrescoSeg}.
-   No se guarda nada en este sitio: los datos viven en tu hoja de Google. */
+/* Aportes de la comunidad en vivo (mapa principal). Usa assets/js/red.js: lee la hoja de Google publicada como CSV, muestra los aportes
+   aprobados (o confirmados por pares si lo activas) y deja que cualquiera confirme o corrija desde el globo del mapa (verificación entre pares). */
 (() => {
   "use strict";
-  const TIPOS = { arbol: ["Árbol o área verde", "#4d9a2a"], plaza: ["Plaza o espacio público", "#1f6b4a"], evento: ["Evento o actividad", "#be185d"], org: ["Organización o club", "#7b4fb0"], salud: ["Servicio de salud", "#2a7fb8"], comercio: ["Comercio o emprendimiento", "#ef6c00"], otro: ["Otro", "#51605a"] };
-  const norm = (t) => String(t || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^a-z0-9 ]/g, "").trim();
-  const esc = (t) => String(t == null ? "" : t).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-  const tipoDe = (t) => { const n = norm(t); return n.startsWith("arbol") || n.includes("verde") ? "arbol" : n.startsWith("plaza") || n.includes("espacio") ? "plaza" : n.startsWith("evento") ? "evento" : n.startsWith("organ") ? "org" : n.startsWith("servicio") || n.includes("salud") ? "salud" : n.startsWith("comercio") || n.includes("emprend") ? "comercio" : "otro"; };
-
-  function csv(txt) { /* lector CSV con comillas */
-    const f = []; let r = [], c = "", q = false;
-    for (let i = 0; i < txt.length; i++) {
-      const ch = txt[i];
-      if (q) { if (ch === '"') { if (txt[i + 1] === '"') { c += '"'; i++; } else q = false; } else c += ch; }
-      else if (ch === '"') q = true;
-      else if (ch === ",") { r.push(c); c = ""; }
-      else if (ch === "\n" || ch === "\r") { if (ch === "\r" && txt[i + 1] === "\n") i++; r.push(c); c = ""; if (r.some((x) => x !== "")) f.push(r); r = []; }
-      else c += ch;
-    }
-    r.push(c); if (r.some((x) => x !== "")) f.push(r); return f;
-  }
-  const num = (v) => { const n = parseFloat(String(v || "").trim().replace(",", ".")); return isFinite(n) ? n : NaN; };
-  /* Convierte filas en aportes válidos. Exportada para pruebas. */
-  function parse(txt, moderacion) {
-    const f = csv(txt); if (f.length < 2) return [];
-    const H = f[0].map(norm), col = (...k) => H.findIndex((h) => k.some((x) => h.startsWith(x)));
-    const iT = col("tipo"), iN = col("nombre"), iD = col("descripcion", "detalle"), iLa = col("latitud", "lat"), iLo = col("longitud", "lng", "long"), iA = col("aprobado");
-    if (iLa < 0 || iLo < 0) return [];
-    return f.slice(1).map((r) => {
-      const lat = num(r[iLa]), lng = num(r[iLo]);
-      if (!(lat < -35.5 && lat > -39.5 && lng < -70.5 && lng > -74.5)) return null; /* solo Biobío y alrededores */
-      if (moderacion !== false && !(iA >= 0 && ["si", "ok", "x", "1", "true", "aprobado"].includes(norm(r[iA])))) return null;
-      return { lat, lng, tipo: tipoDe(r[iT]), nombre: String(r[iN] || "Sin nombre").slice(0, 80), desc: String(r[iD] || "").slice(0, 240) };
-    }).filter(Boolean);
-  }
-
-  let api = null, cfg = null, layer = null, items = [], vis = true, timer = null, estado = "";
+  const R = window.SG_RED; if (!R) return;
+  let api = null, cfg = null, cfgAll = null, layer = null, items = [], timer = null, estado = "";
   const $ = (s) => document.querySelector(s);
+  const demo = /[?&]demo=1/.test(location.search);
+  function globo(a) {
+    const T = R.TIPOS[a.tipo], vf = (acc) => R.formUrl(cfgAll, { tipo: T[0], nombre: a.nombre, lat: a.lat.toFixed(6), lng: a.lng.toFixed(6), origen: "verificacion", descripcion: acc });
+    const ok = vf("CONFIRMACIÓN: existe y está como se describe"), fix = vf("CORRECCIÓN: ");
+    const ver = ok ? `<div class="gl-b"><a class="btn" data-ev="aporte/confirma" target="_blank" rel="noopener" href="${R.esc(ok)}">✓ Lo confirmo</a> <a class="btn alt" data-ev="aporte/corrige" target="_blank" rel="noopener" href="${R.esc(fix)}">✎ Corregir</a></div>` : "";
+    const emp = a.tipo === "comercio" || a.tipo === "org" ? `<div class="gl-b"><button class="btn alt" type="button" data-k="empresas">¿Es tu negocio u organización? Aparece en el directorio</button></div>` : "";
+    const sello = a.confirm ? `<br><small>✓ ${a.confirm} ${a.confirm === 1 ? "persona lo confirma" : "personas lo confirman"}</small>` : "";
+    return `<b>${R.esc(a.nombre)}</b><br><small>${R.esc(T[0])}</small>${a.desc ? "<br>" + R.esc(a.desc) : ""}${sello}<br><small>Aporte de la comunidad</small>${ver}${emp}`;
+  }
   function dibujar() {
     if (!layer) return; layer.clearLayers();
-    items.forEach((a) => L.circleMarker([a.lat, a.lng], { radius: 9, color: "#fff", weight: 2, fillColor: TIPOS[a.tipo][1], fillOpacity: 1 })
-      .bindPopup(`<b>${esc(a.nombre)}</b><br><small>${esc(TIPOS[a.tipo][0])}</small>${a.desc ? "<br>" + esc(a.desc) : ""}<br><small>Aporte de la comunidad</small>`).addTo(layer));
-    const n = $("#cap-aportes-n"); if (n) n.textContent = estado || "(" + items.length + ")";
+    items.filter((a) => a.visible).forEach((a) => L.circleMarker([a.lat, a.lng], { radius: 9, color: a.confirm ? "#12382a" : "#fff", weight: a.confirm ? 3 : 2, fillColor: R.TIPOS[a.tipo][1], fillOpacity: 1 }).bindPopup(globo(a), { maxWidth: 260 }).addTo(layer));
+    const n = $("#cap-aportes-n"); if (n) n.textContent = estado || "(" + items.filter((a) => a.visible).length + ")";
   }
   async function cargar() {
-    try {
-      const r = await fetch(cfg.csvUrl, { cache: "no-store" }); if (!r.ok) throw new Error(r.status);
-      items = parse(await r.text(), cfg.moderacion); estado = "";
-    } catch (e) { estado = "(sin conexión)"; }
+    try { items = await R.cargar(cfgAll, { demo }); estado = ""; } catch (e) { estado = "(sin conexión)"; }
     dibujar();
   }
   function setVisible(on) {
-    vis = on; const cb = $("#cap-aportes"); if (cb) cb.checked = on;
+    const cb = $("#cap-aportes"); if (cb) cb.checked = on;
     if (!api || !api.S.map) return;
-    if (on) { layer.addTo(api.S.map); cargar(); clearInterval(timer); timer = setInterval(cargar, Math.max(15, cfg.refrescoSeg || 30) * 1000); }
-    else { api.S.map.removeLayer(layer); clearInterval(timer); }
+    clearInterval(timer);
+    if (on) { layer.addTo(api.S.map); cargar(); timer = setInterval(cargar, Math.max(15, cfg.refrescoSeg || 30) * 1000); }
+    else api.S.map.removeLayer(layer);
   }
   function attach(a) {
-    api = a; cfg = (a.S.cfg || {}).aportes || {};
-    if (!cfg.csvUrl || !/^https:\/\//i.test(cfg.csvUrl) || !a.S.map) return;
+    api = a; cfgAll = a.S.cfg || {}; cfg = cfgAll.aportes || {};
+    if ((!R.https(cfg.csvUrl) && !demo) || !a.S.map) return;
     layer = L.layerGroup();
     const lab = $("#cap-lab"); if (lab && lab.parentElement) {
       const l = document.createElement("label");
@@ -68,5 +42,7 @@
     }
     setVisible(true);
   }
-  window.SG_APORTES = { attach, parse, setVisible, count: () => items.length };
+  /* compatibilidad con las pruebas de v23 */
+  const parse = (txt, mod) => R.resolver(R.filas(txt), { moderacion: mod }).filter((x) => x.visible).map(({ lat, lng, tipo, nombre, desc }) => ({ lat, lng, tipo, nombre, desc }));
+  window.SG_APORTES = { attach, parse, setVisible, count: () => items.filter((a) => a.visible).length };
 })();
