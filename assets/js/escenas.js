@@ -409,5 +409,7 @@
     h.step(); h.badge(c, "★", h.C.y, { label: "Valor compartido", dir: "bottom", off: [0, 12] });
   };
 
+  E["licitaciones-biobio"] = (h) => { if (window.SG_LIC) window.SG_LIC.dibujar(h); };
+
   window.SG_ESC = { ctx, escenas: E };
 })();

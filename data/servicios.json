@@ -583,6 +583,29 @@
       }
     },
     {
+      "id": "licitaciones-biobio",
+      "activo": true,
+      "grupo": "datos",
+      "titulo": "Compras públicas: licitaciones por comuna",
+      "resumen": "Mapa de las licitaciones activas de Mercado Público en las 33 comunas de la Región del Biobío, según la comuna del organismo comprador. Sirve para ver dónde hay oportunidades y orientar a proveedores y emprendimientos locales.",
+      "acciones": [
+        "Conteo diario de licitaciones activas por comuna",
+        "Identificación de oportunidades para proveedores de la zona",
+        "Apoyo para preparar y presentar ofertas",
+        "Análisis de las compras públicas del territorio"
+      ],
+      "ods": [
+        8,
+        9,
+        16,
+        17
+      ],
+      "mapa": {
+        "leyenda": "Cada burbuja es una comuna: mientras más grande y más cálido el color, más licitaciones activas.",
+        "escena": "licitaciones-biobio"
+      }
+    },
+    {
       "id": "tierra",
       "activo": true,
       "grupo": "datos",

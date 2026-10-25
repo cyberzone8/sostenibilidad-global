@@ -30,6 +30,12 @@ h3{font-size:18px;color:var(--ink)}
 #playBtn{width:84px;height:84px;border-radius:50%;border:0;background:var(--ink);color:var(--on);font-size:30px;cursor:pointer}
 button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(--g);outline-offset:3px}
 .status{margin-top:12px;color:var(--mu);min-height:1.5em}
+.now{margin-top:14px;font-weight:600}
+.trans{display:flex;justify-content:center;gap:10px;margin-top:10px}
+.tb{border:2px solid var(--ln);background:transparent;color:var(--tx);border-radius:10px;min-width:48px;min-height:44px;font-size:18px;cursor:pointer}
+.prog{margin:0;padding-left:1.4em;color:var(--mu)}
+.prog li{padding:2px 0}
+.prog li.on{color:var(--tx);font-weight:600}
 .vol{margin-top:12px;display:flex;align-items:center;justify-content:center;gap:10px;color:var(--mu)}
 .vol input{width:min(240px,60%)}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}
@@ -54,10 +60,13 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(-
 
   <section class="player" aria-label="Reproductor">
     <button id="playBtn" type="button" aria-label="Reproducir radio">&#9654;</button>
+    <div class="now" id="now" aria-live="polite"></div>
     <div class="status" id="status" role="status">Presiona para escuchar</div>
+    <div class="trans"><button type="button" id="prev" class="tb" aria-label="Pista anterior" hidden>&#9198;</button><button type="button" id="next" class="tb" aria-label="Pista siguiente" hidden>&#9197;</button></div>
     <div class="vol"><label for="vol">Volumen</label><input id="vol" type="range" min="0" max="1" step="0.05" value="0.8"></div>
-    <audio id="audio" preload="none"></audio>
   </section>
+
+  <section id="progBox" hidden><h2>En la programación</h2><ol class="prog" id="prog"></ol></section>
 
   <h2>Qué vas a escuchar</h2>
   <div class="grid">
@@ -91,37 +100,33 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(-
   <p class="foot">&copy; <span id="year"></span> <span id="empresa">Sostenibilidad Global SpA</span>. Transmisión por internet. · <a href="../privacidad/">Privacidad</a> · <small id="visitas" hidden></small></p>
 </div>
 
+<script src="../assets/js/radio-core.js"></script>
 <script>
-  // ====== CONFIGURA SOLO ESTAS LÍNEAS ======
-  const STREAM_URL = "";                 // Pega aquí la URL de tu streaming (ej: https://.../radio.mp3)
-  const NOMBRE_RADIO = "Radio ProBio";   // Nombre de tu radio (cámbialo aquí)
-  // =========================================
+  // Nombre y streaming: data/config.json → radio. Música: data/playlist.json (MP3 en audio/).
   const WHATSAPP = "56985947020";        // mismo número del sitio (data/config.json)
-
-  document.getElementById("nombre").textContent = NOMBRE_RADIO;
-  document.title = NOMBRE_RADIO + " · Sostenibilidad Global";
-  document.getElementById("year").textContent = new Date().getFullYear();
-  document.getElementById("wsp").href = "https://wa.me/" + WHATSAPP + "?text=" +
-    encodeURIComponent("Hola, quiero consultar por sonido para eventos / difusión en " + NOMBRE_RADIO + ". Origen: página radio");
-
-  const audio = document.getElementById("audio"), btn = document.getElementById("playBtn"),
-        status = document.getElementById("status"), vol = document.getElementById("vol");
-  audio.volume = parseFloat(vol.value);
-  vol.addEventListener("input", () => { audio.volume = parseFloat(vol.value); });
-  btn.addEventListener("click", async () => {
-    if (!STREAM_URL) { status.textContent = "La señal en vivo se activa pronto."; return; }
-    if (audio.paused) {
-      audio.src = STREAM_URL + (STREAM_URL.includes("?") ? "&" : "?") + "t=" + Date.now();
-      status.textContent = "Conectando...";
-      try { await audio.play(); } catch (e) { status.textContent = "No se pudo reproducir. Intenta de nuevo."; }
-    } else {
-      audio.pause(); audio.removeAttribute("src"); audio.load();
-      btn.innerHTML = "&#9654;"; btn.setAttribute("aria-label", "Reproducir radio"); status.textContent = "Pausado";
+  const $ = (id) => document.getElementById(id);
+  const esc = (t) => String(t == null ? "" : t).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const btn = $("playBtn"), status = $("status"), now = $("now");
+  $("year").textContent = new Date().getFullYear();
+  const ico = (on) => { btn.innerHTML = on ? "&#10074;&#10074;" : "&#9654;"; btn.setAttribute("aria-label", on ? "Pausar radio" : "Reproducir radio"); };
+  function pintarProg(R) { $("prog").innerHTML = R.pistas.map((p, i) => `<li class="${i === R.idx ? "on" : ""}">${esc(p.titulo + (p.autor ? " · " + p.autor : ""))}</li>`).join(""); }
+  const R = SG_RADIO.crear({
+    base: "../",
+    on: {
+      state: ico, status: (m) => { status.textContent = m; },
+      track: (p, nombre) => { now.textContent = "Suena: " + nombre; pintarProg(R); },
+      listo: (r) => {
+        $("nombre").textContent = r.nombre; document.title = r.nombre + " · Sostenibilidad Global";
+        $("wsp").href = "https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent("Hola, quiero consultar por sonido para eventos / difusión en " + r.nombre + ". Origen: página radio");
+        if (r.modo === "lista") { $("progBox").hidden = false; pintarProg(r); now.textContent = r.pistas.length + (r.pistas.length === 1 ? " pista" : " pistas") + " en programación"; if (!r.sync) { $("prev").hidden = false; $("next").hidden = false; } }
+      }
     }
   });
-  audio.addEventListener("playing", () => { btn.innerHTML = "&#10074;&#10074;"; btn.setAttribute("aria-label", "Pausar radio"); status.textContent = "Al aire"; });
-  audio.addEventListener("waiting", () => { status.textContent = "Cargando..."; });
-  audio.addEventListener("error", () => { if (audio.getAttribute("src")) status.textContent = "Se cortó la señal. Presiona para reconectar."; });
+  btn.addEventListener("click", () => R.toggle());
+  $("prev").addEventListener("click", () => R.prev());
+  $("next").addEventListener("click", () => R.next());
+  $("vol").addEventListener("input", (e) => R.volumen(parseFloat(e.target.value)));
+  R.volumen(parseFloat($("vol").value));
 </script>
 <script src="../assets/js/contador.js" data-config="../data/config.json" data-show="visitas" defer></script>
 </body>

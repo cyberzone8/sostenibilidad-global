@@ -1,0 +1,26 @@
+{
+  "_ayuda": "Lista de reproducción de la radio. Si todas las pistas tienen duración, todos escuchan lo mismo al mismo tiempo (como una radio). Orden = orden de la lista.",
+  "pistas": [
+    {
+      "archivo": "audio/amanecer-en-el-valle.mp3",
+      "titulo": "Amanecer en el valle",
+      "autor": "Sostenibilidad Global (demo)",
+      "licencia": "Pista de demostración generada por síntesis, sin terceros. Reemplazar por música propia o con licencia.",
+      "duracion": 56
+    },
+    {
+      "archivo": "audio/ruta-del-agua.mp3",
+      "titulo": "Ruta del agua",
+      "autor": "Sostenibilidad Global (demo)",
+      "licencia": "Pista de demostración generada por síntesis, sin terceros. Reemplazar por música propia o con licencia.",
+      "duracion": 63
+    },
+    {
+      "archivo": "audio/raices.mp3",
+      "titulo": "Raíces",
+      "autor": "Sostenibilidad Global (demo)",
+      "licencia": "Pista de demostración generada por síntesis, sin terceros. Reemplazar por música propia o con licencia.",
+      "duracion": 49
+    }
+  ]
+}

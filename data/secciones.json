@@ -13,20 +13,8 @@
       "texto": "Conversemos",
       "abre": "contacto"
     },
-    "principal": true
-  },
-  {
-    "id": "directorio",
-    "activo": true,
     "principal": true,
-    "titulo": "Directorio",
-    "enlaceDirecto": "directorio/"
-  },
-  {
-    "id": "laboratorio",
-    "activo": true,
-    "titulo": "Laboratorio de datos",
-    "laboratorio": true
+    "grupo": "quienes"
   },
   {
     "id": "metodo",
@@ -52,7 +40,8 @@
         "texto": "Seguimiento, registro en mapa e informes verificables."
       }
     ],
-    "principal": false
+    "principal": false,
+    "grupo": "quienes"
   },
   {
     "id": "alianzas",
@@ -86,7 +75,8 @@
         }
       }
     ],
-    "principal": true
+    "principal": true,
+    "grupo": "quienes"
   },
   {
     "id": "futuro",
@@ -106,7 +96,55 @@
       17
     ],
     "nota": "Describe la orientación de nuestros servicios; no constituye una certificación.",
-    "principal": false
+    "principal": false,
+    "grupo": "quienes"
+  },
+  {
+    "id": "expertos",
+    "activo": true,
+    "titulo": "Expertos Chile",
+    "eyebrow": "Empresa hermana",
+    "encabezado": "Expertos Chile SpA",
+    "parrafos": [
+      "Consultoría tecnológica, ingeniería de procesos y capacitación en inteligencia artificial. Expertos Chile aporta el análisis de procesos y costos; Sostenibilidad Global lo lleva a la operación y al territorio."
+    ],
+    "enlaceExterno": {
+      "texto": "Visitar Expertos Chile",
+      "url": "https://cyberzone8.github.io/expertoschile/"
+    },
+    "principal": false,
+    "grupo": "quienes"
+  },
+  {
+    "id": "servicios",
+    "activo": true,
+    "titulo": "Servicios",
+    "grupo": "servicios",
+    "accion": "areas"
+  },
+  {
+    "id": "directorio",
+    "activo": true,
+    "principal": true,
+    "titulo": "Directorio",
+    "enlaceDirecto": "directorio/",
+    "grupo": "red"
+  },
+  {
+    "id": "empresas",
+    "activo": true,
+    "titulo": "Únete a la red",
+    "eyebrow": "Empresas y emprendimientos",
+    "encabezado": "Tu empresa con página propia, visible en el mapa y en el directorio",
+    "parrafos": [
+      "Cada empresa de la red tiene su ficha: fotos, servicios, teléfono, WhatsApp, horario y zona de atención, con un enlace y un código QR para compartir. También aparece en el directorio, donde se puede buscar por rubro y comuna, y en el mapa.",
+      "Completa los datos, marca tu ubicación y envíalos por WhatsApp. Antes de publicar verificamos la información y pedimos tu autorización por escrito. El valor en UF te lo informamos en esa conversación."
+    ],
+    "registro": true,
+    "mostrarContacto": true,
+    "nota": "Este sitio no guarda lo que escribes: el mensaje se prepara en tu WhatsApp y lo envías tú. Nada se publica sin verificación y autorización previa.",
+    "principal": true,
+    "grupo": "red"
   },
   {
     "id": "anuncios",
@@ -132,44 +170,23 @@
       }
     ],
     "nota": "Las condiciones de cada oferta se confirman por escrito.",
-    "principal": false
+    "principal": false,
+    "grupo": "red"
   },
   {
-    "id": "expertos",
+    "id": "laboratorio",
     "activo": true,
-    "titulo": "Expertos Chile",
-    "eyebrow": "Empresa hermana",
-    "encabezado": "Expertos Chile SpA",
-    "parrafos": [
-      "Consultoría tecnológica, ingeniería de procesos y capacitación en inteligencia artificial. Expertos Chile aporta el análisis de procesos y costos; Sostenibilidad Global lo lleva a la operación y al territorio."
-    ],
-    "enlaceExterno": {
-      "texto": "Visitar Expertos Chile",
-      "url": "https://cyberzone8.github.io/expertoschile/"
-    },
-    "principal": false
+    "titulo": "Laboratorio de datos",
+    "laboratorio": true,
+    "grupo": "aprende"
   },
   {
     "id": "programa",
     "activo": true,
     "titulo": "Programa",
     "enlaceDirecto": "https://cyberzone8.github.io/liderazgo-territorial/",
-    "principal": false
-  },
-  {
-    "id": "empresas",
-    "activo": true,
-    "titulo": "Únete a la red",
-    "eyebrow": "Empresas y emprendimientos",
-    "encabezado": "Tu empresa con página propia, visible en el mapa y en el directorio",
-    "parrafos": [
-      "Cada empresa de la red tiene su ficha: fotos, servicios, teléfono, WhatsApp, horario y zona de atención, con un enlace y un código QR para compartir. También aparece en el directorio, donde se puede buscar por rubro y comuna, y en el mapa.",
-      "Completa los datos, marca tu ubicación y envíalos por WhatsApp. Antes de publicar verificamos la información y pedimos tu autorización por escrito. El valor en UF te lo informamos en esa conversación."
-    ],
-    "registro": true,
-    "mostrarContacto": true,
-    "nota": "Este sitio no guarda lo que escribes: el mensaje se prepara en tu WhatsApp y lo envías tú. Nada se publica sin verificación y autorización previa.",
-    "principal": true
+    "principal": false,
+    "grupo": "aprende"
   },
   {
     "id": "contacto",
@@ -189,6 +206,8 @@
     ],
     "ubicacionInicial": "Biobío, ",
     "mostrarContacto": true,
-    "principal": true
+    "principal": true,
+    "grupo": "contacto",
+    "destacado": true
   }
 ]

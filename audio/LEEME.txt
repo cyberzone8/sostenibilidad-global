@@ -1,0 +1,4 @@
+Pon aquí tus archivos MP3 (hasta ~20 MB cada uno, idealmente 96–128 kbps).
+Después ejecuta:   python3 tools/crear-playlist.py
+Eso crea data/playlist.json con los títulos y las duraciones. Edita ese archivo para corregir título, autor y licencia de cada pista.
+Usa solo música con licencia libre o con autorización/licencias al día (SCD y otras). Anota la licencia en playlist.json.

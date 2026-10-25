@@ -135,3 +135,30 @@ Nueva sección **Laboratorio de datos** (menú «Más») con cuatro herramientas
 Archivos: `assets/js/laboratorio.js` (funciones puras probables en Node: `node -e "require('./assets/js/laboratorio.js')"`), entrada en `data/secciones.json` (`laboratorio:true`), casilla «Aportes de la comunidad (taller)» en Capas.
 
 **Antes de la charla:** importar los activos reales (Acción «Importar activos» o `python3 tools/importar-activos.py`); sin eso, las pestañas Calidad y Cercanía solo tendrán los aportes de ejemplo.
+
+## v18 – Radio con música desde el repositorio (sin servidor) y GitLab
+- **Música:** pon tus MP3 en `audio/` y ejecuta `python3 tools/crear-playlist.py`; eso actualiza `data/playlist.json` (título, autor, licencia y duración; lo que escribas a mano se conserva). La página `radio/` reproduce la lista en bucle. Si todas las pistas tienen duración, funciona como una radio: todos escuchan el mismo momento de la lista; si no, hay botones anterior/siguiente.
+- Hoy hay 3 pistas **de demostración** generadas por síntesis (sin terceros). Bórralas y reemplázalas por música propia o con licencia libre/autorizada (SCD y otras). Anota la licencia en `playlist.json`.
+- Límites: archivos de hasta ~20 MB (96–128 kbps), y el repositorio completo bien por debajo de 1 GB. Con `STREAM_URL` en `radio/index.html` se puede usar un servidor de streaming en vez de la lista.
+- **Panel de capas:** además de plegarse (▾), ahora tiene «×» para quitarlo; la tecla **C** lo vuelve a mostrar.
+- **GitLab:** `.gitlab-ci.yml` publica el sitio en GitLab Pages. Las acciones de `.github/workflows` solo corren en GitHub: en GitLab ejecuta `python3 tools/generar.py` y `tools/importar-activos.py` en tu computador antes de subir.
+
+## v19 – Menú agrupado
+- El menú superior ahora tiene 5 entradas: **Quiénes somos ▾** (Quiénes somos, Método, Alianzas, Futuro sostenible, Expertos Chile), **Servicios** (lleva a las áreas de trabajo), **Red ▾** (Directorio, Únete a la red, Anuncios), **Aprende ▾** (Laboratorio de datos, Programa) y **Contacto** (botón destacado).
+- Cómo se edita: cada sección de `data/secciones.json` elige su `grupo`; los grupos y su orden están en `data/config.json` → `menu.grupos`. Un grupo con una sola sección se muestra como botón directo; `"destacado": true` pinta el botón; `"accion": "areas"` abre el panel de áreas en vez de una sección. Si borras el bloque `menu`, vuelve el menú anterior (`principal` / «Más»).
+- En celular el botón «☰ Menú» muestra los grupos como acordeón y abre el de la sección actual.
+
+## v20 – Botón de radio con ▶ en la portada
+- La etiqueta flotante «Radio ProBio» tiene un botón **▶** que reproduce la música ahí mismo (sin salir del mapa; cambia a ❚❚ y muestra qué suena). Un clic en cualquier otra parte de la etiqueta abre la página `radio/`. Como la lista funciona como radio (todos escuchan el mismo momento), al abrir `radio/` mientras suena se retoma en el mismo punto.
+- La lógica está en `assets/js/radio-core.js` (compartida) y `assets/js/radio-mini.js` (portada). El nombre y el streaming opcional están ahora en `data/config.json` → `radio` (`nombre`, `streamUrl`); ya no hay que editar `radio/index.html`.
+
+## v21 – Licitaciones de Mercado Público por comuna (Biobío)
+- **Servicio nuevo** «Compras públicas: licitaciones por comuna» (grupo «Datos, mapas y geoespacial»). Al abrirlo, el mapa dibuja una burbuja por comuna (33 comunas; tamaño y color según la cantidad de licitaciones activas) y el panel muestra el total y el ranking.
+- **Hoy los números son FICTICIOS** (`data/licitaciones.json` → `"demo": true`; el panel lo avisa). Se reemplazan solos al conectar la API.
+- **Conectar la API real:**
+  1. Pide tu ticket gratis en api.mercadopublico.cl (ChileCompra). Es personal: **no lo pegues en el sitio ni en ningún archivo**.
+  2. GitHub: Settings → Secrets and variables → Actions → New secret `MP_TICKET`. Luego Actions → «Actualizar licitaciones» → Run workflow (después corre solo cada día). La primera vez tarda (consulta el detalle de cada licitación activa del país, con pausa entre llamadas); las siguientes solo consultan las nuevas.
+  3. GitLab/computador: `MP_TICKET=… python3 tools/importar-licitaciones.py` y sube `data/licitaciones.json`.
+- **Qué cuenta:** licitaciones **activas** según la **comuna del organismo comprador** (no donde se ejecuta el contrato). Son licitaciones publicadas, no las ofertas que reciben. Las que no traen comuna reconocida se informan aparte («sin comuna»).
+- La ubicación de cada comuna es referencial (`data/comunas-biobio.json`), no sus límites. Cita la fuente: ChileCompra · Mercado Público.
+- Código: `assets/js/licitaciones.js`, `tools/importar-licitaciones.py`, `.github/workflows/licitaciones.yml`. El importador no se pudo probar contra la API real desde el entorno de desarrollo (sin acceso a internet): revisa la primera ejecución.

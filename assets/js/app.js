@@ -128,7 +128,7 @@
   function renderServicio(s) {
     const red = enRed(s.id);
     const redHtml = red.length ? `<h3>En la red</h3><ul>${red.map((e) => `<li><a data-ev="ficha/${esc(e.id)}/servicio" href="empresas/${encodeURIComponent(e.id)}/">${esc(e.nombre)}</a> · ${esc(e.rubro)}${e.comuna ? " · " + esc(e.comuna) : ""}</li>`).join("")}</ul>` : "";
-    return { t: s.titulo, h: `<span class="ey">${esc(grupoTitulo(s.grupo))}</span><p>${esc(s.resumen)}</p>${s.mapa && s.mapa.leyenda ? `<p class="leg"><b>En el mapa:</b> ${esc(s.mapa.leyenda)} <button class="lnk" type="button" data-replay>↻ Repetir</button></p>` : ""}<h3>Qué hacemos</h3><ul>${(s.acciones || []).map((a) => `<li>${esc(a)}</li>`).join("")}</ul>${odsHtml(s.ods)}${redHtml}<button class="btn" type="button" data-need="${esc(s.titulo)}">Consultar por este servicio</button>${s.enlace && /^(https?:\/\/|[a-z0-9][a-z0-9\-\/]*\/?$)/i.test(s.enlace.url || "") ? ` <a class="btn alt" href="${esc(s.enlace.url)}">${esc(s.enlace.texto)}</a>` : ""}` };
+    return { t: s.titulo, h: `<span class="ey">${esc(grupoTitulo(s.grupo))}</span><p>${esc(s.resumen)}</p>${s.mapa && s.mapa.leyenda ? `<p class="leg"><b>En el mapa:</b> ${esc(s.mapa.leyenda)} <button class="lnk" type="button" data-replay>↻ Repetir</button></p>` : ""}${s.id === "licitaciones-biobio" && window.SG_LIC ? window.SG_LIC.panel() : ""}<h3>Qué hacemos</h3><ul>${(s.acciones || []).map((a) => `<li>${esc(a)}</li>`).join("")}</ul>${odsHtml(s.ods)}${redHtml}<button class="btn" type="button" data-need="${esc(s.titulo)}">Consultar por este servicio</button>${s.enlace && /^(https?:\/\/|[a-z0-9][a-z0-9\-\/]*\/?$)/i.test(s.enlace.url || "") ? ` <a class="btn alt" href="${esc(s.enlace.url)}">${esc(s.enlace.texto)}</a>` : ""}` };
   }
   function renderSeccion(c, need) {
     if (c.laboratorio && window.SG_LAB) return { t: c.titulo, h: window.SG_LAB.html() };
@@ -156,10 +156,20 @@
   }
 
   /* ---------- Menú: entradas principales a la vista y el resto en "Más"; en celular, todo bajo el botón Menú ---------- */
-  function buildNav(items) {
+  function buildNav(items, grupos) {
     const one = (i) => i.href
       ? `<a class="navlink" href="${esc(i.href)}"${i.ext ? ' target="_blank" rel="noopener"' : ""}>${esc(i.t)}${i.ext ? " ↗" : ""}</a>`
-      : `<button type="button" data-k="${esc(i.k)}">${esc(i.t)}</button>`;
+      : i.act ? `<button type="button" data-act="${esc(i.act)}"${i.d ? ' class="cta-nav"' : ""}>${esc(i.t)}</button>`
+      : `<button type="button" data-k="${esc(i.k)}"${i.d ? ' class="cta-nav"' : ""}>${esc(i.t)}</button>`;
+    if (grupos && grupos.length && items.some((i) => i.g)) { /* menú agrupado */
+      let h = "";
+      grupos.forEach((g) => {
+        const l = items.filter((i) => i.g === g.id); if (!l.length) return;
+        h += l.length === 1 ? one(l[0]) : `<span class="mas mgrp"><button type="button" class="mas-b" aria-expanded="false">${esc(g.titulo)} ▾</button><span class="mas-l">${l.map(one).join("")}</span></span>`;
+      });
+      h += items.filter((i) => !grupos.some((g) => g.id === i.g)).map(one).join("");
+      $("#nav").innerHTML = h; return;
+    }
     const pr = items.filter((i) => i.p), rest = items.filter((i) => !i.p);
     $("#nav").innerHTML = pr.map(one).join("") + (rest.length ? `<span class="mas"><button type="button" class="mas-b" aria-expanded="false">Más ▾</button><span class="mas-l">${rest.map(one).join("")}</span></span>` : "");
   }
@@ -186,6 +196,7 @@
     p.inert = false; p.classList.add("open"); setMin(p, false); p.scrollTop = 0;
     document.body.classList.add("pop");
     $$("[data-k]").forEach((b) => b.classList.toggle("on", b.dataset.k === id && !b.classList.contains("brand")));
+    $$(".mas").forEach((m) => m.classList.toggle("has-on", !!$(".on", m)));
     S.cur = sv; showScene(sv);
     if (!sv && !S.emp && window.SG_LAB && (S.secciones.find((s) => s.id === id) || {}).laboratorio) window.SG_LAB.mount(labApi);
     try { history.replaceState(null, "", "#" + id); } catch (e) { /* sin historial */ }
@@ -196,7 +207,7 @@
     S.picking = false; $("#aviso").hidden = true;
     if (window.SG_LAB) window.SG_LAB.cancel();
     p.classList.remove("open"); p.inert = true; document.body.classList.remove("pop");
-    $$(".on").forEach((b) => b.classList.remove("on"));
+    $$(".on").forEach((b) => b.classList.remove("on")); $$(".mas.has-on").forEach((m) => m.classList.remove("has-on"));
     S.cur = null; clearScene();
     try { history.replaceState(null, "", location.pathname + location.search); } catch (e) { /* sin historial */ }
     if (S.lastFocus && S.lastFocus.focus) S.lastFocus.focus();
@@ -432,7 +443,7 @@
     S.nombres = p.nombres === true;
     const nEmp = empConPos().length;
     const d = document.createElement("div"); d.id = "capas"; d.className = "capas";
-    d.innerHTML = `<button type="button" class="capas-h" id="capas-t" aria-expanded="true" aria-controls="capas-b"><b>Capas del mapa</b><span class="cv" aria-hidden="true">▾</span></button>
+    d.innerHTML = `<button type="button" class="capas-h" id="capas-t" aria-expanded="true" aria-controls="capas-b"><b>Capas del mapa</b><span class="cv" aria-hidden="true">▾</span></button><button type="button" class="capas-x" id="capas-x" aria-label="Quitar el panel de capas" title="Quitar el panel (tecla C para volver a mostrarlo)">×</button>
 <div class="capas-b" id="capas-b">
   <div class="g"><label class="fl" for="cap-base">Mapa base</label>
     <select id="cap-base"><option value="calle">Calle (OpenStreetMap)</option><option value="gris">Gris: resalta las capas</option><option value="nada">Sin mapa base</option></select></div>
@@ -465,6 +476,7 @@
     d.addEventListener("click", (e) => {
       const t = e.target.closest("button"); if (!t) return;
       if (t.id === "present") return togglePresent();
+      if (t.id === "capas-x") { if (document.body.classList.contains("present")) togglePresent(false); d.classList.add("off"); aviso("Panel de capas oculto. Presiona la tecla C para volver a mostrarlo."); return; }
       if (t.id === "capas-t") { setCapasMin(!d.classList.contains("is-min")); guardarPref(); return; }
       if (t.dataset.tipo) {
         const k = t.dataset.tipo, ver = S.ocultos.has(k); /* estaba oculto: lo muestra */
@@ -498,7 +510,7 @@
   const escribiendo = () => { const a = document.activeElement; return !!a && (a.tagName === "TEXTAREA" || a.tagName === "SELECT" || (a.tagName === "INPUT" && !/^(checkbox|radio|range|button)$/.test(a.type))); };
   document.addEventListener("click", (e) => {
     if (!e.target.closest(".mas, #menubtn")) $$(".mas.open").forEach((m) => { m.classList.remove("open"); $(".mas-b", m).setAttribute("aria-expanded", "false"); });
-    const b = e.target.closest(".min, #x, [data-k], [data-need], [data-replay], [data-zoom], #send, #pick, #reg, .mas-b, #menubtn, .dims button");
+    const b = e.target.closest(".min, #x, [data-k], [data-need], [data-replay], [data-zoom], #send, #pick, #reg, .mas-b, #menubtn, [data-act], .dims button");
     if (!b) return;
     if (b.matches(".dims button")) {
       S.dim = b.dataset.dim;
@@ -506,8 +518,13 @@
       $$("#tags .grp").forEach((g) => { g.hidden = !!S.dim && !(g.dataset.dim || "").split(" ").includes(S.dim); });
       return;
     }
-    if (b.id === "menubtn") { const o = $("#nav").classList.toggle("open"); b.setAttribute("aria-expanded", String(o)); return; }
-    if (b.classList.contains("mas-b")) { const m = b.closest(".mas"), o = m.classList.toggle("open"); b.setAttribute("aria-expanded", String(o)); return; }
+    if (b.id === "menubtn") { const o = $("#nav").classList.toggle("open"); b.setAttribute("aria-expanded", String(o)); if (o) { const m = $(".mas.has-on"); if (m) { m.classList.add("open"); $(".mas-b", m).setAttribute("aria-expanded", "true"); } } return; }
+    if (b.classList.contains("mas-b")) {
+      const m = b.closest(".mas"), o = !m.classList.contains("open");
+      $$(".mas.open").forEach((x) => { x.classList.remove("open"); $(".mas-b", x).setAttribute("aria-expanded", "false"); });
+      m.classList.toggle("open", o); b.setAttribute("aria-expanded", String(o)); return;
+    }
+    if (b.dataset.act === "areas") { closeMenus(); const a = $("#areas"); if (a) { setMin(a, false); a.scrollIntoView({ block: "nearest" }); a.classList.add("flash"); setTimeout(() => a.classList.remove("flash"), 1400); const f = $(".dims button, .grp summary", a); if (f) f.focus({ preventScroll: true }); } return; }
     if (b.dataset.k || b.dataset.need) closeMenus();
     if (b.id === "x") return closeP();
     if (b.dataset.zoom) return zoomEmp(b.dataset.zoom);
@@ -528,7 +545,7 @@
     if (b.dataset.need) return open("contacto", b.dataset.need);
     open(b.dataset.k);
   });
-  document.addEventListener("keydown", (e) => { if ((e.key === "p" || e.key === "P") && !escribiendo() && !S.emp) { togglePresent(); return; } if (e.key !== "Escape") return; if ($(".mas.open") || $("#nav.open")) { closeMenus(); return; } if ($("#panel").classList.contains("open")) closeP(); });
+  document.addEventListener("keydown", (e) => { if ((e.key === "c" || e.key === "C") && !escribiendo() && !e.ctrlKey && !e.metaKey && !S.emp) { const cp = $("#capas"); if (cp && cp.classList.contains("off")) { cp.classList.remove("off"); return; } } if ((e.key === "p" || e.key === "P") && !escribiendo() && !S.emp) { togglePresent(); return; } if (e.key !== "Escape") return; if ($(".mas.open") || $("#nav.open")) { closeMenus(); return; } if ($("#panel").classList.contains("open")) closeP(); });
 
   /* ---------- Arranque ---------- */
   async function init() {
@@ -551,8 +568,9 @@
     $("#intro-s").textContent = `${si.razonSocial} · RUT ${si.rut} · ${si.direccion}`;
     $("#areas-t").textContent = t.areas;
     buildNav(S.secciones.filter((s) => s.activo !== false).map((s) => s.enlaceDirecto
-      ? { href: s.enlaceDirecto, t: s.titulo, ext: !!safeUrl(s.enlaceDirecto), p: s.principal }
-      : { k: s.id, t: s.titulo, p: s.principal }));
+      ? { href: s.enlaceDirecto, t: s.titulo, ext: !!safeUrl(s.enlaceDirecto), p: s.principal, g: s.grupo, d: s.destacado }
+      : s.accion ? { act: s.accion, t: s.titulo, p: s.principal, g: s.grupo, d: s.destacado }
+      : { k: s.id, t: s.titulo, p: s.principal, g: s.grupo, d: s.destacado }), (S.cfg.menu || {}).grupos);
     $("#intro-c").innerHTML = `WhatsApp <a data-ev="wa/sitio/portada" href="${esc(wa("Hola, quiero conversar con Sostenibilidad Global.", "sitio · portada"))}" target="_blank" rel="noopener">${esc(si.telefono)}</a> · <a href="mailto:${esc(si.correo)}">${esc(si.correo)}</a>`;
     const li = $("#lnk"); if (safeUrl(si.linkedin)) li.href = si.linkedin; else li.hidden = true;
     const dimBar = (S.dims || []).length ? `<div class="dims" role="group" aria-label="Dimensión de la sostenibilidad"><button type="button" data-dim="" aria-pressed="true">Todas</button>${S.dims.map((d) => `<button type="button" data-dim="${esc(d.id)}" aria-pressed="false">${esc(d.titulo)}</button>`).join("")}</div>` : "";

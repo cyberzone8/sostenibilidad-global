@@ -1,0 +1,203 @@
+{
+ "_ayuda": "Las 33 comunas de la Región del Biobío con una ubicación referencial (centro urbano aproximado) para dibujar el mapa de licitaciones. No son límites comunales.",
+ "comunas": [
+  {
+   "nombre": "Concepción",
+   "provincia": "Concepción",
+   "lat": -36.827,
+   "lng": -73.05
+  },
+  {
+   "nombre": "Coronel",
+   "provincia": "Concepción",
+   "lat": -37.03,
+   "lng": -73.157
+  },
+  {
+   "nombre": "Chiguayante",
+   "provincia": "Concepción",
+   "lat": -36.925,
+   "lng": -73.029
+  },
+  {
+   "nombre": "Florida",
+   "provincia": "Concepción",
+   "lat": -36.822,
+   "lng": -72.66
+  },
+  {
+   "nombre": "Hualqui",
+   "provincia": "Concepción",
+   "lat": -36.975,
+   "lng": -72.937
+  },
+  {
+   "nombre": "Lota",
+   "provincia": "Concepción",
+   "lat": -37.089,
+   "lng": -73.158
+  },
+  {
+   "nombre": "Penco",
+   "provincia": "Concepción",
+   "lat": -36.741,
+   "lng": -72.995
+  },
+  {
+   "nombre": "San Pedro de la Paz",
+   "provincia": "Concepción",
+   "lat": -36.843,
+   "lng": -73.108
+  },
+  {
+   "nombre": "Santa Juana",
+   "provincia": "Concepción",
+   "lat": -37.171,
+   "lng": -72.939
+  },
+  {
+   "nombre": "Talcahuano",
+   "provincia": "Concepción",
+   "lat": -36.725,
+   "lng": -73.117
+  },
+  {
+   "nombre": "Tomé",
+   "provincia": "Concepción",
+   "lat": -36.617,
+   "lng": -72.957
+  },
+  {
+   "nombre": "Hualpén",
+   "provincia": "Concepción",
+   "lat": -36.783,
+   "lng": -73.093
+  },
+  {
+   "nombre": "Lebu",
+   "provincia": "Arauco",
+   "lat": -37.609,
+   "lng": -73.65
+  },
+  {
+   "nombre": "Arauco",
+   "provincia": "Arauco",
+   "lat": -37.246,
+   "lng": -73.318
+  },
+  {
+   "nombre": "Cañete",
+   "provincia": "Arauco",
+   "lat": -37.8,
+   "lng": -73.397
+  },
+  {
+   "nombre": "Contulmo",
+   "provincia": "Arauco",
+   "lat": -38.012,
+   "lng": -73.23
+  },
+  {
+   "nombre": "Curanilahue",
+   "provincia": "Arauco",
+   "lat": -37.477,
+   "lng": -73.347
+  },
+  {
+   "nombre": "Los Álamos",
+   "provincia": "Arauco",
+   "lat": -37.668,
+   "lng": -73.466
+  },
+  {
+   "nombre": "Tirúa",
+   "provincia": "Arauco",
+   "lat": -38.337,
+   "lng": -73.497
+  },
+  {
+   "nombre": "Los Ángeles",
+   "provincia": "Biobío",
+   "lat": -37.47,
+   "lng": -72.354
+  },
+  {
+   "nombre": "Antuco",
+   "provincia": "Biobío",
+   "lat": -37.33,
+   "lng": -71.683
+  },
+  {
+   "nombre": "Cabrero",
+   "provincia": "Biobío",
+   "lat": -37.037,
+   "lng": -72.403
+  },
+  {
+   "nombre": "Laja",
+   "provincia": "Biobío",
+   "lat": -37.282,
+   "lng": -72.711
+  },
+  {
+   "nombre": "Mulchén",
+   "provincia": "Biobío",
+   "lat": -37.717,
+   "lng": -72.24
+  },
+  {
+   "nombre": "Nacimiento",
+   "provincia": "Biobío",
+   "lat": -37.503,
+   "lng": -72.671
+  },
+  {
+   "nombre": "Negrete",
+   "provincia": "Biobío",
+   "lat": -37.595,
+   "lng": -72.536
+  },
+  {
+   "nombre": "Quilaco",
+   "provincia": "Biobío",
+   "lat": -37.678,
+   "lng": -71.978
+  },
+  {
+   "nombre": "Quilleco",
+   "provincia": "Biobío",
+   "lat": -37.47,
+   "lng": -71.973
+  },
+  {
+   "nombre": "San Rosendo",
+   "provincia": "Biobío",
+   "lat": -37.262,
+   "lng": -72.725
+  },
+  {
+   "nombre": "Santa Bárbara",
+   "provincia": "Biobío",
+   "lat": -37.667,
+   "lng": -72.017
+  },
+  {
+   "nombre": "Tucapel",
+   "provincia": "Biobío",
+   "lat": -37.289,
+   "lng": -71.947
+  },
+  {
+   "nombre": "Yumbel",
+   "provincia": "Biobío",
+   "lat": -37.098,
+   "lng": -72.558
+  },
+  {
+   "nombre": "Alto Biobío",
+   "provincia": "Biobío",
+   "lat": -37.865,
+   "lng": -71.527
+  }
+ ]
+}

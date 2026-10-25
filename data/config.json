@@ -71,5 +71,35 @@
     "responsable": "Sostenibilidad Global SpA",
     "contacto": "sostenibilidadglobalspa@gmail.com",
     "version": "borrador 2026-10-21"
+  },
+  "menu": {
+    "_ayuda": "Grupos del menú superior, en orden. Cada sección de data/secciones.json elige su grupo con el campo 'grupo'. Un grupo con una sola sección se muestra como botón directo. Quita este bloque para volver al menú anterior (principal/Más).",
+    "grupos": [
+      {
+        "id": "quienes",
+        "titulo": "Quiénes somos"
+      },
+      {
+        "id": "servicios",
+        "titulo": "Servicios"
+      },
+      {
+        "id": "red",
+        "titulo": "Red"
+      },
+      {
+        "id": "aprende",
+        "titulo": "Aprende"
+      },
+      {
+        "id": "contacto",
+        "titulo": "Contacto"
+      }
+    ]
+  },
+  "radio": {
+    "_ayuda": "Nombre de la radio y, opcionalmente, la dirección https de un servidor de streaming. Vacío = suena la lista de data/playlist.json (MP3 en audio/).",
+    "nombre": "Radio ProBio",
+    "streamUrl": ""
   }
 }
