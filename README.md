@@ -65,3 +65,73 @@ Al abrir cualquier servicio, el mapa dibuja una escena geométrica propia (punto
 
 ## Contador de visitas
 `assets/js/contador.js` usa GoatCounter (sin cookies). Crea la cuenta en goatcounter.com, escribe el código en `data/config.json` → `contador.goatcounter` y activa en GoatCounter «permitir mostrar el conteo en páginas públicas» para que se vea el total al pie de `valorizacion/`. Vacío = no cuenta ni muestra nada.
+
+## Red de empresas (v12): ficha propia, directorio y conexiones
+Cada empresa de `data/empresas.json` tiene una **ficha pública** (`empresas/<id>/`) y aparece en el **directorio** (`directorio/`) con buscador y filtros por rubro y comuna. Esas páginas se **generan solas** con `tools/generar.py`:
+- En GitHub: al cambiar `data/empresas.json`, las fotos o la taxonomía, la acción `.github/workflows/generar.yml` regenera todo y lo guarda (tarda 1 o 2 minutos). No hay que hacer nada más.
+- En tu computador: `python3 tools/generar.py` (opcional `pip install segno` para el código QR).
+
+### Agregar un cliente
+1. En `data/empresas.json` copia el bloque `ejemplo`, cambia el `id` (minúsculas y guiones), los datos, y pon `"activo": true`.
+2. Fotos: `python3 tools/optimizar-imagenes.py <carpeta-de-fotos> <id>` las reduce y las deja en `assets/empresas/<id>/`; pega los nombres en `imagenes` (la primera es la portada) y en `servicios[].imagen`. También puedes subir JPG de hasta 1400 px y menos de 400 KB.
+3. Teléfono: `telefono` (botón «Llamar») y `whatsapp` (solo números con código de país). Si `whatsapp` va vacío, los mensajes llegan a Sostenibilidad Global.
+4. `rubroId` (de `data/taxonomia.json`) clasifica en el directorio; `relacion` conecta la empresa con servicios de Sostenibilidad Global (aparece en las dos direcciones); `plan` (`gratis`, `socio`, `aliado`) ordena el directorio.
+5. Antes de publicar: autorización por escrito de la empresa, anotada en `consentimiento`. Quita `"prototipo": true` cuando confirme sus datos.
+
+### Dirección pública
+En `data/config.json` → `sitio.url` escribe la dirección del sitio (con `/` al final). Con eso se activan el código QR de cada ficha, el sitemap y los enlaces para compartir.
+
+### Medición
+Cada botón de contacto envía el origen en el mensaje de WhatsApp («Origen: ficha web · Diesel J.J») y, con GoatCounter activo, cuenta eventos `wa/<empresa>/<origen>`, `tel/…`, `dir/…` y `ficha/…`.
+
+### Código
+`assets/js/comun.js` reúne lo compartido (escapar texto, «abierto ahora», WhatsApp con origen, medición). `assets/css/ficha.css` y `assets/js/ficha.js` son de las páginas generadas. El menú muestra 5 entradas y el resto bajo «Más»; en celular todo queda bajo el botón «Menú».
+
+## v13: financiamiento, formularios de Google, privacidad y visibilidad
+- **Áreas de trabajo → «Financiamiento, innovación y exportación»:** 6 servicios nuevos (proyectos Corfo, fondos para emprender, exportación, postulación y rendición, fondos regionales, proyectos asociativos). Los textos no incluyen montos ni fechas, porque cambian en cada convocatoria; cada servicio avisa que se confirman en las bases vigentes y que no se garantiza la adjudicación. Cada uno tiene su escena en el mapa (`assets/js/escenas.js`).
+- **Formularios de Google:** pega los enlaces en `data/config.json` → `formularios` (`empresa`, `residuo_generador`, `planta_gestor`, `contacto`). Hoy el de `empresa` aparece en «Únete a la red» y en el directorio; los otros quedan listos para los portales. Pide solo lo necesario y agrega a cada formulario el texto «Al enviar aceptas el aviso de privacidad» con el enlace a `privacidad/`.
+- **`privacidad/`:** aviso de privacidad en BORRADOR. Revísalo con asesoría legal antes de publicar (la Ley 21.719 tiene vigencia legal el 1 de diciembre de 2026; hay un proyecto de postergación en trámite). Completa el plazo de conservación (hay un comentario en el HTML).
+- **Visibilidad:** este repositorio es público. `data/empresas.json` solo lleva empresas **públicas**. Las **reservadas** (aparecen anónimas y el contacto lo haces tú) y las **privadas** (nunca se muestran) viven solo en el repositorio privado. Si alguien pone `visibilidad` distinta de `publica` aquí, `tools/generar.py` se detiene.
+- **Regla de oro para el repositorio público:** el historial de Git es permanente. Nunca subas datos personales ni de empresas reservadas, ni siquiera por un minuto; borrarlos después no los saca del historial.
+
+## v14 – Salud comunitaria, tres dimensiones y activos comunitarios
+
+- **Dimensiones explícitas**: filtro Ambiental / Social / Económica en el panel de servicios (campo `dimensiones` en `data/servicios.json`). Dos grupos nuevos (social, economía) y 9 servicios nuevos (activos comunitarios, electrodependencia, equidad rural, participación, salud comunitaria, resiliencia, economía social, evaluación económica, negocios de impacto).
+- **Capa de activos comunitarios** (postas, CESFAM, hospitales, escuelas, juntas de vecinos, etc.) desde OpenStreetMap, con casillas "Salud" y "Comunidad".
+  - Antes de una presentación: `python3 tools/importar-activos.py` (o Actions → "Importar activos") para guardar `data/activos.json`. Si el archivo está vacío, el navegador consulta Overpass en vivo (necesita internet).
+  - OSM puede estar incompleto o desactualizado: verifica y corrige los datos antes de mostrarlos.
+- **Ejemplo de electrodependencia**: usa hogares y cortes **ficticios** (se rotulan "datos ficticios"). Nunca subir datos reales de personas a este repositorio público. En un caso real: trabajo por zonas, consentimiento, evaluación de impacto y resguardos de datos sensibles (Ley 21.719).
+- **Modo presentación**: botón en el panel de capas o tecla **P** → mapa a pantalla completa con la escena; Esc/P para salir.
+
+## v15 – Sonido, eventos, radio digital y difusión
+- **Servicio nuevo** «Sonido, eventos, radio digital y difusión de información clave» (`id: sonido-radio`, grupo «Mercado, marca y comunicación») en `data/servicios.json`, con escena propia en el mapa (`assets/js/escenas.js`) y botón «Escuchar la radio» que abre `radio/`.
+- **Botón flotante «Radio ProBio»** en la portada (`index.html` + `.fabr` en `styles.css`) lleva a `radio/`. El nombre es provisorio: antes de usarlo, busca la marca en INAPI (clases 38 y 41) y cámbialo en `radio/index.html` → `NOMBRE_RADIO`, el título y el botón de `index.html`.
+- **`radio/`**: página de la radio en línea con el estilo del sitio. Pega la URL de tu streaming en `radio/index.html` → `STREAM_URL` (mientras esté vacía, el botón avisa que la señal se activa pronto). El nombre de la radio está en `NOMBRE_RADIO`; el WhatsApp es el del sitio.
+- La página se agregó al sitemap (`tools/generar.py`).
+
+## v16 – Control del panel «Capas del mapa»
+El panel de la esquina inferior derecha ahora se puede plegar (▾) y trae:
+- **Mapa base:** Calle (OpenStreetMap), Gris (resalta las capas) o Sin mapa base. Sigue usando solo teselas de OpenStreetMap.
+- **Capas:** Salud, Comunidad, Empresas registradas e Ilustración del servicio, cada una con su casilla.
+- **Filtro por tipo** dentro de Salud y Comunidad (Hospital, CESFAM, Posta rural, Biblioteca, etc.). Los tipos salen de los datos de `data/activos.json`; el contador muestra «2 de 4» cuando hay tipos ocultos.
+- **Intensidad** del mapa base y de las capas (30 a 100 %), útil para destacar los puntos en una presentación.
+- **Mostrar nombres** de los puntos (solo se ven al acercar el mapa, desde el zoom 12).
+- **Mostrar todas / Ocultar todas / Centrar en las capas** (encuadra los puntos visibles).
+- Lo que elijas se recuerda **solo en ese navegador** (localStorage); no se envía a ningún lado. Si el navegador no lo permite, el panel funciona igual sin recordar.
+- En celular el panel parte plegado. En «Modo presentación» con un servicio abierto, el panel pasa al lado izquierdo para no tapar el detalle.
+- Desmarcar «Ilustración del servicio» hace que al abrir un servicio no se dibuje la escena en el mapa (queda solo el texto).
+- La tecla **P** ahora funciona aunque el foco esté en una casilla o deslizador del panel (sigue sin activarse al escribir en un campo de texto).
+- El código está en `assets/js/app.js` (funciones `initCapas`, `dibujarActivos`, `setBase`, etc.) y los estilos en `assets/css/styles.css` (sección v16).
+
+## v17 · Laboratorio de datos (taller de salud comunitaria)
+
+Nueva sección **Laboratorio de datos** (menú «Más») con cuatro herramientas que corren 100 % en el navegador:
+
+1. **Mapear**: la comunidad marca activos (5 tipos, sin personas ni domicilios), valida aportes y exporta GeoJSON/CSV. Se guarda solo en ese navegador. Botón «Cargar ejemplo con errores» (datos ficticios).
+2. **Calidad**: completitud, unicidad (posibles duplicados), vigencia y validación, cada una con su regla visible.
+3. **Cercanía**: activos más cercanos a un sector, radio y cobertura del área visible (línea recta, sin población).
+4. **Dinámica**: modelo ilustrativo de dos reservas (vigencia del dato y población que conoce los activos), con crisis y comparación sin mapa / mapa sin mantención / mapa verificado.
+
+Archivos: `assets/js/laboratorio.js` (funciones puras probables en Node: `node -e "require('./assets/js/laboratorio.js')"`), entrada en `data/secciones.json` (`laboratorio:true`), casilla «Aportes de la comunidad (taller)» en Capas.
+
+**Antes de la charla:** importar los activos reales (Acción «Importar activos» o `python3 tools/importar-activos.py`); sin eso, las pestañas Calidad y Cercanía solo tendrán los aportes de ejemplo.

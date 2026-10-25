@@ -1,0 +1,6 @@
+{
+  "_ayuda": "Activos comunitarios (postas, CESFAM, hospitales, centros comunitarios, municipalidades, bibliotecas) con su ubicación. Se llena con tools/importar-activos.py (desde OpenStreetMap) o con la acción de GitHub «Importar activos». Si está vacío, el mapa los consulta en vivo a OpenStreetMap desde el navegador. Solo instituciones públicas y comunitarias: NUNCA personas ni domicilios.",
+  "fuente": "OpenStreetMap (ODbL)",
+  "actualizado": "",
+  "activos": []
+}

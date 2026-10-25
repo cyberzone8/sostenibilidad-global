@@ -291,5 +291,123 @@
     h.step(); h.pulse(c, h.C.r);
   };
 
+  E["sonido-radio"] = (h) => {
+    const c = h.LA, dest = [h.T.mul, h.T.nac, h.T.sb, h.T.cab, h.T.yum, h.T.laja];
+    h.badge(c, "📻", h.C.o, { label: "Radio digital", dir: "bottom", off: [0, 12] });
+    [14, 28, 44].forEach((r, i) => { h.step(); h.ring(c, r, { c: h.C.o, fo: 0.05 + i * 0.02, w: 1.5, dash: i ? "3 7" : null }); });
+    h.step(); dest.forEach((p) => { h.arrow(c, p, { c: h.C.o, w: 2 }); h.dot(p, h.C.g, { r: 7 }); });
+    h.step(); h.badge(h.P(c, 0, 8), "🔊", h.C.p, { label: "Sonido para eventos", dir: "top", off: [0, -12] });
+    h.step(); h.pulse(h.T.mul, h.C.y, { label: "Información clave", dir: "top", off: [0, -10] });
+  };
+
+  /* ---------- Financiamiento, innovación y exportación ---------- */
+  E["corfo-innovacion"] = (h) => {
+    const p = [h.LA, h.P(h.LA, 12, 5), h.P(h.LA, 24, 11), h.P(h.LA, 36, 20)], nm = ["Idea", "Prototipo", "Validación", "Escala"];
+    p.forEach((q, i) => { h.step(); if (i) h.arrow(p[i - 1], q, { c: h.C.g, w: 4 }); h.badge(q, String(i + 1), h.C.g, { label: nm[i], dir: "top", off: [0, -14] }); if (i === 1 || i === 3) h.badge(h.P(q, 0, -9), "$", h.C.y, { label: i === 1 ? "Fondo" : "Fondo", dir: "bottom", off: [0, 10] }); });
+  };
+  E["fondos-emprender"] = (h) => {
+    const p = [h.P(h.LA, -16, -8), h.P(h.LA, 0, 2), h.P(h.LA, 16, 12)], nm = ["Semilla", "Crece", "Escala"];
+    p.forEach((q, i) => { h.step(); if (i) h.arrow(p[i - 1], q, { c: h.C.o, w: 4 }); h.dot(q, h.C.o, { r: 7 + i * 4, label: nm[i], dir: "top", off: [0, -10 - i * 4] }); });
+  };
+  E.exportacion = (h) => {
+    const o = h.LA, pto = h.CC, ext = h.P(h.CC, -85, 12);
+    h.dot(o, h.C.g, { r: 8, label: "Productor", dir: "bottom", off: [0, 8] });
+    h.step(); h.curve(o, pto, { c: h.C.g, bend: 0.12, w: 4 }); h.dot(pto, h.C.b, { r: 8, label: "Puerto", dir: "bottom", off: [0, 8] });
+    h.step(); h.curve(pto, ext, { c: h.C.b, bend: 0.2, w: 4, dash: "8 8" }); h.badge(h.P(pto, -40, 6), "🚢", h.C.b);
+    h.step(); h.dot(ext, h.C.o, { r: 10, label: "Mercado externo", dir: "top", off: [0, -12] });
+  };
+  E.postulacion = (h) => {
+    const c = h.LA, ps = [[0, 14, "Bases"], [14, 0, "Formular"], [0, -14, "Postular"], [-14, 0, "Rendir"]];
+    ps.forEach(([x, y, t], i) => { h.step(); const q = h.P(c, x, y); if (i) h.arrow(h.P(c, ps[i - 1][0], ps[i - 1][1]), q, { c: h.C.g, w: 3 }); h.badge(q, String(i + 1), h.C.g, { label: t, dir: i === 0 ? "top" : i === 2 ? "bottom" : i === 1 ? "right" : "left", off: [i === 1 ? 10 : i === 3 ? -10 : 0, i === 0 ? -12 : i === 2 ? 12 : 0] }); });
+    h.step(); h.arrow(h.P(c, ps[3][0], ps[3][1]), h.P(c, ps[0][0], ps[0][1]), { c: h.C.lg, w: 2, dash: "4 6", flow: false });
+  };
+  E["fondos-regionales"] = (h) => {
+    const cap = h.CC, com = [h.LA, h.T.mul, h.T.nac, h.T.sb, h.T.cab];
+    h.dot(cap, h.C.b, { r: 10, label: "Capital regional", dir: "bottom", off: [0, 8] });
+    h.step(); com.forEach((q, i) => { h.arrow(cap, q, { c: h.C.y, w: 2.5, dash: "6 7" }); });
+    h.step(); com.forEach((q) => h.dot(q, h.C.g, { r: 7 })); h.badge(h.P(h.LA, 0, 10), "$", h.C.y, { label: "Fondos en la provincia", dir: "top", off: [0, -12] });
+  };
+  E.asociatividad = (h) => {
+    const c = h.LA, ex = [[-15, 9], [0, 15], [15, 9], [15, -9], [-15, -9]];
+    h.dot(c, h.C.o, { r: 11, label: "Proyecto común", dir: "bottom", off: [0, 8] });
+    ex.forEach(([x, y], i) => { h.step(); h.line([c, h.P(c, x, y)], { c: h.C.lg, w: 3, flow: true }); h.dot(h.P(c, x, y), h.C.g, { r: 8 }); });
+    h.step(); for (let i = 0; i < ex.length; i++) h.line([h.P(c, ex[i][0], ex[i][1]), h.P(c, ex[(i + 1) % ex.length][0], ex[(i + 1) % ex.length][1])], { c: h.C.g, w: 2, dash: "4 6", op: 0.7 });
+  };
+
+  /* ---------- Salud, comunidad y resiliencia social ---------- */
+  /* Los activos reales (postas, centros de salud, sedes) vienen de data/activos.json o de OpenStreetMap (window.SG_ACTIVOS).
+     Hogares, localidades y cortes de luz de estas escenas son FICTICIOS: nunca se grafican personas reales. */
+  const hav = (a, b) => { const R = 6371, dl = (b[0] - a[0]) * RAD, dn = (b[1] - a[1]) * RAD, x = Math.sin(dl / 2) ** 2 + Math.cos(a[0] * RAD) * Math.cos(b[0] * RAD) * Math.sin(dn / 2) ** 2; return 2 * R * Math.asin(Math.sqrt(x)); };
+  const activos = (g) => (window.SG_ACTIVOS || []).filter((a) => !g || a.grupo === g);
+  const cercanos = (c, n, g, maxKm) => activos(g).map((a) => ({ a, d: hav(c, [a.lat, a.lng]) })).filter((o) => o.d <= (maxKm || 14)).sort((u, v) => u.d - v.d).slice(0, n);
+  const ejemplos = (h, c) => [[-1.5, 0.5, "Centro de salud (ejemplo)"], [2.5, 2.5, "Posta (ejemplo)"], [-3.5, -2, "Posta (ejemplo)"]].map(([x, y, t]) => ({ a: { nombre: t, tipo: "Ejemplo", lat: h.P(c, x, y)[0], lng: h.P(c, x, y)[1], ej: true }, d: 0 }));
+  const saludCerca = (h, c, n) => { const r = cercanos(c, n, "salud"); return r.length ? r : ejemplos(h, c); };
+  const mulberry = (seed) => () => { seed |= 0; seed = (seed + 0x6D2B79F5) | 0; let t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+  const dentro = (pt, poly) => { let c = false; for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) { const [xi, yi] = poly[i], [xj, yj] = poly[j]; if ((yi > pt[1]) !== (yj > pt[1]) && pt[0] < (xj - xi) * (pt[1] - yi) / (yj - yi) + xi) c = !c; } return c; };
+
+  E["activos-comunitarios"] = (h) => {
+    const c = h.LA, sal = cercanos(c, 12, "salud", 16), com = cercanos(c, 10, "comunidad", 16);
+    h.dot(c, h.C.o, { r: 9, label: "Territorio", dir: "bottom", off: [0, 8] });
+    h.step(); (sal.length ? sal : ejemplos(h, c)).forEach((o, i) => h.dot([o.a.lat, o.a.lng], h.C.g, { r: 7, label: i < 3 ? o.a.nombre : null, dir: "top", off: [0, -8] }));
+    h.step(); (com.length ? com : []).forEach((o) => h.dot([o.a.lat, o.a.lng], h.C.p, { r: 6 }));
+    h.step(); (sal.concat(com)).forEach((o) => h.line([c, [o.a.lat, o.a.lng]], { c: h.C.lg, w: 1.5, dash: "3 6", op: 0.8 }));
+    h.badge(h.P(c, 0, 5), "🤝", h.C.g, { label: "Activos conectados", dir: "top", off: [0, -14] });
+  };
+  E.electrodependencia = (h) => {
+    const c = h.LA, rnd = mulberry(7), cl = [[-2.6, 0.8, 1.6], [0.4, 1.9, 1.2], [1.2, -1.6, 1.8], [-0.8, -2.2, 1.0]], hog = [];
+    for (let i = 0; i < 30; i++) { const k = cl[i % cl.length], a = rnd() * 6.283, r = Math.sqrt(rnd()) * k[2]; hog.push([k[0] + Math.cos(a) * r, k[1] + Math.sin(a) * r]); }
+    const A = [[-4.2, -0.6], [-0.4, -1.1], [0.6, 1.2], [0.2, 3.3], [-3.2, 3.0], [-4.6, 1.4]], Bz = [[2.6, -3.9], [5.2, -3.7], [5.6, -1.9], [3.0, -1.6]];
+    const L = (p) => h.P(c, p[0], p[1]);
+    const af = hog.filter((p) => dentro(p, A)), sal = saludCerca(h, c, 8);
+    h.badge(h.P(c, -5.2, 5.6), "Hogares y cortes de EJEMPLO (datos ficticios)", h.C.k);
+    sal.forEach((o, i) => h.dot([o.a.lat, o.a.lng], h.C.g, { r: 7, label: i < 2 ? o.a.nombre : null, dir: "top", off: [0, -8] }));
+    h.step(); hog.forEach((p) => h.dot(L(p), h.C.o, { r: 4 }));
+    h.step(); h.poly(Bz.map(L), { c: h.C.k, fo: 0.18, w: 2 }); h.badge(L([4.3, -2.8]), "Corte B: 0 hogares ✓", h.C.g, { dir: "top" });
+    h.step(); h.poly(A.map(L), { c: h.C.r, fo: 0.22, w: 2 }); af.forEach((p) => h.dot(L(p), h.C.r, { r: 6 }));
+    h.badge(L([-2.2, 3.7]), `Corte A: ${af.length} de ${hog.length} hogares afectados`, h.C.r, { dir: "top" });
+    h.step(); af.slice(0, 8).forEach((p) => { const ll = L(p), n = sal.slice().sort((u, v) => hav(ll, [u.a.lat, u.a.lng]) - hav(ll, [v.a.lat, v.a.lng]))[0]; h.line([ll, [n.a.lat, n.a.lng]], { c: h.C.y, w: 2, dash: "4 6", op: 0.9 }); });
+    h.badge(h.P(c, -1.2, 0.2), "Aviso + respaldo + activo más cercano", h.C.y, { dir: "bottom", off: [0, 10] });
+  };
+  E["equidad-rural"] = (h) => {
+    const c = h.LA, loc = [[-14, 9, "A"], [12, 14, "B"], [20, -6, "C"], [-18, -12, "D"], [4, -20, "E"], [28, 8, "F"]], sal = saludCerca(h, c, 12);
+    h.badge(h.P(c, -22, 20), "Localidades de EJEMPLO", h.C.k);
+    sal.forEach((o) => h.dot([o.a.lat, o.a.lng], h.C.g, { r: 6 }));
+    loc.forEach(([x, y, t]) => { h.step(); const p = h.P(c, x, y), n = sal.slice().sort((u, v) => hav(p, [u.a.lat, u.a.lng]) - hav(p, [v.a.lat, v.a.lng]))[0], np = [n.a.lat, n.a.lng], d = hav(p, np), col = d < 6 ? h.C.g : d < 12 ? h.C.y : h.C.r;
+      h.dot(p, col, { r: 7, label: "Localidad " + t, dir: "top", off: [0, -8] }); h.line([p, np], { c: col, w: 2.5, dash: "5 6", op: 0.9 }); h.badge([(p[0] + np[0]) / 2, (p[1] + np[1]) / 2], d.toFixed(0) + " km", col); });
+  };
+  E.participacion = (h) => {
+    const c = h.LA, n = 7;
+    for (let i = 0; i < n; i++) { const a = i / n * 6.283, p = h.P(c, 12 * Math.cos(a), 9 * Math.sin(a)); h.step(); h.dot(p, h.C.p, { r: 7 }); h.arrow(p, c, { c: h.C.lg, w: 2 }); }
+    h.step(); h.badge(c, "✓", h.C.g, { label: "Acuerdo compartido", dir: "bottom", off: [0, 12] });
+  };
+  E["salud-comunitaria"] = (h) => {
+    const c = h.LA, ns = [[0, 14, "Promoción"], [16, 0, "Participación"], [0, -14, "Entornos"], [-16, 0, "Cultura"]];
+    h.dot(c, h.C.o, { r: 11, label: "Comunidad saludable", dir: "bottom", off: [0, 8] });
+    ns.forEach(([x, y, t]) => { h.step(); const p = h.P(c, x, y); h.line([c, p], { c: h.C.lg, w: 3, flow: true }); h.dot(p, h.C.g, { r: 9, label: t, dir: "top", off: [0, -10] }); });
+    h.step(); for (let i = 0; i < 4; i++) { const a = ns[i], b = ns[(i + 1) % 4]; h.line([h.P(c, a[0], a[1]), h.P(c, b[0], b[1])], { c: h.C.g, w: 2, dash: "4 6", op: 0.7 }); }
+  };
+  E["resiliencia-comunitaria"] = (h) => {
+    const c = h.LA, n = 8, ps = []; for (let i = 0; i < n; i++) { const a = i / n * 6.283; ps.push(h.P(c, 13 * Math.cos(a), 10 * Math.sin(a))); }
+    ps.forEach((p) => h.dot(p, h.C.g, { r: 6 }));
+    h.step(); h.pulse(ps[0], h.C.r, { label: "Alerta", dir: "top", off: [0, -10] });
+    h.step(); [1, n - 1].forEach((i) => { h.arrow(ps[0], ps[i], { c: h.C.y, w: 3 }); h.dot(ps[i], h.C.y, { r: 7 }); });
+    h.step(); [2, n - 2, 3, n - 3, 4].forEach((i) => h.dot(ps[i], h.C.y, { r: 7 })); h.badge(c, "✓", h.C.g, { label: "Red vecinal activa", dir: "bottom", off: [0, 12] });
+  };
+  /* ---------- Economía y desarrollo local ---------- */
+  E["economia-social"] = (h) => {
+    const c = h.LA, ns = [[-14, 6, "Productor"], [0, 14, "Feria"], [14, 6, "Familias"], [0, -8, "Reinversión"]];
+    ns.forEach(([x, y, t], i) => { h.step(); const p = h.P(c, x, y); if (i) { const a = ns[i - 1]; h.arrow(h.P(c, a[0], a[1]), p, { c: h.C.g, w: 4 }); } h.dot(p, h.C.g, { r: 9, label: t, dir: i === 3 ? "bottom" : "top", off: [0, i === 3 ? 10 : -10] }); });
+    h.step(); h.arrow(h.P(c, 0, -8), h.P(c, -14, 6), { c: h.C.lg, w: 4 });
+  };
+  E["evaluacion-economica"] = (h) => {
+    const c = h.LA, alt = [[-12, 3, 5, "A"], [0, 4, 7, "B"], [12, 2, 4, "C"]];
+    alt.forEach(([x, y, b, t], i) => { h.step(); h.rect(h.P(c, x - 2.2, y / 2 + 1), 3.2, y, { c: h.C.r, fo: 0.45, w: 1 }); h.rect(h.P(c, x + 2.2, b / 2 + 1), 3.2, b, { c: h.C.g, fo: 0.5, w: 1 }); h.badge(h.P(c, x, -2.2), t, h.C.k); if (t === "B") h.badge(h.P(c, x, b + 3), "✓", h.C.g, { label: "Mayor valor neto", dir: "top", off: [0, -12] }); });
+  };
+  E["negocios-impacto"] = (h) => {
+    const c = h.LA, r = [[-4, 2, h.C.o, "Empresa"], [4, 2, h.C.g, "Comunidad"], [0, -4.5, h.C.b, "Ambiente"]];
+    r.forEach(([x, y, col, t]) => { h.step(); h.ring(h.P(c, x, y), 7, { c: col, fo: 0.18, w: 2 }); h.badge(h.P(c, x * 2.1, y * 1.9 + (y < 0 ? -3 : 4)), t, col); });
+    h.step(); h.badge(c, "★", h.C.y, { label: "Valor compartido", dir: "bottom", off: [0, 12] });
+  };
+
   window.SG_ESC = { ctx, escenas: E };
 })();

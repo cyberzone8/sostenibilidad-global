@@ -1,0 +1,7 @@
+Aquí van las fotos de Servicio Técnico Diesel J.J.
+1) Prepáralas:  python3 tools/optimizar-imagenes.py <carpeta-con-tus-fotos> diesel-jj
+   (o sube JPG de hasta 1400 px de ancho y menos de 400 KB).
+2) En data/empresas.json, en diesel-jj, escribe los nombres:  "imagenes": ["portada.jpg", "taller.jpg"]
+   y, por servicio, "imagen": "bombas.jpg".  La primera de "imagenes" es la portada del directorio.
+3) Completa también "telefono", "whatsapp" (si quieres que los mensajes lleguen al taller), "direccion" y "lat"/"lng".
+4) Cuando la empresa confirme sus datos, borra la línea "prototipo": true y pon "verificada": true y la fecha en "consentimiento".

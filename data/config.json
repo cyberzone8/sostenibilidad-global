@@ -7,12 +7,14 @@
     "correo": "sostenibilidadglobalspa@gmail.com",
     "telefono": "+56 9 8594 7020",
     "whatsapp": "56985947020",
-    "linkedin": "https://www.linkedin.com/in/gustavo-godoy-phd-confidential-strategic-advisor-9b505029"
+    "linkedin": "https://www.linkedin.com/in/gustavo-godoy-phd-confidential-strategic-advisor-9b505029",
+    "url": "",
+    "_urlAyuda": "Dirección pública del sitio, con / al final (ej.: https://usuario.github.io/repositorio/). Se usa para el código QR de cada ficha, el sitemap y los enlaces para compartir. Vacío = esas funciones se omiten."
   },
   "textos": {
     "titulo": "Sostenibilidad, datos y tecnología",
     "tituloEnfasis": "para tu territorio.",
-    "intro": "Proyectos ambientales y de economía circular, información geoespacial, sistemas informáticos, producción, logística y comunicación, desde la Región del Biobío. Elige un área de trabajo para ver qué hacemos.",
+    "intro": "Sostenibilidad en sus tres dimensiones, ambiental, social y económica: proyectos ambientales y de economía circular, salud y desarrollo comunitario, financiamiento e innovación, información geoespacial y sistemas informáticos, desde la Región del Biobío. Elige un área de trabajo para ver qué hacemos.",
     "areas": "Áreas de trabajo"
   },
   "mapa": {
@@ -45,7 +47,10 @@
     "12": "Producción y consumo responsables",
     "13": "Acción por el clima",
     "15": "Vida de ecosistemas terrestres",
-    "17": "Alianzas para lograr los objetivos"
+    "17": "Alianzas para lograr los objetivos",
+    "3": "Salud y bienestar",
+    "10": "Reducción de las desigualdades",
+    "16": "Paz, justicia e instituciones sólidas"
   },
   "registro": {
     "precioUF": null,
@@ -54,5 +59,17 @@
   "contador": {
     "_ayuda": "Crea una cuenta gratis en goatcounter.com, elige un código (por ejemplo 'sostenibilidadglobal') y escríbelo en 'goatcounter'. Mientras esté vacío no se cuenta ni se muestra nada.",
     "goatcounter": ""
+  },
+  "formularios": {
+    "_ayuda": "Enlaces a tus Formularios de Google (Compartir → Enviar → enlace). Vacío = ese botón no aparece y se usa WhatsApp. Pide solo los datos necesarios, nunca datos sensibles ni RUT de personas, e incluye en cada formulario el texto: 'Al enviar aceptas el aviso de privacidad: <enlace a privacidad/>'. Las respuestas quedan en tu Drive: usa una cuenta propia con verificación en dos pasos.",
+    "empresa": "",
+    "residuo_generador": "",
+    "planta_gestor": "",
+    "contacto": ""
+  },
+  "privacidad": {
+    "responsable": "Sostenibilidad Global SpA",
+    "contacto": "sostenibilidadglobalspa@gmail.com",
+    "version": "borrador 2026-10-21"
   }
 }

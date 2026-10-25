@@ -6,13 +6,27 @@
     "eyebrow": "Sostenibilidad Global SpA",
     "encabezado": "Ingeniería, consultoría y tecnología para la sustentabilidad",
     "parrafos": [
-      "Somos una empresa de Los Ángeles, Región del Biobío. Combinamos sostenibilidad, información geográfica, tecnología y gestión de proyectos para ayudar a organizaciones a decidir mejor sobre sus recursos, su producción y su territorio: desde estudios ambientales y economía circular hasta sistemas informáticos, logística y comunicación.",
+      "Somos una empresa de Los Ángeles, Región del Biobío. Trabajamos la sostenibilidad en sus tres dimensiones, ambiental, social y económica, y combinamos información geográfica, tecnología y gestión de proyectos para ayudar a organizaciones y comunidades a decidir mejor sobre sus recursos, su producción, su salud y su territorio: desde estudios ambientales y economía circular hasta salud comunitaria, financiamiento de proyectos, sistemas informáticos y comunicación.",
       "Trabajamos con empresas, municipios y operadores autorizados. No transportamos ni disponemos residuos: habilitamos, validamos y registramos."
     ],
     "cta": {
       "texto": "Conversemos",
       "abre": "contacto"
-    }
+    },
+    "principal": true
+  },
+  {
+    "id": "directorio",
+    "activo": true,
+    "principal": true,
+    "titulo": "Directorio",
+    "enlaceDirecto": "directorio/"
+  },
+  {
+    "id": "laboratorio",
+    "activo": true,
+    "titulo": "Laboratorio de datos",
+    "laboratorio": true
   },
   {
     "id": "metodo",
@@ -37,7 +51,8 @@
         "titulo": "4 · Operación y reportes",
         "texto": "Seguimiento, registro en mapa e informes verificables."
       }
-    ]
+    ],
+    "principal": false
   },
   {
     "id": "alianzas",
@@ -70,7 +85,8 @@
           "asunto": "Licitaciones y proyectos públicos"
         }
       }
-    ]
+    ],
+    "principal": true
   },
   {
     "id": "futuro",
@@ -89,7 +105,8 @@
       15,
       17
     ],
-    "nota": "Describe la orientación de nuestros servicios; no constituye una certificación."
+    "nota": "Describe la orientación de nuestros servicios; no constituye una certificación.",
+    "principal": false
   },
   {
     "id": "anuncios",
@@ -114,7 +131,8 @@
         "texto": "Diseño inicial de una planta que convierte residuos orgánicos en compost y fertilizantes. Buscamos socios, terreno y financiamiento."
       }
     ],
-    "nota": "Las condiciones de cada oferta se confirman por escrito."
+    "nota": "Las condiciones de cada oferta se confirman por escrito.",
+    "principal": false
   },
   {
     "id": "expertos",
@@ -128,27 +146,30 @@
     "enlaceExterno": {
       "texto": "Visitar Expertos Chile",
       "url": "https://cyberzone8.github.io/expertoschile/"
-    }
+    },
+    "principal": false
   },
   {
     "id": "programa",
     "activo": true,
     "titulo": "Programa",
-    "enlaceDirecto": "https://cyberzone8.github.io/liderazgo-territorial/"
+    "enlaceDirecto": "https://cyberzone8.github.io/liderazgo-territorial/",
+    "principal": false
   },
   {
     "id": "empresas",
     "activo": true,
-    "titulo": "Registra tu empresa",
-    "eyebrow": "Empresas en el mapa",
-    "encabezado": "Haz visible tu empresa o negocio en el mapa",
+    "titulo": "Únete a la red",
+    "eyebrow": "Empresas y emprendimientos",
+    "encabezado": "Tu empresa con página propia, visible en el mapa y en el directorio",
     "parrafos": [
-      "Completa los datos, marca tu ubicación y envíalos por WhatsApp. Antes de publicar verificamos la información y nos contactamos contigo.",
-      "La publicación en el mapa tiene un valor en UF, que te informamos en esa conversación."
+      "Cada empresa de la red tiene su ficha: fotos, servicios, teléfono, WhatsApp, horario y zona de atención, con un enlace y un código QR para compartir. También aparece en el directorio, donde se puede buscar por rubro y comuna, y en el mapa.",
+      "Completa los datos, marca tu ubicación y envíalos por WhatsApp. Antes de publicar verificamos la información y pedimos tu autorización por escrito. El valor en UF te lo informamos en esa conversación."
     ],
     "registro": true,
     "mostrarContacto": true,
-    "nota": "Este sitio no guarda lo que escribes: el mensaje se prepara en tu WhatsApp y lo envías tú. Nada se publica sin verificación y acuerdo previo."
+    "nota": "Este sitio no guarda lo que escribes: el mensaje se prepara en tu WhatsApp y lo envías tú. Nada se publica sin verificación y autorización previa.",
+    "principal": true
   },
   {
     "id": "contacto",
@@ -167,6 +188,7 @@
       "Otro"
     ],
     "ubicacionInicial": "Biobío, ",
-    "mostrarContacto": true
+    "mostrarContacto": true,
+    "principal": true
   }
 ]

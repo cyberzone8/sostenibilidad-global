@@ -2,35 +2,89 @@
   "grupos": [
     {
       "id": "residuos",
-      "titulo": "Residuos y economía circular"
+      "titulo": "Residuos y economía circular",
+      "dimensiones": [
+        "ambiental",
+        "economica"
+      ]
     },
     {
       "id": "ambiental",
-      "titulo": "Gestión ambiental y territorio"
+      "titulo": "Gestión ambiental y territorio",
+      "dimensiones": [
+        "ambiental"
+      ]
+    },
+    {
+      "id": "social",
+      "titulo": "Salud, comunidad y resiliencia social",
+      "dimensiones": [
+        "social"
+      ]
+    },
+    {
+      "id": "economia",
+      "titulo": "Economía y desarrollo local",
+      "dimensiones": [
+        "economica",
+        "social"
+      ]
+    },
+    {
+      "id": "financiamiento",
+      "titulo": "Financiamiento, innovación y exportación",
+      "dimensiones": [
+        "economica"
+      ]
     },
     {
       "id": "datos",
-      "titulo": "Datos, mapas y geoespacial"
+      "titulo": "Datos, mapas y geoespacial",
+      "dimensiones": [
+        "ambiental",
+        "social",
+        "economica"
+      ]
     },
     {
       "id": "tecnologia",
-      "titulo": "Sistemas informáticos y automatización"
+      "titulo": "Sistemas informáticos y automatización",
+      "dimensiones": [
+        "ambiental",
+        "social",
+        "economica"
+      ]
     },
     {
       "id": "produccion",
-      "titulo": "Producción, energía y recursos"
+      "titulo": "Producción, energía y recursos",
+      "dimensiones": [
+        "economica",
+        "ambiental"
+      ]
     },
     {
       "id": "comercio",
-      "titulo": "Comercio y logística"
+      "titulo": "Comercio y logística",
+      "dimensiones": [
+        "economica"
+      ]
     },
     {
       "id": "profesional",
-      "titulo": "Servicios profesionales y personas"
+      "titulo": "Servicios profesionales y personas",
+      "dimensiones": [
+        "economica",
+        "social"
+      ]
     },
     {
       "id": "comunicacion",
-      "titulo": "Mercado, marca y comunicación"
+      "titulo": "Mercado, marca y comunicación",
+      "dimensiones": [
+        "economica",
+        "social"
+      ]
     }
   ],
   "servicios": [
@@ -786,6 +840,375 @@
         "leyenda": "Una cámara, varios ángulos del territorio y las historias que vale la pena contar.",
         "escena": "video"
       }
+    },
+    {
+      "id": "sonido-radio",
+      "activo": true,
+      "grupo": "comunicacion",
+      "titulo": "Sonido, eventos, radio digital y difusión de información clave",
+      "resumen": "Sonido profesional para eventos y una radio digital en línea para llegar a la provincia. Usamos ambos para difundir información clave de tu empresa, municipio u organización: avisos, cortes de servicio, alertas, convocatorias y campañas.",
+      "acciones": [
+        "Sonido y amplificación para eventos, ferias y actividades comunitarias",
+        "Radio digital en línea 24 horas, con transmisión por internet",
+        "Difusión de información clave: avisos de servicio, alertas y convocatorias",
+        "Menciones y auspicios para negocios de la zona",
+        "Spots y contenidos de audio para web y redes"
+      ],
+      "ods": [
+        9,
+        11,
+        17
+      ],
+      "mapa": {
+        "leyenda": "Una señal sale de Los Ángeles y llega a las comunas de la provincia con la información que importa.",
+        "escena": "sonido-radio"
+      },
+      "enlace": {
+        "texto": "Escuchar la radio",
+        "url": "radio/"
+      }
+    },
+    {
+      "id": "corfo-innovacion",
+      "activo": true,
+      "grupo": "financiamiento",
+      "titulo": "Proyectos de innovación (Corfo)",
+      "resumen": "Te ayudamos a elegir el instrumento de Corfo que calza con la etapa de tu innovación (por ejemplo Innova, Crea y Valida o Consolida y Expande), a armar la postulación y a llevar el proyecto. Las bases, montos y plazos cambian en cada convocatoria: los confirmamos en las bases vigentes. No garantizamos la adjudicación.",
+      "acciones": [
+        "Diagnóstico de la etapa de tu innovación y de los requisitos que cumples",
+        "Formulación técnica, presupuesto y plan de trabajo",
+        "Postulación y respuesta a consultas de la convocatoria",
+        "Seguimiento de hitos e informes del proyecto"
+      ],
+      "ods": [
+        9,
+        17
+      ],
+      "mapa": {
+        "leyenda": "Una innovación sube por etapas: idea, prototipo, validación y escala, con el financiamiento llegando en el momento justo.",
+        "escena": "corfo-innovacion"
+      }
+    },
+    {
+      "id": "fondos-emprender",
+      "activo": true,
+      "grupo": "financiamiento",
+      "titulo": "Fondos para emprender y escalar",
+      "resumen": "Para ideas, prototipos y empresas jóvenes: instrumentos como Semilla Inicia y Semilla Expande de Corfo, y programas como Startup Chile. Te orientamos sobre cuál corresponde a tu etapa y cómo postular. Las bases, montos y plazos cambian en cada convocatoria: los confirmamos en las bases vigentes. No garantizamos la adjudicación.",
+      "acciones": [
+        "Ruta de financiamiento según la etapa del emprendimiento",
+        "Modelo de negocio, validación y plan de ventas",
+        "Preparación de la postulación y del video o presentación",
+        "Acompañamiento durante la ejecución"
+      ],
+      "ods": [
+        8,
+        9
+      ],
+      "mapa": {
+        "leyenda": "Un emprendimiento sube de escalón en escalón: cada etapa abre un instrumento distinto.",
+        "escena": "fondos-emprender"
+      }
+    },
+    {
+      "id": "exportacion",
+      "activo": true,
+      "grupo": "financiamiento",
+      "titulo": "Exportación e internacionalización",
+      "resumen": "Preparamos a empresas y emprendimientos del Biobío para vender fuera de Chile: producto, costos, mercados, instrumentos de apoyo y respaldo documental. Las bases, montos y plazos cambian en cada convocatoria: los confirmamos en las bases vigentes. No garantizamos la adjudicación.",
+      "acciones": [
+        "Diagnóstico exportador: producto, certificaciones y costos",
+        "Selección de mercados y canales de venta",
+        "Instrumentos de apoyo (Corfo, ProChile y otros)",
+        "Plan de exportación y primeras ventas",
+        "Trazabilidad y respaldo para mercados exigentes"
+      ],
+      "ods": [
+        8,
+        9,
+        12
+      ],
+      "mapa": {
+        "leyenda": "El producto sale del territorio, pasa por el puerto y llega a un mercado externo.",
+        "escena": "exportacion"
+      }
+    },
+    {
+      "id": "postulacion",
+      "activo": true,
+      "grupo": "financiamiento",
+      "titulo": "Formulación, postulación y rendición",
+      "resumen": "Nos hacemos cargo del trabajo administrativo que más tiempo quita: leer las bases, preparar la documentación, postular y rendir.",
+      "acciones": [
+        "Revisión de bases y requisitos de elegibilidad",
+        "Presupuesto y aportes propios",
+        "Documentación, firmas y plazos",
+        "Rendición de gastos e informes técnicos"
+      ],
+      "ods": [
+        16,
+        17
+      ],
+      "mapa": {
+        "leyenda": "Un ciclo con cuatro paradas: bases, formulación, postulación y rendición.",
+        "escena": "postulacion"
+      }
+    },
+    {
+      "id": "fondos-regionales",
+      "activo": true,
+      "grupo": "financiamiento",
+      "titulo": "Fondos regionales y concursos públicos",
+      "resumen": "Fondos del gobierno regional, de municipios y de otros organismos públicos, además de licitaciones donde se puede participar con una propuesta técnica. Las bases, montos y plazos cambian en cada convocatoria: los confirmamos en las bases vigentes. No garantizamos la adjudicación.",
+      "acciones": [
+        "Mapa de fondos y calendario de convocatorias",
+        "Formulación de proyectos con foco territorial",
+        "Alianzas con municipios y organizaciones",
+        "Propuestas técnicas para licitaciones"
+      ],
+      "ods": [
+        11,
+        17
+      ],
+      "mapa": {
+        "leyenda": "Los recursos llegan desde la capital regional a las comunas de la provincia.",
+        "escena": "fondos-regionales"
+      }
+    },
+    {
+      "id": "asociatividad",
+      "activo": true,
+      "grupo": "financiamiento",
+      "titulo": "Proyectos asociativos y redes de empresas",
+      "resumen": "Articulamos grupos de empresas y emprendimientos con un objetivo común para postular juntos, compartir costos y llegar a mercados que solos no alcanzan. Las bases, montos y plazos cambian en cada convocatoria: los confirmamos en las bases vigentes. No garantizamos la adjudicación.",
+      "acciones": [
+        "Articulación de grupos de empresas con un objetivo común",
+        "Plan de trabajo conjunto y acuerdos de gobernanza",
+        "Postulación de proyectos asociativos",
+        "Medición de resultados compartidos"
+      ],
+      "ods": [
+        8,
+        17
+      ],
+      "mapa": {
+        "leyenda": "Varias empresas conectadas en torno a un proyecto común.",
+        "escena": "asociatividad"
+      }
+    },
+    {
+      "id": "salud-comunitaria",
+      "activo": true,
+      "grupo": "social",
+      "titulo": "Salud comunitaria",
+      "resumen": "Proyectos de salud con la comunidad como protagonista: promoción de la salud, participación, cultura y entornos saludables. Partimos de lo que el territorio ya sabe y tiene.",
+      "acciones": [
+        "Diagnóstico participativo de salud del territorio",
+        "Planes comunitarios de promoción de la salud",
+        "Apoyo a consejos de desarrollo y comités de salud",
+        "Evaluación de resultados con indicadores que la comunidad entiende"
+      ],
+      "ods": [
+        3,
+        10,
+        11
+      ],
+      "mapa": {
+        "leyenda": "La salud se construye en cuatro frentes que se alimentan entre sí: promoción, participación, cultura y entornos.",
+        "escena": "salud-comunitaria"
+      }
+    },
+    {
+      "id": "activos-comunitarios",
+      "activo": true,
+      "grupo": "social",
+      "titulo": "Activos comunitarios y mapeo del territorio",
+      "resumen": "Convertimos el conocimiento local en información útil: ubicamos postas, centros de salud, sedes, organizaciones y redes, y mostramos cómo se conectan en el mapa.",
+      "acciones": [
+        "Mapa de activos: centros de salud, postas, sedes y organizaciones",
+        "Entrevistas y talleres para recoger el saber local",
+        "Datos abiertos y registros públicos, sin datos personales",
+        "Tableros para dirigentes, equipos de salud y municipios"
+      ],
+      "ods": [
+        3,
+        11,
+        17
+      ],
+      "mapa": {
+        "leyenda": "Postas, centros de salud y espacios comunitarios del territorio, con sus conexiones.",
+        "escena": "activos-comunitarios",
+        "activos": true
+      }
+    },
+    {
+      "id": "electrodependencia",
+      "activo": true,
+      "grupo": "social",
+      "titulo": "Continuidad de servicios críticos y electrodependencia",
+      "resumen": "Cruzamos las zonas de corte de luz con la ubicación de hogares con personas electrodependientes para saber a quién afecta, a quién no y qué activo comunitario está más cerca. Trabajamos por zonas y con resguardos para datos sensibles de salud.",
+      "acciones": [
+        "Mapa de cortes de suministro y zonas afectadas",
+        "Cruce con registros autorizados, por zonas y con consentimiento",
+        "Protocolos de aviso y respaldo con equipos de salud y empresas eléctricas",
+        "Evaluación de impacto en datos personales antes de operar"
+      ],
+      "ods": [
+        3,
+        7,
+        11
+      ],
+      "mapa": {
+        "leyenda": "Una zona de corte se cruza con hogares de ejemplo (datos ficticios) y con los activos comunitarios cercanos.",
+        "escena": "electrodependencia",
+        "activos": true
+      }
+    },
+    {
+      "id": "participacion",
+      "activo": true,
+      "grupo": "social",
+      "titulo": "Participación ciudadana y gobernanza local",
+      "resumen": "Procesos para que la comunidad organizada decida y evalúe: consejos, cabildos, mesas territoriales y presupuestos participativos.",
+      "acciones": [
+        "Diseño de procesos participativos",
+        "Facilitación de consejos y mesas territoriales",
+        "Devolución de resultados en lenguaje claro",
+        "Seguimiento de acuerdos"
+      ],
+      "ods": [
+        10,
+        11,
+        16,
+        17
+      ],
+      "mapa": {
+        "leyenda": "Voces del territorio convergen en una decisión compartida.",
+        "escena": "participacion"
+      }
+    },
+    {
+      "id": "equidad-rural",
+      "activo": true,
+      "grupo": "social",
+      "titulo": "Inequidades y salud rural",
+      "resumen": "Medimos brechas de acceso entre localidades rurales y urbanas: distancias, tiempos y cobertura de postas y centros de salud, para priorizar dónde actuar.",
+      "acciones": [
+        "Distancia y tiempo de acceso a postas y centros de salud",
+        "Brechas por localidad y por grupo de población",
+        "Priorización de inversiones y rondas de salud",
+        "Indicadores de equidad para consejos y servicios"
+      ],
+      "ods": [
+        3,
+        10
+      ],
+      "mapa": {
+        "leyenda": "Desde cada localidad rural se mide la distancia a la posta más cercana.",
+        "escena": "equidad-rural",
+        "activos": true
+      }
+    },
+    {
+      "id": "resiliencia-comunitaria",
+      "activo": true,
+      "grupo": "social",
+      "titulo": "Resiliencia comunitaria y gestión de riesgos con la comunidad",
+      "resumen": "Preparamos a barrios y localidades para emergencias: redes de apoyo vecinal, planes comunitarios, alertas y simulacros, con foco en las personas más vulnerables.",
+      "acciones": [
+        "Mapa de riesgos y de personas que necesitan apoyo, por zonas",
+        "Redes de apoyo vecinal y puntos de encuentro",
+        "Planes comunitarios y simulacros",
+        "Coordinación con municipios y servicios de emergencia"
+      ],
+      "ods": [
+        11,
+        13
+      ],
+      "mapa": {
+        "leyenda": "Una alerta se propaga por la red vecinal y cada punto responde.",
+        "escena": "resiliencia-comunitaria"
+      }
+    },
+    {
+      "id": "economia-social",
+      "activo": true,
+      "grupo": "economia",
+      "titulo": "Economía social y desarrollo local",
+      "resumen": "Fortalecemos cooperativas, ferias, cadenas cortas y emprendimientos locales para que el valor se quede en el territorio.",
+      "acciones": [
+        "Diagnóstico de la economía local y sus cadenas",
+        "Modelos de cooperativa y asociatividad",
+        "Circuitos cortos de comercialización",
+        "Capacitación y acompañamiento"
+      ],
+      "ods": [
+        8,
+        11,
+        12
+      ],
+      "mapa": {
+        "leyenda": "El valor circula dentro del territorio: productor, feria, familia y de vuelta al productor.",
+        "escena": "economia-social"
+      }
+    },
+    {
+      "id": "evaluacion-economica",
+      "activo": true,
+      "grupo": "economia",
+      "titulo": "Evaluación económica y costo-beneficio de proyectos",
+      "resumen": "Ponemos números a las decisiones: costos, beneficios sociales y ambientales, y retorno, para elegir la alternativa que más valor entrega.",
+      "acciones": [
+        "Costo-beneficio y costo-efectividad",
+        "Valoración de beneficios sociales y ambientales",
+        "Escenarios y sensibilidad",
+        "Evaluación ex ante y ex post de proyectos"
+      ],
+      "ods": [
+        8,
+        9,
+        17
+      ],
+      "mapa": {
+        "leyenda": "Costos y beneficios se comparan lado a lado para cada alternativa.",
+        "escena": "evaluacion-economica"
+      }
+    },
+    {
+      "id": "negocios-impacto",
+      "activo": true,
+      "grupo": "economia",
+      "titulo": "Negocios con impacto y valor compartido",
+      "resumen": "Diseñamos modelos de negocio que mejoran los resultados de la empresa y, a la vez, los del territorio donde opera.",
+      "acciones": [
+        "Modelo de negocio con impacto medible",
+        "Alianzas entre empresa, comunidad y sector público",
+        "Indicadores económicos, sociales y ambientales",
+        "Comunicación de resultados"
+      ],
+      "ods": [
+        8,
+        12,
+        17
+      ],
+      "mapa": {
+        "leyenda": "El valor se reparte entre la empresa, la comunidad y el ambiente.",
+        "escena": "negocios-impacto"
+      }
+    }
+  ],
+  "dimensiones": [
+    {
+      "id": "ambiental",
+      "titulo": "Ambiental"
+    },
+    {
+      "id": "social",
+      "titulo": "Social"
+    },
+    {
+      "id": "economica",
+      "titulo": "Económica"
     }
   ]
 }

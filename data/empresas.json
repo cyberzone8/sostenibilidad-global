@@ -1,5 +1,5 @@
 {
-  "_ayuda": "Empresas del mapa. Copia el bloque 'ejemplo', cambia los datos y pon activo:true. Si la empresa tiene 'servicios', su ficha se abre en modo empresa con ?e=<id> (ej.: index.html?e=diesel-jj). horario: dias 1=lunes ... 7=domingo. cobertura.radioKm dibuja la zona de atención. whatsapp vacío usa el de Sostenibilidad Global. prototipo:true marca la ficha como datos de ejemplo.",
+  "_ayuda": "Empresas de la red. Para agregar una: copia el bloque 'ejemplo', cambia los datos, pon activo:true y haz commit. La ficha pública (empresas/<id>/) y el directorio se generan solos. FOTOS: sube los archivos a assets/empresas/<id>/ y escribe solo el nombre en 'imagenes' (la primera es la portada) o en servicios[].imagen. TELÉFONO: 'telefono' (llamadas) y 'whatsapp' (solo números con código de país, ej. 56912345678); si whatsapp va vacío, los mensajes llegan a Sostenibilidad Global. rubroId: uno de data/taxonomia.json. relacion: ids de servicios de Sostenibilidad Global que se conectan con esta empresa (ver servicios.json). plan: gratis | socio | aliado (ordena el directorio). prototipo:true muestra 'datos por confirmar'; quítalo cuando la empresa los confirme. consentimiento: fecha (AAAA-MM-DD) en que la empresa autorizó por escrito publicar sus datos. horario: dias 1=lunes ... 7=domingo. VISIBILIDAD: este archivo es público, así que solo lleva empresas públicas (las que autorizaron aparecer con nombre). Las empresas reservadas (aparecen anónimas y el contacto lo haces tú) o privadas (nunca se muestran) van SOLO en el repositorio privado; si pones 'visibilidad' distinta de 'publica' aquí, el generador se detiene.",
   "empresas": [
     {
       "id": "ejemplo",
@@ -10,7 +10,48 @@
       "descripcion": "Texto breve aprobado por la empresa.",
       "web": "https://ejemplo.cl",
       "lat": -37.4697,
-      "lng": -72.3537
+      "lng": -72.3537,
+      "rubroId": "reciclaje",
+      "direccion": "Calle y número, Los Ángeles",
+      "telefono": "+56 9 0000 0000",
+      "whatsapp": "",
+      "mensajeWhatsApp": "Hola, vi a Empresa de ejemplo en Sostenibilidad Global y quiero hacer una consulta.",
+      "imagenes": [
+        "portada.jpg",
+        "taller.jpg"
+      ],
+      "horario": [
+        {
+          "etiqueta": "Lunes a viernes",
+          "dias": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "abre": "09:00",
+          "cierra": "18:00"
+        }
+      ],
+      "horarioNota": "",
+      "cobertura": {
+        "texto": "Los Ángeles y alrededores",
+        "radioKm": 20
+      },
+      "servicios": [
+        {
+          "titulo": "Servicio uno",
+          "detalle": "Qué incluye y para quién.",
+          "imagen": "servicio-uno.jpg"
+        }
+      ],
+      "relacion": [
+        "valorizacion"
+      ],
+      "plan": "gratis",
+      "verificada": false,
+      "consentimiento": ""
     },
     {
       "id": "diesel-jj",
@@ -22,7 +63,7 @@
       "direccion": "Mulchén, Región del Biobío (dirección exacta por confirmar)",
       "descripcion": "Taller especializado en motores diésel para camiones, maquinaria agrícola y forestal. Diagnóstico, reparación y atención en terreno en Mulchén y alrededores.",
       "web": "",
-      "telefono": null,
+      "telefono": "",
       "whatsapp": null,
       "mensajeWhatsApp": "Hola, vi Servicio Técnico Diesel J.J en Sostenibilidad Global y necesito una revisión para mi vehículo o maquinaria.",
       "lat": -37.7167,
@@ -57,25 +98,41 @@
       "servicios": [
         {
           "titulo": "Diagnóstico y scanner",
-          "detalle": "Revisión del motor y lectura de fallas para saber qué reparar antes de gastar. (Texto de ejemplo)"
+          "detalle": "Revisión del motor y lectura de fallas para saber qué reparar antes de gastar. (Texto de ejemplo)",
+          "imagen": ""
         },
         {
           "titulo": "Bombas e inyectores",
-          "detalle": "Revisión, prueba y reparación del sistema de inyección diésel. (Texto de ejemplo)"
+          "detalle": "Revisión, prueba y reparación del sistema de inyección diésel. (Texto de ejemplo)",
+          "imagen": ""
         },
         {
           "titulo": "Mantención de camiones y maquinaria",
-          "detalle": "Mantención preventiva para camiones, tractores y maquinaria forestal. (Texto de ejemplo)"
+          "detalle": "Mantención preventiva para camiones, tractores y maquinaria forestal. (Texto de ejemplo)",
+          "imagen": ""
         },
         {
           "titulo": "Servicio en terreno",
-          "detalle": "Atención donde está el equipo, dentro de la zona de cobertura. (Texto de ejemplo)"
+          "detalle": "Atención donde está el equipo, dentro de la zona de cobertura. (Texto de ejemplo)",
+          "imagen": ""
         },
         {
           "titulo": "Residuos del taller",
-          "detalle": "Orientación para dar destino autorizado al aceite usado, filtros y otros residuos del taller, junto a la red de Sostenibilidad Global. (Texto de ejemplo)"
+          "detalle": "Orientación para dar destino autorizado al aceite usado, filtros y otros residuos del taller, junto a la red de Sostenibilidad Global. (Texto de ejemplo)",
+          "imagen": ""
         }
-      ]
+      ],
+      "rubroId": "mecanica",
+      "imagenes": [],
+      "relacion": [
+        "destino",
+        "trazabilidad",
+        "valorizacion"
+      ],
+      "plan": "gratis",
+      "verificada": false,
+      "consentimiento": "",
+      "schemaTipo": "AutoRepair"
     }
   ]
 }

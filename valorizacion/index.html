@@ -251,7 +251,7 @@ small{color:var(--mu)}
 </div>
 <div class="q-box res" id="res" aria-live="polite">
 <h3 id="rt"></h3><p id="rp"></p>
-<p><a class="btn" id="cta" href="https://wa.me/56985947020?text=Hola%2C%20hice%20el%20diagn%C3%B3stico%20y%20quiero%20conversar%20sobre%20el%20piloto%20en%20mi%20planta." target="_blank" rel="noopener">Quiero el piloto en mi planta</a></p>
+<p><a class="btn" id="cta" data-ev="wa/sitio/diagnostico" href="https://wa.me/56985947020?text=Hola%2C%20hice%20el%20diagn%C3%B3stico%20y%20quiero%20conversar%20sobre%20el%20piloto%20en%20mi%20planta.%0A%0A(Origen%3A%20diagn%C3%B3stico%20de%20valorizaci%C3%B3n)" target="_blank" rel="noopener">Quiero el piloto en mi planta</a></p>
 <small>También: <a href="mailto:sostenibilidadglobalspa@gmail.com">sostenibilidadglobalspa@gmail.com</a></small>
 </div>
 
@@ -396,7 +396,7 @@ r:[CUMSTAGE(4),25,"Después: ya cayó todo. Solo se contiene y se recupera una p
 const OFR={a:{n:"Antes",v:"prevenir",x:6,col:"var(--g)",t:[["Diagnóstico","riesgos y puntos críticos"],["Evaluación","consecuencias y alternativas"]]},
 d:{n:"Durante",v:"controlar",x:3,col:"var(--am)",t:[["Seguimiento","avance y desviaciones"]]},
 r:{n:"Después",v:"recuperar",x:2,col:"var(--r)",t:[["Resultados","objetivo vs. observado"]]}};
-const WA="https://wa.me/56985947020?text=";
+const WA="https://wa.me/56985947020?text=",OR="\n\n(Origen: simulación de valorización)";
 const calc=(k,lane)=>{const w=WH[k];let R=model(w[0]);if(lane!==null)R=R.map((r,i)=>i===lane?r:W0[i]);
  const t=sum(R.map(r=>r.m)),recM=lane===null?w[1]/100*(BASE-WORST):w[1]/100*(B[lane].m-W0[lane].m),
  mt=t+recM,av=mt-WORST,tope=lane===null?BASE-WORST:B[lane].m-W0[lane].m;
@@ -407,7 +407,7 @@ function offer(k){
  const o=$("offer");
  if(!k){o.style.removeProperty("--oc");
   o.innerHTML=`<div class="of-n">Elija el <b>alcance</b> (toda la planta o solo una línea) y <b>cuándo intervenir</b> arriba: <b>Antes</b>, <b>Durante</b> o <b>Después</b>. Cada momento devuelve una cantidad distinta por cada $1 invertido: <b>×6 · ×3 · ×2</b>.</div>
-  <div class="of-cta"><a class="btn" target="_blank" rel="noopener" href="${WA+encodeURIComponent("Hola, vi la simulación y quiero conversar sobre un piloto en una línea de mi planta.")}">Quiero un piloto en una línea</a></div>`;return}
+  <div class="of-cta"><a class="btn" data-ev="wa/sitio/simulacion" target="_blank" rel="noopener" href="${WA+encodeURIComponent("Hola, vi la simulación y quiero conversar sobre un piloto en una línea de mi planta."+OR)}">Quiero un piloto en una línea</a></div>`;return}
  const O=OFR[k],c=calc(k,scope),ca=calc(k,null),inv=c.av/O.x,share=Math.round(c.av/ca.av*100),
   ml=scope===null?"de toda la planta":"de la línea "+LANES[scope].n;
  o.style.setProperty("--oc",O.col);
@@ -415,7 +415,7 @@ function offer(k){
  ${scope===null?"":`<p class="of-p">Piloto: se trabaja solo una línea, con cerca del <b>${share} %</b> de la inversión de toda la planta y resultados en 30 días. Las otras líneas siguen como hoy. Si funciona, se repite el método en ellas.</p>`}
  <div class="of-k"><div><b>${c.pc} %</b>de la pérdida ${ml} se evita</div><div><b>${nz.format(c.av)} M$/mes</b>de pérdida evitada</div><div><b>${nz.format(inv)} M$</b>inversión equivalente (ilustrativa)</div><div><b>${nf.format(c.mt)} M$/mes</b>${scope===null?"margen resultante":"margen de la planta con solo esta línea protegida"} (normal ${nf.format(BASE)}; sin intervenir ${nf.format(WORST)})</div></div>
  <div class="of-w"><em>Qué hacemos:</em>${O.t.map(x=>`<span><b>${x[0]}</b> · ${x[1]}</span>`).join("")}</div>
- <div class="of-cta"><a class="btn" target="_blank" rel="noopener" href="${WA+encodeURIComponent("Hola, vi la simulación: me interesa "+scopeTxt()+", interviniendo "+O.n.toLowerCase()+" ("+O.v+"). Quiero conversar sobre el piloto.")}">${scope===null?"Quiero conversar sobre esto":"Quiero este piloto en una línea"}</a></div>`;
+ <div class="of-cta"><a class="btn" data-ev="wa/sitio/simulacion" target="_blank" rel="noopener" href="${WA+encodeURIComponent("Hola, vi la simulación: me interesa "+scopeTxt()+", interviniendo "+O.n.toLowerCase()+" ("+O.v+"). Quiero conversar sobre el piloto."+OR)}">${scope===null?"Quiero conversar sobre esto":"Quiero este piloto en una línea"}</a></div>`;
 }
 const tm=[];const stop=()=>{tm.forEach(clearTimeout);tm.length=0};
 function run(from){
@@ -451,6 +451,7 @@ svg.addEventListener("keydown",e=>{if(e.key!=="Enter"&&e.key!==" ")return;const 
 show([...NONE],0,null,null);offer(null);
 })();
 </script>
+<script src="../assets/js/comun.js"></script>
 <script src="../assets/js/contador.js" data-config="../data/config.json" data-show="visitas" defer></script>
 </body>
 </html>

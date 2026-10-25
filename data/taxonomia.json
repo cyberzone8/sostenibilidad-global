@@ -1,0 +1,66 @@
+{
+  "_ayuda": "Rubros del directorio. 'id' se usa en empresas.json (rubroId). Puedes agregar rubros nuevos copiando un bloque.",
+  "rubros": [
+    {
+      "id": "mecanica",
+      "titulo": "Mecánica y mantención"
+    },
+    {
+      "id": "reciclaje",
+      "titulo": "Reciclaje y valorización"
+    },
+    {
+      "id": "transporte",
+      "titulo": "Transporte y logística"
+    },
+    {
+      "id": "agro",
+      "titulo": "Agro, forestal y alimentos"
+    },
+    {
+      "id": "energia",
+      "titulo": "Energía y recursos naturales"
+    },
+    {
+      "id": "construccion",
+      "titulo": "Construcción e industria"
+    },
+    {
+      "id": "turismo",
+      "titulo": "Turismo y cultura"
+    },
+    {
+      "id": "tecnologia",
+      "titulo": "Tecnología y datos"
+    },
+    {
+      "id": "profesionales",
+      "titulo": "Servicios profesionales"
+    },
+    {
+      "id": "comunicacion",
+      "titulo": "Marca y comunicación"
+    },
+    {
+      "id": "otro",
+      "titulo": "Otros"
+    }
+  ],
+  "planes": [
+    {
+      "id": "gratis",
+      "titulo": "En el directorio",
+      "peso": 0
+    },
+    {
+      "id": "socio",
+      "titulo": "Socio",
+      "peso": 1
+    },
+    {
+      "id": "aliado",
+      "titulo": "Aliado",
+      "peso": 2
+    }
+  ]
+}

@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Radio ProBio: radio digital en línea de la provincia de Biobío, con sonido para eventos y difusión de información clave. Sostenibilidad Global.">
+<title>Radio ProBio · Sostenibilidad Global</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;800&family=Inter:wght@400;600&display=swap">
+<style>
+:root{--bg:#f3f1ea;--tx:#17211b;--mu:#55605a;--card:#fff;--ln:#d9d6cb;--g:#1f7a4d;--ink:#12382a;--on:#fff;--ac:#c26a00}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1713;--tx:#eef1ec;--mu:#a3b0a8;--card:#18231d;--ln:#2c3a32;--g:#4cc58a;--ink:#4cc58a;--on:#0f1713;--ac:#f0a43a}}
+:root[data-theme="dark"]{--bg:#0f1713;--tx:#eef1ec;--mu:#a3b0a8;--card:#18231d;--ln:#2c3a32;--g:#4cc58a;--ink:#4cc58a;--on:#0f1713;--ac:#f0a43a}
+*{box-sizing:border-box}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font:17px/1.6 Inter,system-ui,sans-serif}
+.w{max-width:880px;margin:0 auto;padding:28px 20px 60px}
+h1,h2,h3{font-family:Fraunces,Georgia,serif;line-height:1.15;margin:0 0 12px}
+h1{font-size:clamp(30px,6vw,48px);font-weight:800}
+h1 span{color:var(--ac)}
+h2{font-size:clamp(22px,4vw,28px);margin-top:48px}
+h3{font-size:18px;color:var(--ink)}
+.lead{font-size:19px;color:var(--mu);max-width:60ch}
+.brand{font-weight:600;color:var(--ink);margin-bottom:24px}
+.brand a{color:inherit}
+.live{display:inline-flex;align-items:center;gap:8px;font-size:14px;color:var(--g);font-weight:600}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--g);animation:p 1.6s infinite}
+@keyframes p{0%,100%{opacity:1}50%{opacity:.3}}
+@media (prefers-reduced-motion:reduce){.dot{animation:none}}
+.player{background:var(--card);border:1px solid var(--ln);border-radius:16px;padding:24px;margin:24px 0;text-align:center}
+#playBtn{width:84px;height:84px;border-radius:50%;border:0;background:var(--ink);color:var(--on);font-size:30px;cursor:pointer}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(--g);outline-offset:3px}
+.status{margin-top:12px;color:var(--mu);min-height:1.5em}
+.vol{margin-top:12px;display:flex;align-items:center;justify-content:center;gap:10px;color:var(--mu)}
+.vol input{width:min(240px,60%)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}
+.card{background:var(--card);border:1px solid var(--ln);border-left:6px solid var(--g);border-radius:8px;padding:16px 18px}
+.card p{margin:0;font-size:16px;color:var(--mu)}
+.comunas{display:flex;flex-wrap:wrap;gap:8px}
+.comunas span{background:var(--card);border:1px solid var(--ln);padding:5px 12px;border-radius:999px;font-size:15px}
+.btn{display:inline-block;background:var(--ink);color:var(--on);padding:14px 22px;border-radius:8px;font-weight:600;text-decoration:none;font-size:17px}
+.btn.alt{background:transparent;color:var(--tx);border:2px solid var(--ln)}
+.cta{background:var(--card);border:1px solid var(--ln);border-radius:12px;padding:22px;margin:40px 0 0}
+.cta p{margin:0 0 14px;color:var(--mu)}
+.foot{color:var(--mu);font-size:14px;margin-top:40px}
+.foot a{color:inherit}
+</style>
+</head>
+<body>
+<div class="w">
+  <p class="brand"><a href="../">← Sostenibilidad Global</a></p>
+  <h1><span id="nombre">Radio ProBio</span></h1>
+  <p class="lead">La radio digital en línea de la provincia de Biobío, desde Los Ángeles: noticias locales, información de servicios y música de la zona.</p>
+  <div class="live"><span class="dot"></span> EN VIVO 24 HORAS</div>
+
+  <section class="player" aria-label="Reproductor">
+    <button id="playBtn" type="button" aria-label="Reproducir radio">&#9654;</button>
+    <div class="status" id="status" role="status">Presiona para escuchar</div>
+    <div class="vol"><label for="vol">Volumen</label><input id="vol" type="range" min="0" max="1" step="0.05" value="0.8"></div>
+    <audio id="audio" preload="none"></audio>
+  </section>
+
+  <h2>Qué vas a escuchar</h2>
+  <div class="grid">
+    <div class="card"><h3>Noticias locales</h3><p>Lo que pasa en tu comuna, sin pasar por Santiago.</p></div>
+    <div class="card"><h3>Información clave</h3><p>Clima, cortes de luz y agua, estado de caminos, ferias y avisos de la comunidad.</p></div>
+    <div class="card"><h3>Música de la zona</h3><p>Cueca, rancheras, cumbia y lo más pedido del Biobío.</p></div>
+  </div>
+
+  <h2>Más que una radio</h2>
+  <div class="grid">
+    <div class="card"><h3>Sonido para eventos</h3><p>Amplificación para ferias, actos y actividades comunitarias.</p></div>
+    <div class="card"><h3>Difusión de información clave</h3><p>Avisos de servicio, alertas y convocatorias de tu empresa, municipio u organización.</p></div>
+    <div class="card"><h3>Menciones y auspicios</h3><p>Llega a toda la provincia con spots y menciones en la radio.</p></div>
+  </div>
+
+  <h2>Cobertura</h2>
+  <div class="comunas">
+    <span>Los Ángeles</span><span>Mulchén</span><span>Nacimiento</span><span>Cabrero</span>
+    <span>Yumbel</span><span>Laja</span><span>San Rosendo</span><span>Negrete</span>
+    <span>Santa Bárbara</span><span>Quilleco</span><span>Quilaco</span><span>Tucapel</span>
+    <span>Antuco</span><span>Alto Biobío</span>
+  </div>
+
+  <section class="cta">
+    <h2 style="margin-top:0">¿Necesitas sonido para un evento o difundir un aviso?</h2>
+    <p>Cuéntanos qué necesitas y te respondemos por WhatsApp.</p>
+    <a class="btn" id="wsp" href="#" target="_blank" rel="noopener">Escríbenos por WhatsApp</a>
+    <a class="btn alt" href="../">Ver todos los servicios</a>
+  </section>
+
+  <p class="foot">&copy; <span id="year"></span> <span id="empresa">Sostenibilidad Global SpA</span>. Transmisión por internet. · <a href="../privacidad/">Privacidad</a> · <small id="visitas" hidden></small></p>
+</div>
+
+<script>
+  // ====== CONFIGURA SOLO ESTAS LÍNEAS ======
+  const STREAM_URL = "";                 // Pega aquí la URL de tu streaming (ej: https://.../radio.mp3)
+  const NOMBRE_RADIO = "Radio ProBio";   // Nombre de tu radio (cámbialo aquí)
+  // =========================================
+  const WHATSAPP = "56985947020";        // mismo número del sitio (data/config.json)
+
+  document.getElementById("nombre").textContent = NOMBRE_RADIO;
+  document.title = NOMBRE_RADIO + " · Sostenibilidad Global";
+  document.getElementById("year").textContent = new Date().getFullYear();
+  document.getElementById("wsp").href = "https://wa.me/" + WHATSAPP + "?text=" +
+    encodeURIComponent("Hola, quiero consultar por sonido para eventos / difusión en " + NOMBRE_RADIO + ". Origen: página radio");
+
+  const audio = document.getElementById("audio"), btn = document.getElementById("playBtn"),
+        status = document.getElementById("status"), vol = document.getElementById("vol");
+  audio.volume = parseFloat(vol.value);
+  vol.addEventListener("input", () => { audio.volume = parseFloat(vol.value); });
+  btn.addEventListener("click", async () => {
+    if (!STREAM_URL) { status.textContent = "La señal en vivo se activa pronto."; return; }
+    if (audio.paused) {
+      audio.src = STREAM_URL + (STREAM_URL.includes("?") ? "&" : "?") + "t=" + Date.now();
+      status.textContent = "Conectando...";
+      try { await audio.play(); } catch (e) { status.textContent = "No se pudo reproducir. Intenta de nuevo."; }
+    } else {
+      audio.pause(); audio.removeAttribute("src"); audio.load();
+      btn.innerHTML = "&#9654;"; btn.setAttribute("aria-label", "Reproducir radio"); status.textContent = "Pausado";
+    }
+  });
+  audio.addEventListener("playing", () => { btn.innerHTML = "&#10074;&#10074;"; btn.setAttribute("aria-label", "Pausar radio"); status.textContent = "Al aire"; });
+  audio.addEventListener("waiting", () => { status.textContent = "Cargando..."; });
+  audio.addEventListener("error", () => { if (audio.getAttribute("src")) status.textContent = "Se cortó la señal. Presiona para reconectar."; });
+</script>
+<script src="../assets/js/contador.js" data-config="../data/config.json" data-show="visitas" defer></script>
+</body>
+</html>
