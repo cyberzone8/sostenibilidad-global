@@ -584,6 +584,7 @@
     initMap();
     if (window.SG_LAB && S.map && !S.emp) window.SG_LAB.attach(labApi);
     initCapas();
+    if (window.SG_APORTES && S.map && !S.emp) window.SG_APORTES.attach(labApi);
     if (S.empMissing) aviso("No encontramos esa empresa. Te mostramos el mapa general.");
     const h = decodeURIComponent(location.hash.slice(1));
     if (h) open(h, null, false);

@@ -166,3 +166,13 @@ Archivos: `assets/js/laboratorio.js` (funciones puras probables en Node: `node -
 ## v22 – Menú con licitaciones y caso de salud comunitaria
 - **Red → Licitaciones por comuna** abre el servicio de v21 (mapa de burbujas por comuna).
 - **Aprende → Caso: corte de luz y electrodependencia:** caso **ficticio** en 7 pasos (de la hora 0 al cierre) con el aviso por radio y los resguardos de datos de salud. El botón «Ver el caso en el mapa» abre la escena de electrodependencia (hogares y cortes ficticios, activos comunitarios cercanos).
+
+## v23 – Aporta al mapa (QR + Formulario de Google)
+**Idea:** en la charla proyectas el QR (`aporta/qr/`), las personas aportan desde el celular y, cuando tú apruebas cada aporte, aparece en el mapa. El formulario **no va incrustado** en el sitio: se abre en otra pestaña, así el diseño no se toca.
+1. **Crea el Formulario de Google** con estas preguntas, con estos títulos exactos: *Tipo* (lista: Árbol o área verde · Plaza o espacio público · Evento o actividad · Organización o club · Servicio de salud · Comercio o emprendimiento · Otro), *Nombre*, *Descripción* (párrafo, opcional), *Latitud*, *Longitud* (respuesta corta). En Configuración: **no** recopilar correos y **no** exigir iniciar sesión. Agrega al inicio el texto: «No escribas nombres de personas, direcciones de casas ni teléfonos. Al enviar aceptas el aviso de privacidad (enlace a `privacidad/`)».
+2. **Pega el enlace** (Enviar → icono de enlace `…/viewform`) en `data/config.json` → `formularios.aporte`.
+3. **Relleno automático (opcional):** en el formulario, ⋮ → «Obtener enlace prellenado», llena un ejemplo, «Obtener enlace»; de la dirección copia cada `entry.123456789` a `formularios.aporteCampos` (tipo, nombre, descripcion, lat, lng). Así la persona marca el lugar en el mapa de `aporta/` y el formulario ya viene con las coordenadas.
+4. **Mapa en vivo:** en la hoja de respuestas, agrega una columna **Aprobado**. Archivo → Compartir → **Publicar en la web** → hoja de respuestas, formato **CSV** → Publicar; pega ese enlace en `data/config.json` → `aportes.csvUrl`. Solo se dibujan las filas con `SI` en Aprobado (moderación; `aportes.moderacion:false` las muestra todas). Google refresca el CSV publicado cada pocos minutos, así que un aporte puede tardar en verse.
+5. **QR:** `tools/crear-qr.py` lo regenera si cambia la dirección del sitio (hoy apunta a `https://cyberzone8.github.io/sostenibilidad-global/aporta/`). Proyecta `aporta/qr/` en pantalla completa (F11).
+- Menú: **Red → Aporta al mapa**. Capa: «Aportes en vivo» en el panel de capas.
+- Privacidad: la hoja publicada es pública; por eso el formulario no pide nombres ni correos. Revisa cada fila antes de escribir SI.

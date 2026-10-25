@@ -329,7 +329,7 @@ def buscadores():
         if sm.exists():
             sm.unlink()
         return
-    urls = [BASE, f"{BASE}directorio/", f"{BASE}valorizacion/", f"{BASE}radio/", f"{BASE}privacidad/"] + [f"{BASE}empresas/{e['id']}/" for e in empresas]
+    urls = [BASE, f"{BASE}directorio/", f"{BASE}valorizacion/", f"{BASE}radio/", f"{BASE}aporta/", f"{BASE}privacidad/"] + [f"{BASE}empresas/{e['id']}/" for e in empresas]
     cuerpo = "".join(f"  <url><loc>{esc(u)}</loc></url>\n" for u in urls)
     sm.write_text(f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{cuerpo}</urlset>\n', encoding="utf-8")
 

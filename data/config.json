@@ -65,7 +65,16 @@
     "empresa": "",
     "residuo_generador": "",
     "planta_gestor": "",
-    "contacto": ""
+    "contacto": "",
+    "aporte": "",
+    "aporteCampos": {
+      "_ayuda": "Para que el sitio rellene el formulario con lo que la persona marcó en el mapa: en tu Formulario de Google, menú ⋮ → «Obtener enlace prellenado», llena una respuesta de ejemplo, presiona «Obtener enlace» y copia de la dirección cada código «entry.123456789». Vacío = se abre el formulario sin rellenar.",
+      "tipo": "",
+      "nombre": "",
+      "descripcion": "",
+      "lat": "",
+      "lng": ""
+    }
   },
   "privacidad": {
     "responsable": "Sostenibilidad Global SpA",
@@ -101,5 +110,11 @@
     "_ayuda": "Nombre de la radio y, opcionalmente, la dirección https de un servidor de streaming. Vacío = suena la lista de data/playlist.json (MP3 en audio/).",
     "nombre": "Radio ProBio",
     "streamUrl": ""
+  },
+  "aportes": {
+    "_ayuda": "Mapa en vivo con las respuestas del formulario. En la hoja de respuestas: Archivo → Compartir → Publicar en la web → pestaña de respuestas, formato CSV → Publicar; pega aquí el enlace https. Agrega una columna «Aprobado» y escribe SI en las filas que quieras mostrar. Google actualiza el CSV publicado cada pocos minutos.",
+    "csvUrl": "",
+    "moderacion": true,
+    "refrescoSeg": 30
   }
 }

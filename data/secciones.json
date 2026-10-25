@@ -147,6 +147,13 @@
     "grupo": "red"
   },
   {
+    "id": "aporta",
+    "activo": true,
+    "grupo": "red",
+    "titulo": "Aporta al mapa",
+    "enlaceDirecto": "aporta/"
+  },
+  {
     "id": "anuncios",
     "activo": true,
     "titulo": "Anuncios",
