@@ -275,3 +275,6 @@ body.present .capas{display:block}
   .mas.mgrp.open .mas-l{display:flex}
   .nav .cta-nav{justify-content:center}
 }
+
+/* el menú desplegable siempre por encima de los paneles */
+.top{z-index:30}

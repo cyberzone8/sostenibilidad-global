@@ -174,6 +174,75 @@
     "grupo": "red"
   },
   {
+    "id": "licitaciones-biobio",
+    "activo": true,
+    "grupo": "red",
+    "titulo": "Licitaciones por comuna"
+  },
+  {
+    "id": "caso-electro",
+    "activo": true,
+    "grupo": "aprende",
+    "titulo": "Caso: corte de luz y electrodependencia",
+    "eyebrow": "Caso ficticio · salud comunitaria",
+    "encabezado": "Un corte de luz de 6 horas: ¿a quién le afecta de verdad?",
+    "parrafos": [
+      "Caso inventado para mostrar cómo se trabaja la salud comunitaria con datos. Los hogares, los cortes y las cifras son ficticios y no corresponden a personas reales.",
+      "Situación: un martes de invierno, a las 19:00, la empresa eléctrica avisa un corte no programado en un sector de Los Ángeles que durará unas 6 horas. En el territorio hay personas que dependen de la electricidad para su salud, por ejemplo para oxígeno domiciliario o ventilación."
+    ],
+    "bloques": [
+      {
+        "etiqueta": "Hora 0:00",
+        "titulo": "Se conoce el corte",
+        "texto": "Se dibuja en el mapa la zona sin luz. La pregunta no es cuántos clientes quedaron sin servicio, sino a quién le afecta de verdad."
+      },
+      {
+        "etiqueta": "0:15",
+        "titulo": "Cruce por zonas",
+        "texto": "Se cruza la zona del corte con los hogares que autorizaron registrar que necesitan electricidad para su salud. En el ejemplo hay dos zonas de corte: una afecta a varios hogares y la otra a ninguno, así que el esfuerzo se concentra donde importa. Se trabaja por zonas: no se muestran nombres ni direcciones."
+      },
+      {
+        "etiqueta": "0:30",
+        "titulo": "Orden de prioridad",
+        "texto": "Se ordena el contacto según la autonomía declarada de la batería o del respaldo de cada hogar y la distancia a un punto de apoyo."
+      },
+      {
+        "etiqueta": "0:45",
+        "titulo": "Aviso por radio y canales",
+        "texto": "La radio digital difunde información clave, sin datos personales. Mensaje modelo: «Corte de luz en el sector Norte de la ciudad. Si en tu hogar alguien usa equipos eléctricos para su salud, avisa a tu CESFAM o a tu red de apoyo. Hay un punto de carga en la sede vecinal»."
+      },
+      {
+        "etiqueta": "1:00",
+        "titulo": "Activos comunitarios cercanos",
+        "texto": "El mapa une cada hogar afectado con el CESFAM, la posta o la sede vecinal más cercana (las líneas punteadas del mapa). Allí pueden cargar equipos o recibir apoyo."
+      },
+      {
+        "etiqueta": "3:00",
+        "titulo": "Seguimiento",
+        "texto": "Se confirma el contacto con cada hogar afectado. Quien no responda pasa a visita de la red comunitaria o del equipo de salud."
+      },
+      {
+        "etiqueta": "6:00 y después",
+        "titulo": "Cierre y aprendizaje",
+        "texto": "Al volver la luz se cierra el caso: qué demoró, qué dato faltaba, qué se mejora. Eso alimenta el plan de resiliencia del territorio."
+      },
+      {
+        "etiqueta": "Resguardos",
+        "titulo": "Datos de salud, con cuidado",
+        "texto": "Datos sensibles: solo con consentimiento, por zonas y con evaluación de impacto antes de operar (Ley 21.719). Nunca se publican en el sitio."
+      }
+    ],
+    "cta": {
+      "texto": "Ver el caso en el mapa",
+      "abre": "electrodependencia"
+    },
+    "enlaceExterno": {
+      "texto": "Escuchar la radio",
+      "url": "radio/"
+    },
+    "nota": "Todo lo de este caso es ficticio, con fines de demostración."
+  },
+  {
     "id": "laboratorio",
     "activo": true,
     "titulo": "Laboratorio de datos",

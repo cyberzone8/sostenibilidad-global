@@ -162,3 +162,7 @@ Archivos: `assets/js/laboratorio.js` (funciones puras probables en Node: `node -
 - **Qué cuenta:** licitaciones **activas** según la **comuna del organismo comprador** (no donde se ejecuta el contrato). Son licitaciones publicadas, no las ofertas que reciben. Las que no traen comuna reconocida se informan aparte («sin comuna»).
 - La ubicación de cada comuna es referencial (`data/comunas-biobio.json`), no sus límites. Cita la fuente: ChileCompra · Mercado Público.
 - Código: `assets/js/licitaciones.js`, `tools/importar-licitaciones.py`, `.github/workflows/licitaciones.yml`. El importador no se pudo probar contra la API real desde el entorno de desarrollo (sin acceso a internet): revisa la primera ejecución.
+
+## v22 – Menú con licitaciones y caso de salud comunitaria
+- **Red → Licitaciones por comuna** abre el servicio de v21 (mapa de burbujas por comuna).
+- **Aprende → Caso: corte de luz y electrodependencia:** caso **ficticio** en 7 pasos (de la hora 0 al cierre) con el aviso por radio y los resguardos de datos de salud. El botón «Ver el caso en el mapa» abre la escena de electrodependencia (hogares y cortes ficticios, activos comunitarios cercanos).
