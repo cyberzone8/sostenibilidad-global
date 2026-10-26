@@ -1,0 +1,36 @@
+# Informe PRIVADO de los efectos de red del sitio (Metcalfe, DSM, bucles, llamados a la acción, índice de red).
+# Si el repositorio es público, el informe NO se muestra en GitHub: solo llega a tu correo (ver README → «Estado de la red»).
+name: Estado de la red (privado)
+on:
+  schedule:
+    - cron: "0 12 * * 1"   # cada lunes, 12:00 UTC (8 o 9 de la mañana en Chile)
+  workflow_dispatch:
+    inputs:
+      miembros:
+        description: "Personas hoy en la Asamblea/Comunidad (n de Metcalfe). Vacío = variable RED_MIEMBROS"
+        required: false
+      k:
+        description: "Coeficiente K (0 a 0,99). Vacío = variable RED_K o 0,6"
+        required: false
+permissions:
+  contents: read
+jobs:
+  estado:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - name: Saber si el repositorio es privado
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: echo "REPO_PRIVADO=$(gh api repos/$GITHUB_REPOSITORY --jq .private)" >> "$GITHUB_ENV"
+      - name: Calcular y enviar el informe
+        run: python3 tools/estado-red.py
+        env:
+          RED_MIEMBROS: ${{ inputs.miembros || vars.RED_MIEMBROS }}
+          RED_K: ${{ inputs.k || vars.RED_K }}
+          RED_DESTINO: ${{ secrets.RED_DESTINO }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          GOATCOUNTER_TOKEN: ${{ secrets.GOATCOUNTER_TOKEN }}
