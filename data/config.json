@@ -115,7 +115,7 @@
   },
   "aportes": {
     "_ayuda": "Mapa en vivo con las respuestas del formulario. En la hoja de respuestas: Archivo → Compartir → Publicar en la web → pestaña de respuestas, formato CSV → Publicar; pega aquí el enlace https. Agrega una columna «Aprobado» y escribe SI en las filas que quieras mostrar. Google actualiza el CSV publicado cada pocos minutos.",
-    "csvUrl": "https://docs.google.com/spreadsheets/d/e/2PACX-1vQzPx5e-7G5699ArNReXg0VHmCiHpvk9EUC2u5n7Ptoe8KSgsM_hL9tYhh5KsA14Slv5Cc1H7YJB8Zs/pub?gid=426386440&single=true&output=csv",
+    "csvUrl": "",
     "moderacion": true,
     "refrescoSeg": 30,
     "confirmacionesParaMostrar": 0,

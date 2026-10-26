@@ -214,3 +214,13 @@ Configuración (Settings → Secrets and variables → Actions):
 3. Opcional: secret `GOATCOUNTER_TOKEN` (GoatCounter → Settings → API) para sumar las visitas de los últimos 30 días.
 
 Notas: Metcalfe cuenta conexiones **posibles**; solo se concretan si la gente aporta y confirma entre sí. Los llamados a la acción se cuentan en el código (puntos de llamado), no son clics; los clics los mide el contador. GitHub pausa los Actions programados tras 60 días sin actividad en el repositorio.
+
+## v27 · Dinámica con efecto de red y enlaces directos al Laboratorio
+- **Pestaña «4 · Dinámica»** (`assets/js/laboratorio.js`): el modelo pasa de dos a tres reservas y muestra **cuatro líneas**, cada una suma una pieza: sin mapa → mapa hecho una vez → mapa verificado → **mapa verificado que crece con la gente** (efecto de red). Las tres primeras son idénticas al modelo v17 (se comprobó numéricamente); la cuarta agrega `dA/dt = (s + g·C)·(1−A)`: cada persona que conoce el mapa aporta a completarlo.
+- Nuevos controles: «Aporte de las personas al mapa» (`g`), aportes que no dependen de las personas (`s`), personas en la red (`N`) y datos vigentes hoy (`Q0`). La leyenda es interactiva (tocar una línea la oculta o la muestra: sirve para construir la historia en la charla).
+- **Efecto de red** en una segunda tabla: personas que usan los activos, conexiones posibles (Metcalfe) y conexiones que pasan por un activo del mapa y vigente (índice ilustrativo = posibles × cobertura × vigencia).
+- **«Partir de mis activos»**: toma los activos cargados (Mapear, Calidad, Cercanía) y fija la vigencia (registros de hasta un año) y la cobertura del mapa (área visible a menos del radio elegido). Para OpenStreetMap la fecha es la de descarga, no una verificación en terreno.
+- Dibujo de los bucles (R refuerzo, B balance) dentro de la pestaña.
+- **Enlaces directos:** `#laboratorio-mapear`, `#laboratorio-calidad`, `#laboratorio-cercania`, `#laboratorio-dinamica` (cambian al cambiar de pestaña, así se pueden compartir). Con `?r=6` el Laboratorio muestra «↩ Volver a la charla (diapositiva 6)». Ejemplo: `../?o=charla&r=6#laboratorio-dinamica`.
+- **`data/red-dsm.json`:** se agregó la arista 4 → 5 (Laboratorio entrega a Aporta), que existe en el código desde la v24 pero faltaba en la matriz. Bucles cerrados hoy: 16 → 21; los que quedan sin la administración: 4 → 5. La administración sigue siendo el cuello de botella.
+- Modelo ilustrativo, sin calibrar con datos reales. Las funciones puras se prueban en Node: `node -e "require('./assets/js/laboratorio.js')"`.

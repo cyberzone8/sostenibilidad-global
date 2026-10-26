@@ -88,37 +88,50 @@
     return ok / (paso * paso);
   }
 
-  /* Modelo dinámico (ilustrativo). Dos reservas:
-       Q: vigencia del dato del mapa (0 a 1).   dQ/dt = a·(1−Q) − u·Q
-       C: fracción de la población que conoce y puede usar los activos (0 a 1).   dC/dt = (c0 + r·M·Q·C)·(1−C) − d·C
-     M = cobertura del mapeo; a = verificación mensual con la comunidad; u = pérdida de vigencia; r = efecto de ver y conectar los activos;
-     c0 = difusión espontánea; d = olvido y recambio. Crisis: en el mes t0, C cae una fracción sev y, durante dur meses, r baja una fracción corte. */
-  const MODELO_BASE = { M: 0.7, a: 0.08, u: 0.05, r: 0.5, c0: 0.02, d: 0.05, C0: 0.25, Q0: 0.9, T: 36, crisis: true, t0: 18, sev: 0.35, dur: 3, corte: 0.6 };
-  function simular(p, M, a, dt = 0.05) {
-    const n = Math.round(p.T / dt), idx0 = Math.round(p.t0 / dt), t = [], C = [], Q = [];
-    let c = p.C0, q = p.Q0;
-    const f = (c, q, tt) => {
+  /* Modelo dinámico (ilustrativo). Tres reservas y dos bucles:
+       Q: vigencia del dato del mapa (0 a 1).        dQ/dt = a·(1−Q) − u·Q                          [bucle de BALANCE: el tiempo desactualiza, la verificación renueva]
+       C: fracción de la población que conoce y puede usar los activos (0 a 1).
+                                                      dC/dt = (c0 + r·A·Q·C)·(1−C) − d·C            [bucle de REFUERZO: quien lo conoce lo recomienda]
+       A: cobertura del mapa, parte de los activos reales que ya está en él (0 a 1).
+                                                      dA/dt = (s + g·C)·(1−A)                        [EFECTO DE RED: más personas que conocen el mapa, más aportes]
+     a = verificación mensual con la comunidad; u = pérdida de vigencia; r = efecto de ver y conectar los activos; c0 = difusión espontánea;
+     d = olvido y recambio; s = aportes que no dependen de las personas (importación, administración); g = aporte de las personas al mapa.
+     Con crece = false, A queda fija en su valor inicial M (el modelo de dos reservas de la v17). Con M = 0 y sin aportes, es «sin mapa».
+     Crisis: en el mes t0, C cae una fracción sev y, durante dur meses, r baja una fracción corte.
+     Efecto de red (índice ilustrativo): n = C·N personas usan los activos; conexiones posibles = n(n−1)/2 (Metcalfe);
+     conexiones que pasan por un activo del mapa y vigente = posibles·A·Q (solo se concretan si la gente aporta y confirma). */
+  const MODELO_BASE = { M: 0.7, a: 0.08, u: 0.05, r: 0.5, c0: 0.02, d: 0.05, C0: 0.25, Q0: 0.9, T: 36, crisis: true, t0: 18, sev: 0.35, dur: 3, corte: 0.6, g: 0.3, s: 0.01, N: 400 };
+  function simular(p, M, a, dt = 0.05, crece = false) {
+    const n = Math.round(p.T / dt), idx0 = Math.round(p.t0 / dt), t = [], C = [], Q = [], A = [];
+    let c = p.C0, q = p.Q0, m = M;
+    const f = (c, q, m, tt) => {
       const rr = p.crisis && tt >= p.t0 && tt < p.t0 + p.dur ? p.r * (1 - p.corte) : p.r;
-      return [(p.c0 + rr * M * q * c) * (1 - c) - p.d * c, a * (1 - q) - p.u * q];
+      return [(p.c0 + rr * m * q * c) * (1 - c) - p.d * c, a * (1 - q) - p.u * q, crece ? ((p.s || 0) + (p.g || 0) * c) * (1 - m) : 0];
     };
     for (let i = 0; i <= n; i++) {
-      const tt = i * dt; t.push(tt); C.push(c); Q.push(q);
+      const tt = i * dt; t.push(tt); C.push(c); Q.push(q); A.push(m);
       if (p.crisis && i === idx0) c *= 1 - p.sev;
-      const k1 = f(c, q, tt), k2 = f(c + (dt / 2) * k1[0], q + (dt / 2) * k1[1], tt + dt / 2), k3 = f(c + (dt / 2) * k2[0], q + (dt / 2) * k2[1], tt + dt / 2), k4 = f(c + dt * k3[0], q + dt * k3[1], tt + dt);
-      c += (dt / 6) * (k1[0] + 2 * k2[0] + 2 * k3[0] + k4[0]); q += (dt / 6) * (k1[1] + 2 * k2[1] + 2 * k3[1] + k4[1]);
+      const k1 = f(c, q, m, tt), k2 = f(c + (dt / 2) * k1[0], q + (dt / 2) * k1[1], m + (dt / 2) * k1[2], tt + dt / 2), k3 = f(c + (dt / 2) * k2[0], q + (dt / 2) * k2[1], m + (dt / 2) * k2[2], tt + dt / 2), k4 = f(c + dt * k3[0], q + dt * k3[1], m + dt * k3[2], tt + dt);
+      c += (dt / 6) * (k1[0] + 2 * k2[0] + 2 * k3[0] + k4[0]); q += (dt / 6) * (k1[1] + 2 * k2[1] + 2 * k3[1] + k4[1]); m += (dt / 6) * (k1[2] + 2 * k2[2] + 2 * k3[2] + k4[2]);
     }
-    return { t, C, Q };
+    return { t, C, Q, A };
   }
   function metricas(s, p) {
-    const at = (m) => s.C[Math.min(s.C.length - 1, Math.round(m / (s.t[1] - s.t[0])))];
-    const r = { c12: at(12), fin: s.C[s.C.length - 1], pre: null, min: null, rec: null };
+    const k = s.C.length - 1, at = (m) => s.C[Math.min(k, Math.round(m / (s.t[1] - s.t[0])))];
+    const r = { c12: at(12), fin: s.C[k], pre: null, min: null, rec: null, A: s.A[k], Q: s.Q[k] };
+    const n = s.C[k] * (p.N || 0); r.n = n; r.pos = Math.max(0, n * (n - 1) / 2); r.util = r.pos * s.A[k] * s.Q[k];
     if (!p.crisis) return r;
     const i0 = Math.round(p.t0 / (s.t[1] - s.t[0]));
     r.pre = s.C[i0]; r.min = Math.min(...s.C.slice(i0));
     for (let i = i0 + 1; i < s.C.length; i++) if (s.C[i] >= 0.9 * r.pre) { r.rec = s.t[i] - p.t0; break; }
     return r;
   }
-  const PURE = { TIPOS, hav, norm, dice, duplicados, calidad, masCercanos, coberturaPct, MODELO_BASE, simular, metricas };
+  /* Fracción de los registros con fecha de hace dias días o menos (sin fecha cuenta como no vigente). null si no hay registros. */
+  function vigenteFrac(items, hoy = new Date(), dias = 365) {
+    if (!items.length) return null;
+    return items.filter((i) => { const e = edadDias(i.fecha, hoy); return e !== null && e <= dias; }).length / items.length;
+  }
+  const PURE = { TIPOS, hav, norm, dice, duplicados, calidad, masCercanos, coberturaPct, vigenteFrac, MODELO_BASE, simular, metricas };
   if (typeof module !== "undefined" && module.exports) { module.exports = PURE; return; }
 
   /* ================= Interfaz (solo en el navegador) ================= */
@@ -171,13 +184,17 @@
 
   /* ---------- HTML del panel ---------- */
   const CAMPOS = [
-    { k: "M", t: "Cobertura del mapeo", u: "%", f: 100, min: 0, max: 100, step: 5, main: 1 },
+    { k: "M", t: "Cobertura del mapa hoy", u: "%", f: 100, min: 0, max: 100, step: 5, main: 1 },
     { k: "a", t: "Verificación mensual con la comunidad", u: "% del mapa por mes", f: 100, min: 0, max: 15, step: 1, main: 1 },
+    { k: "g", t: "Aporte de las personas al mapa (efecto de red)", u: "% por mes", f: 100, min: 0, max: 100, step: 5, main: 1 },
     { k: "u", t: "Pérdida de vigencia del dato", u: "% por mes", f: 100, min: 0, max: 20, step: 1 },
     { k: "r", t: "Efecto de ver y conectar los activos", u: "por mes", f: 1, min: 0, max: 2, step: 0.1 },
     { k: "c0", t: "Difusión espontánea", u: "% por mes", f: 100, min: 0, max: 10, step: 0.5 },
     { k: "d", t: "Olvido y recambio de personas", u: "% por mes", f: 100, min: 1, max: 20, step: 1 },
+    { k: "s", t: "Aportes que no dependen de las personas (importación, administración)", u: "% por mes", f: 100, min: 0, max: 10, step: 0.5 },
     { k: "C0", t: "Población que ya conoce los activos (mes 0)", u: "%", f: 100, min: 0, max: 100, step: 5 },
+    { k: "Q0", t: "Datos vigentes hoy (mes 0)", u: "%", f: 100, min: 0, max: 100, step: 5 },
+    { k: "N", t: "Personas en el barrio o la red", u: "personas", f: 1, min: 50, max: 5000, step: 50 },
     { k: "t0", t: "Mes de la crisis", u: "mes", f: 1, min: 6, max: 30, step: 1 },
     { k: "sev", t: "Pérdida inmediata por la crisis", u: "%", f: 100, min: 0, max: 80, step: 5 },
     { k: "dur", t: "Duración de la interrupción", u: "meses", f: 1, min: 0, max: 12, step: 1 },
@@ -187,7 +204,9 @@
     const tabs = [["mapear", "1 · Mapear"], ["calidad", "2 · Calidad"], ["cercania", "3 · Cercanía"], ["dinamica", "4 · Dinámica"]];
     const main = CAMPOS.filter((c) => c.main).map((c) => `<label for="mod-${c.k}">${esc(c.t)}: <output id="mod-${c.k}-o"></output></label><input type="range" id="mod-${c.k}" data-mod="${c.k}" min="${c.min}" max="${c.max}" step="${c.step}">`).join("");
     const adv = CAMPOS.filter((c) => !c.main).map((c) => `<label for="mod-${c.k}">${esc(c.t)} <small>(${esc(c.u)})</small></label><input type="number" id="mod-${c.k}" data-mod="${c.k}" min="${c.min}" max="${c.max}" step="${c.step}">`).join("");
-    return `<span class="ey">De la información local a la decisión</span>
+    const rN = (() => { try { const v = new URLSearchParams(location.search).get("r"); return /^\d{1,2}$/.test(v || "") ? v : null; } catch (e) { return null; } })();
+    const volver = rN ? `<p class="lab-back"><a href="charla/?o=laboratorio#${rN}">↩ Volver a la charla (diapositiva ${rN})</a></p>` : "";
+    return `${volver}<span class="ey">De la información local a la decisión</span>
 <p class="lead">Cuatro herramientas para pasar del conocimiento del territorio a información útil para la salud comunitaria.</p>
 <div id="lab" class="lab">
 <div class="lab-tabs" role="tablist" aria-label="Herramientas del laboratorio">${tabs.map(([k, t]) => `<button type="button" role="tab" id="t-${k}" data-tab="${k}" aria-selected="${k === "mapear"}" aria-controls="p-${k}">${t}</button>`).join("")}</div>
@@ -220,16 +239,41 @@
 </section>
 
 <section id="p-dinamica" role="tabpanel" aria-labelledby="t-dinamica" hidden>
-<p class="lab-sub"><b>La salud se re-crea constantemente, y el mapa también.</b> ¿Qué pasa con el tiempo y ante una crisis?</p>
+<p class="lab-sub"><b>Anticipación.</b> La salud se re-crea constantemente, y el mapa también. Cada línea suma una pieza: ¿qué pasa con el tiempo, ante una crisis y cuando la gente aporta?</p>
+<svg id="mod-svg" viewBox="0 0 400 230" role="img" aria-label="Gráfico de la simulación"></svg>
+<div id="mod-leg" class="mod-leg" role="group" aria-label="Mostrar u ocultar líneas"></div>
+<p id="mod-lec" class="mod-lec" role="status"></p>
 ${main}
 <label class="chk"><input type="checkbox" id="mod-crisis" data-mod="crisis"> Simular una crisis (corte de servicios, temporal)</label>
-<svg id="mod-svg" viewBox="0 0 400 230" role="img" aria-label="Gráfico de la simulación"></svg>
-<div id="mod-leg" class="mod-leg"></div>
+<div class="acts"><button class="btn alt" type="button" id="mod-mis">Partir de mis activos</button></div>
+<p class="nota" id="mod-msg" role="status"></p>
 <div id="mod-tab"></div>
+<div id="mod-red"></div>
+<details open><summary>El sistema en un dibujo</summary>
+<svg id="mod-loop" viewBox="0 0 400 205" role="img" aria-label="Dos bucles. Refuerzo: más personas que usan los activos aportan más activos al mapa, y un mapa más completo atrae a más personas. Balance: el tiempo desactualiza los datos y la verificación de la comunidad los renueva.">
+<defs><marker id="mk-r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1f6b4a"/></marker><marker id="mk-b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#c2410c"/></marker></defs>
+<g font-size="10" fill="currentColor" text-anchor="middle">
+<rect x="4" y="24" width="132" height="46" rx="8" fill="none" stroke="currentColor" stroke-width="1.6"/><text x="70" y="44" font-weight="700">Activos en el mapa</text><text x="70" y="58" opacity=".7">A · cobertura</text>
+<rect x="264" y="24" width="132" height="46" rx="8" fill="none" stroke="currentColor" stroke-width="1.6"/><text x="330" y="44" font-weight="700">Personas que los usan</text><text x="330" y="58" opacity=".7">C · población</text>
+<rect x="134" y="128" width="132" height="46" rx="8" fill="none" stroke="currentColor" stroke-width="1.6"/><text x="200" y="148" font-weight="700">Datos vigentes</text><text x="200" y="162" opacity=".7">Q · confianza</text>
+<path d="M137 38 H263" stroke="#1f6b4a" stroke-width="2" fill="none" marker-end="url(#mk-r)"/><text x="200" y="31" fill="#1f6b4a">ven y se conectan +</text>
+<path d="M263 56 H137" stroke="#1f6b4a" stroke-width="2" fill="none" marker-end="url(#mk-r)"/><text x="200" y="74" fill="#1f6b4a">aportan +</text>
+<circle cx="200" cy="47" r="8" fill="#1f6b4a"/><text x="200" y="50.5" fill="#fff" font-weight="700">R</text>
+<path d="M234 128 L300 74" stroke="#1f6b4a" stroke-width="2" fill="none" marker-end="url(#mk-r)"/><text x="252" y="112" fill="#1f6b4a" text-anchor="end">un mapa vigente sirve +</text>
+<path d="M70 151 H133" stroke="#c2410c" stroke-width="2" fill="none" marker-end="url(#mk-b)"/><text x="70" y="143" fill="#c2410c">pasa el tiempo −</text>
+<path d="M330 151 H267" stroke="#1f6b4a" stroke-width="2" fill="none" marker-end="url(#mk-r)"/><text x="330" y="143" fill="#1f6b4a">se confirma +</text>
+<circle cx="200" cy="192" r="8" fill="#c2410c"/><text x="200" y="195.5" fill="#fff" font-weight="700">B</text>
+</g></svg>
+<p class="nota"><b>R</b> refuerza: cada persona que conoce el mapa lo mejora y lo recomienda. <b>B</b> equilibra: sin verificación, el dato se pierde. El efecto de red existe solo si el bucle R está conectado a la verificación B.</p>
+</details>
 <details><summary>Supuestos y ecuaciones</summary>
 <pre class="eq">dQ/dt = a·(1−Q) − u·Q
-dC/dt = (c₀ + r·M·Q·C)·(1−C) − d·C</pre>
-<p class="nota">Q: vigencia del dato (0 a 1). C: fracción de la población que conoce y puede usar los activos. M: cobertura del mapeo. a: verificación mensual con la comunidad. u: pérdida de vigencia. r: efecto de ver y conectar los activos. c₀: difusión espontánea. d: olvido y recambio. Integración de Runge-Kutta de cuarto orden, paso de 0,05 mes.</p>
+dC/dt = (c₀ + r·A·Q·C)·(1−C) − d·C
+dA/dt = (s + g·C)·(1−A)
+posibles = n(n−1)/2,  n = C·N
+vía el mapa = posibles · A · Q</pre>
+<p class="nota">Q: vigencia del dato (0 a 1). C: fracción de la población que conoce y puede usar los activos. A: cobertura del mapa. a: verificación mensual con la comunidad. u: pérdida de vigencia. r: efecto de ver y conectar los activos. c₀: difusión espontánea. d: olvido y recambio. s: aportes que no dependen de las personas. g: aporte de las personas al mapa. N: personas en el barrio o la red. En las tres primeras líneas A no crece (queda en su valor de hoy); en la cuarta crece con las personas que conocen el mapa. Integración de Runge-Kutta de cuarto orden, paso de 0,05 mes.</p>
+<p class="nota"><b>Conexiones.</b> Las «posibles» son las de Metcalfe. Las «vía el mapa» son un índice: suponen que una conexión solo se concreta si pasa por un activo que está en el mapa (A) y cuyo dato sigue vigente (Q). No es una medición.</p>
 ${adv}
 <div class="acts"><button class="btn alt" type="button" id="mod-reset">Volver a los valores iniciales</button></div></details>
 <p class="nota">Modelo ilustrativo, no calibrado con datos reales. Sirve para conversar qué tendría que ser cierto para que mapear valga la pena, no para predecir.</p>
@@ -244,6 +288,7 @@ ${adv}
     $$("#lab [role=tab]").forEach((b) => b.setAttribute("aria-selected", String(b.dataset.tab === k)));
     $$("#lab [role=tabpanel]").forEach((p) => { p.hidden = p.id !== "p-" + k; });
     cancelarPick(); limpiarCerc();
+    try { history.replaceState(null, "", location.pathname + location.search + "#laboratorio-" + k); } catch (e) { /* sin historial */ }
     if (k === "calidad") renderCalidad(); if (k === "cercania") renderCercania(); if (k === "dinamica") renderModelo();
   }
 
@@ -349,25 +394,47 @@ ${adv}
   }
 
   /* ---------- 4 · Dinámica ---------- */
-  const COL = { sin: "#6b7280", mal: "#c2410c", bien: "#1f6b4a" };
+  const COL = { sin: "#6b7280", mal: "#c2410c", bien: "#1f6b4a", red: "#1d4ed8" };
+  const NOM = { sin: "Sin mapa digital", mal: "Mapa hecho una vez", bien: "Mapa verificado", red: "Verificado, con efecto de red" };
+  const DES = { sin: "Sin mapa digital", mal: "Mapa hecho una vez, sin mantención", bien: "Mapa verificado con la comunidad", red: "Mapa verificado que crece con la gente (efecto de red)" };
+  const DASH = { sin: "2 4", mal: "7 4", bien: "12 3 2 3", red: "" };
+  const ocultas = new Set();
+  const nf = (v) => Math.round(v).toLocaleString("es-CL");
   function renderModelo() {
     const svg = $("#mod-svg"); if (!svg) return;
     CAMPOS.forEach((c) => { const el = $("#mod-" + c.k); if (el && document.activeElement !== el) el.value = Math.round(P[c.k] * c.f * 100) / 100; const o = $("#mod-" + c.k + "-o"); if (o) o.textContent = Math.round(P[c.k] * c.f * 10) / 10 + " " + c.u; });
     $("#mod-crisis").checked = P.crisis;
-    const S = [["Sin mapa digital", simular(P, 0, 0), "sin", "2 4"], ["Mapa hecho una vez, sin mantención", simular(P, P.M, 0), "mal", "7 4"], ["Mapa verificado con la comunidad", simular(P, P.M, P.a), "bien", ""]];
+    const S = [["sin", simular(P, 0, 0)], ["mal", simular(P, P.M, 0)], ["bien", simular(P, P.M, P.a)], ["red", simular(P, P.M, P.a, 0.05, true)]];
     const W = 400, H = 230, l = 38, r = 10, t = 12, b = 30, x = (m) => l + (m / P.T) * (W - l - r), y = (v) => t + (1 - v) * (H - t - b);
     let g = "";
     [0, 0.25, 0.5, 0.75, 1].forEach((v) => { g += `<line x1="${l}" x2="${W - r}" y1="${y(v)}" y2="${y(v)}" stroke="currentColor" opacity=".13"/><text x="${l - 5}" y="${y(v) + 3.5}" text-anchor="end" font-size="9.5" fill="currentColor" opacity=".7">${v * 100}</text>`; });
     for (let m = 0; m <= P.T; m += 6) g += `<text x="${x(m)}" y="${H - 14}" text-anchor="middle" font-size="9.5" fill="currentColor" opacity=".7">${m}</text>`;
     g += `<text x="${(l + W - r) / 2}" y="${H - 2}" text-anchor="middle" font-size="9.5" fill="currentColor" opacity=".7">meses</text><text transform="translate(9 ${(t + H - b) / 2}) rotate(-90)" text-anchor="middle" font-size="9.5" fill="currentColor" opacity=".7">% que conoce y puede usar los activos</text>`;
     if (P.crisis) g += `<rect x="${x(P.t0)}" y="${t}" width="${Math.max(1, x(Math.min(P.T, P.t0 + P.dur)) - x(P.t0))}" height="${H - t - b}" fill="#b91c1c" opacity=".1"/><line x1="${x(P.t0)}" x2="${x(P.t0)}" y1="${t}" y2="${H - b}" stroke="#b91c1c" stroke-dasharray="3 3"/><text x="${x(P.t0) + 3}" y="${t + 9}" font-size="9.5" fill="#b91c1c">crisis</text>`;
-    S.forEach(([n, s, c, d]) => { g += `<polyline fill="none" stroke="${COL[c]}" stroke-width="${c === "bien" ? 2.8 : 2}" ${d ? `stroke-dasharray="${d}"` : ""} points="${s.t.filter((_, i) => i % 4 === 0).map((tt, i) => `${x(tt).toFixed(1)},${y(s.C[i * 4]).toFixed(1)}`).join(" ")}"/>`; });
+    S.filter(([c]) => !ocultas.has(c)).forEach(([c, s]) => { g += `<polyline fill="none" stroke="${COL[c]}" stroke-width="${c === "red" ? 3 : 2}" ${DASH[c] ? `stroke-dasharray="${DASH[c]}"` : ""} points="${s.t.filter((_, i) => i % 4 === 0).map((tt, i) => `${x(tt).toFixed(1)},${y(s.C[i * 4]).toFixed(1)}`).join(" ")}"/>`; });
     svg.innerHTML = g;
-    const M = S.map(([n, s]) => metricas(s, P));
-    svg.setAttribute("aria-label", `Simulación a ${P.T} meses. A los 36 meses conoce y puede usar los activos: ${Math.round(M[0].fin * 100)} % sin mapa, ${Math.round(M[1].fin * 100)} % con un mapa sin mantención y ${Math.round(M[2].fin * 100)} % con un mapa verificado con la comunidad.`);
-    $("#mod-leg").innerHTML = S.map(([n, , c, d]) => `<span><svg width="26" height="8" aria-hidden="true"><line x1="0" x2="26" y1="4" y2="4" stroke="${COL[c]}" stroke-width="3" ${d ? `stroke-dasharray="${d}"` : ""}/></svg> ${esc(n)}</span>`).join("");
+    const M = S.map(([, s]) => metricas(s, P));
+    svg.setAttribute("aria-label", `Simulación a ${P.T} meses. A los ${P.T} meses conoce y puede usar los activos: ${Math.round(M[0].fin * 100)} % sin mapa, ${Math.round(M[1].fin * 100)} % con un mapa sin mantención, ${Math.round(M[2].fin * 100)} % con un mapa verificado y ${Math.round(M[3].fin * 100)} % con un mapa verificado que crece con la gente.`);
+    $("#mod-leg").innerHTML = S.map(([c]) => `<button type="button" class="mod-lg" data-ln="${c}" title="${esc(DES[c])}" aria-pressed="${!ocultas.has(c)}"><svg width="26" height="8" aria-hidden="true"><line x1="0" x2="26" y1="4" y2="4" stroke="${COL[c]}" stroke-width="3" ${DASH[c] ? `stroke-dasharray="${DASH[c]}"` : ""}/></svg> ${esc(NOM[c])}</button>`).join("");
     const pc = (v) => (v == null ? "–" : Math.round(v * 100) + " %"), rec = (v) => (!P.crisis ? "–" : v == null ? "no se recupera" : String(Math.round(v * 10) / 10).replace(".", ",") + " meses");
-    $("#mod-tab").innerHTML = `<table class="mod-t"><thead><tr><th></th><th>Mes 12</th><th>Mínimo tras la crisis</th><th>Mes ${P.T}</th><th>Recupera 90 %</th></tr></thead><tbody>${S.map(([n], i) => `<tr><th scope="row">${esc(n)}</th><td>${pc(M[i].c12)}</td><td>${pc(M[i].min)}</td><td>${pc(M[i].fin)}</td><td>${rec(M[i].rec)}</td></tr>`).join("")}</tbody></table>`;
+    const dif = (M[3].c12 - M[2].c12) * 100, difF = (M[3].fin - M[2].fin) * 100, sg = (v) => (v >= 0 ? "+" : "−") + Math.abs(Math.round(v));
+    $("#mod-lec").innerHTML = `<b>Qué suma el efecto de red.</b> Frente a un mapa verificado que no crece, al mes 12 son ${sg(dif)} puntos y al mes ${P.T}, ${sg(difF)}.${dif > difF + 1 ? " La red ayuda más al principio: el mapa crece solo y llega antes." : difF > dif + 1 ? " La red pesa más con el tiempo: cada aporte acumulado sirve a más gente." : ""}`;
+    $("#mod-tab").innerHTML = `<table class="mod-t"><thead><tr><th></th><th>Mes 12</th><th>Mínimo tras la crisis</th><th>Mes ${P.T}</th><th>Recupera 90 %</th></tr></thead><tbody>${S.map(([c], i) => `<tr><th scope="row"><span class="mod-sw" style="background:${COL[c]}"></span>${esc(NOM[c])}</th><td>${pc(M[i].c12)}</td><td>${pc(M[i].min)}</td><td>${pc(M[i].fin)}</td><td>${rec(M[i].rec)}</td></tr>`).join("")}</tbody></table>`;
+    $("#mod-red").innerHTML = `<table class="mod-t"><caption>Efecto de red al mes ${P.T}, con ${nf(P.N)} personas (índice ilustrativo)</caption><thead><tr><th></th><th>Usan los activos</th><th>Conexiones posibles</th><th>Vía el mapa vigente</th></tr></thead><tbody>${S.map(([c], i) => `<tr><th scope="row"><span class="mod-sw" style="background:${COL[c]}"></span>${esc(NOM[c])}</th><td>${nf(M[i].n)}</td><td>${nf(M[i].pos)}</td><td>${nf(M[i].util)}</td></tr>`).join("")}</tbody></table><p class="nota">Las conexiones posibles crecen con el cuadrado de las personas; las que pasan por un activo vigente del mapa son las que se concretan.</p>`;
+  }
+  /* Toma los activos que ya están cargados (Mapear, Calidad, Cercanía) como punto de partida del modelo */
+  function partirDeMisActivos() {
+    const msg = $("#mod-msg"), lista = todos();
+    if (lista.length < 3) { msg.textContent = "Aún hay muy pocos activos cargados. Agrega aportes en «Mapear» o espera a que carguen los de OpenStreetMap."; return; }
+    const q = vigenteFrac(lista), map = api.S.map;
+    P.Q0 = q;
+    let txt = `Partí de ${lista.length} activos: ${Math.round(q * 100)} % con fecha de hace un año o menos (datos vigentes hoy)`;
+    if (map) {
+      const bb = map.getBounds(), cob = coberturaPct(lista, F.radio, { s: bb.getSouth(), w: bb.getWest(), n: bb.getNorth(), e: bb.getEast() });
+      P.M = cob; txt += ` y ${Math.round(cob * 100)} % del área visible a ${String(F.radio).replace(".", ",")} km o menos de algún activo (cobertura del mapa hoy)`;
+    }
+    msg.textContent = txt + ". Para los datos de OpenStreetMap la fecha es la de descarga, no la de una verificación en terreno.";
+    renderModelo();
   }
 
   /* ---------- Montaje y eventos ---------- */
@@ -384,7 +451,9 @@ ${adv}
       if (b.id === "lab-csv") return exportar("csv");
       if (b.id === "lab-clear") return vaciar(b);
       if (b.id === "cer-pick") return iniciarPick("origen");
-      if (b.id === "mod-reset") { Object.assign(P, MODELO_BASE); return renderModelo(); }
+      if (b.id === "mod-reset") { Object.assign(P, MODELO_BASE); ocultas.clear(); const m = $("#mod-msg"); if (m) m.textContent = ""; return renderModelo(); }
+      if (b.id === "mod-mis") return partirDeMisActivos();
+      if (b.dataset.ln) { if (ocultas.has(b.dataset.ln)) ocultas.delete(b.dataset.ln); else ocultas.add(b.dataset.ln); return renderModelo(); }
       const id = b.dataset.val || b.dataset.del || b.dataset.zoom, it = items.find((i) => i.id === id);
       if (!it) return;
       if (b.dataset.val) { it.validado = !it.validado; guardar(); dibujar(); renderLista(); }
@@ -412,5 +481,5 @@ ${adv}
   }
   function cancel() { if (!api) return; cancelarPick(); limpiarCerc(); montado = false; }
 
-  root.SG_LAB = { html, mount, attach, cancel, setVisible, visible: () => vis, count: () => items.length, points: () => items.map((i) => [i.lat, i.lng]), pure: PURE };
+  root.SG_LAB = { html, mount, attach, cancel, irA: (k) => { if (montado && ["mapear", "calidad", "cercania", "dinamica"].includes(k)) setTab(k); }, setVisible, visible: () => vis, count: () => items.length, points: () => items.map((i) => [i.lat, i.lng]), pure: PURE };
 })(typeof window !== "undefined" ? window : globalThis);

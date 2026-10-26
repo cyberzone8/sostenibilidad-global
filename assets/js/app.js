@@ -587,7 +587,9 @@
     if (window.SG_APORTES && S.map && !S.emp) window.SG_APORTES.attach(labApi);
     if (S.empMissing) aviso("No encontramos esa empresa. Te mostramos el mapa general.");
     const h = decodeURIComponent(location.hash.slice(1));
-    if (h) open(h, null, false);
+    const hl = /^laboratorio-(mapear|calidad|cercania|dinamica)$/.exec(h); /* enlace directo a una herramienta del Laboratorio */
+    if (hl) { open("laboratorio", null, false); if (window.SG_LAB) window.SG_LAB.irA(hl[1]); }
+    else if (h) open(h, null, false);
   }
   init();
 })();
