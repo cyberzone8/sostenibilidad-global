@@ -1,0 +1,14 @@
+[
+ {
+  "id": "HIP-0001",
+  "enunciado": "La falta de información territorial consolidada a escala regional dificulta la articulación intermunicipal y la formulación de proyectos conjuntos.",
+  "tipo": "brecha",
+  "capacidad_ids": "",
+  "necesidad_ids": "NEC-0001",
+  "estado": "pendiente",
+  "criterio_validacion": "Contrastar con actas, informes de proyectos y entrevistas a equipos municipales; buscar casos donde sí haya consolidación.",
+  "fecha_registro": "2026-10-28",
+  "fuente_ids": "SRC-0001",
+  "notas": "Hipótesis por contrastar. No equivale a afirmar que no exista coordinación."
+ }
+]

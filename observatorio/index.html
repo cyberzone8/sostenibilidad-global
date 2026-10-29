@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Observatorio Biobío | Sostenibilidad Global</title>
+<meta name="description" content="Observatorio de capacidades y articulación territorial del Biobío: actores, iniciativas y capacidades con fuente, fecha y nivel de verificación.">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
+<style>
+:root{--dk:#173528;--g:#2d6a4f;--lg:#58b88a;--bg:#f4f8f5;--fg:#14251d;--mut:#586b62;--bd:#d4e0d9;--cd:#fff}
+@media(prefers-color-scheme:dark){:root{--bg:#0f1b16;--fg:#e3eee8;--mut:#9db1a7;--bd:#2a3b33;--cd:#16261f}}
+*{box-sizing:border-box}body{margin:0;font:16px/1.55 "DM Sans",system-ui,sans-serif;background:var(--bg);color:var(--fg);padding-top:env(safe-area-inset-top,0)}
+h1,h2,h3{font-family:Montserrat,system-ui,sans-serif;line-height:1.2}
+.top{display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;align-items:center;max-width:1040px;margin:auto;padding:16px 20px}
+.logo{background:var(--dk);color:#fff;font:800 1rem Montserrat,sans-serif;padding:10px 18px;border-radius:30px;text-decoration:none}.logo b{color:var(--lg)}
+.menu{display:flex;flex-wrap:wrap;gap:4px;background:var(--cd);border:1px solid var(--bd);border-radius:30px;padding:5px}
+.menu a{padding:7px 13px;border-radius:20px;text-decoration:none;color:var(--fg);font-size:.88rem;font-weight:500}.menu a.on{background:var(--g);color:#fff}
+.hero{max-width:1040px;margin:8px auto;padding:0 20px}.hero div{background:var(--cd);border:1px solid var(--bd);border-radius:22px;padding:24px}
+.hero h1{margin:0 0 6px;font-size:1.7rem}.hero h1 span{color:var(--g)}.hero p{margin:0;color:var(--mut)}
+.tabs{display:flex;flex-wrap:wrap;gap:6px;max-width:1040px;margin:14px auto 0;padding:0 20px}
+.tabs a{padding:6px 13px;border:1px solid var(--bd);border-radius:20px;text-decoration:none;color:var(--fg);font-size:.88rem;background:var(--cd)}.tabs a.on{background:var(--dk);color:#fff;border-color:var(--dk)}
+main{max-width:1040px;margin:auto;padding:16px 20px 40px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
+.card{background:var(--cd);border:1px solid var(--bd);border-radius:14px;padding:12px}.card b{font:800 1.6rem Montserrat,sans-serif;color:var(--g);display:block}
+.tw{overflow-x:auto;background:var(--cd);border:1px solid var(--bd);border-radius:14px}table{border-collapse:collapse;width:100%;font-size:.86rem}
+th,td{border-bottom:1px solid var(--bd);padding:7px 10px;text-align:left;vertical-align:top}th{color:var(--mut);font-weight:700}
+.n{font-size:.75rem;padding:1px 8px;border-radius:10px;background:var(--g);color:#fff}
+.aviso{background:var(--cd);border-left:4px solid var(--lg);border-radius:8px;padding:10px 14px;margin:14px 0;font-size:.9rem}
+svg text{fill:var(--fg);font-size:10px}a{color:var(--g)}footer{max-width:1040px;margin:auto;padding:0 20px 30px;color:var(--mut);font-size:.82rem}
+</style></head><body>
+<div class="top"><a class="logo" href="../">Sostenibilidad <b>Global</b></a>
+<nav class="menu"><a href="../">Mapa</a><a href="../directorio/">Directorio</a><a href="../comunidad/">Comunidad</a><a href="../radio/">Radio</a><a class="on" href="./">Observatorio</a><a href="https://cyberzone8.github.io/liderazgo-territorial/programa-liderazgo.html">Liderazgo territorial</a></nav></div>
+<section class="hero"><div><h1>Observatorio de capacidades y <span>articulación territorial</span> del Biobío</h1>
+<p>Actores, iniciativas y capacidades con fuente, fecha y nivel de verificación. Trabaja junto al Programa de Liderazgo Local y Desarrollo Territorial 2026–2027.</p></div></section>
+<nav class="tabs" id="tabs"></nav><main id="app"></main>
+<footer>Iniciativa independiente. No es un sitio oficial ni implica participación o aprobación de los organismos mencionados. Datos sin información personal; ver <a href="../privacidad/">privacidad</a>.</footer>
+<script>
+const SEC={inicio:"Inicio",actores:"Actores y relaciones",iniciativas:"Iniciativas",cap:"Capacidades y necesidades",hipotesis:"Hipótesis",fuentes:"Fuentes",solicitudes:"Solicitudes",programa:"Con el programa",metodo:"Metodología"};
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const get=async f=>{try{const r=await fetch("publicado/"+f+".json");return r.ok?await r.json():[]}catch{return[]}};
+let ESQ={niveles:{},tablas:{}};const vista=t=>(ESQ.tablas[t]||{}).vista;
+const lvl=n=>n?`<span class="n">${esc(n)}</span>`:"";
+function tabla(rows,cols,map={}){if(!rows.length)return'<p class="aviso">Aún no hay registros publicados.</p>';cols=cols||Object.keys(rows[0]);
+ return`<div class="tw"><table><tr>${cols.map(c=>`<th>${c}</th>`).join("")}</tr>${rows.map(r=>`<tr>${cols.map(c=>`<td>${c==="nivel_verificacion"?lvl(r[c]):esc(map[c]?map[c](r[c]):r[c])}</td>`).join("")}</tr>`).join("")}</table></div>`}
+function grafo(G){if(!G.nodos.length)return"";const W=520,c=W/2,rad=c-70,n=G.nodos.length,p={};
+ G.nodos.forEach((x,i)=>{const a=2*Math.PI*i/n;p[x.id]=[c+rad*Math.cos(a),c+rad*Math.sin(a)]});
+ const L=G.aristas.filter(e=>p[e.de]&&p[e.a]).map(e=>`<line x1="${p[e.de][0]}" y1="${p[e.de][1]}" x2="${p[e.a][0]}" y2="${p[e.a][1]}" stroke="#2d6a4f" stroke-opacity=".55" ${["N0","N1"].includes(e.nivel)?'stroke-dasharray="4"':""}/>`).join("");
+ const N=G.nodos.map(x=>`<circle cx="${p[x.id][0]}" cy="${p[x.id][1]}" r="6" fill="#58b88a"/><text x="${p[x.id][0]+8}" y="${p[x.id][1]+3}">${esc(x.nombre)}</text>`).join("");
+ return`<svg viewBox="0 0 ${W} ${W}" width="100%" role="img" aria-label="Mapa de relaciones documentadas">${L}${N}</svg><p class="aviso">Línea punteada: verificación baja (N0–N1). Que falte una línea no demuestra que no exista la relación.</p>`}
+const PROG=[["Fase 1 · Módulo 1","Línea base normativa y protocolo de datos personales","Metodología y reglas de publicación","—"],["Fase 1 · Módulo 2","Mapeo de capacidades productivas y perfil de resiliencia y transformabilidad por comuna","Capacidades, necesidades, perfil_rt y cluster de actores","programa_liderazgo"],["Fase 2 · Módulo 6","Datos abiertos y acceso a la información (Ley 20.285)","Fuentes e iniciativas","fuente_publica"],["Fase 3 · Módulos 8 y 9","Alianzas y encadenamientos productivos","Relaciones e hipótesis validadas","programa_liderazgo"],["Fase 4 · Módulos 10 a 12","Medición antes/después, hoja de ruta 2050 y red que opera como observatorio","Nivel N3, métricas y continuidad","programa_liderazgo"]];
+const V={
+async inicio(){const m=await fetch("publicado/metricas.json").then(r=>r.json()).catch(()=>null);if(!m)return'<p class="aviso">Sin datos aún. Se generan con observatorio/tools/construir.py.</p>';const t=m.totales;
+ return`<div class="cards">${Object.keys(t).map(k=>`<div class="card"><b>${t[k]}</b>${k}</div>`).join("")}</div>
+ <h3>Calidad de la evidencia</h3>${tabla(Object.entries(m.por_nivel).map(([nivel,registros])=>({nivel,registros})),["nivel","registros"])}
+ <h3>Origen de los registros</h3>${tabla(Object.entries(m.por_origen||{}).map(([origen,registros])=>({origen,registros})),["origen","registros"])}
+ <h3>Vacíos que orientan el trabajo</h3><ul><li>Actores sin relaciones documentadas: ${m.actores_sin_relaciones.length}</li><li>Capacidades sin cruce con necesidades: ${m.capacidades_sin_cruce.length}</li><li>Necesidades sin capacidades asociadas: ${m.necesidades_sin_cruce.length}</li><li>Registros por revisar (más de 180 días): ${m.registros_por_revisar_180d.length}</li></ul><p style="color:var(--mut)">Actualizado: ${esc(m.generado)}</p>`},
+async actores(){const A=await get("actores"),R=await get("relaciones"),G=await fetch("publicado/grafo.json").then(r=>r.json()).catch(()=>({nodos:[],aristas:[]}));const nm=Object.fromEntries(A.map(a=>[a.id,a.nombre]));
+ return`<h2>Mapa de relaciones documentadas</h2>${grafo(G)}<h3>Actores</h3>${tabla(A,vista("actores"))}<h3>Relaciones</h3>${tabla(R,vista("relaciones"),{origen_id:x=>nm[x]||x,destino_id:x=>nm[x]||x})}`},
+async iniciativas(){return`<h2>Registro de iniciativas</h2>`+tabla(await get("iniciativas"),vista("iniciativas"))},
+async cap(){return`<h2>Capacidades</h2>`+tabla(await get("capacidades"),vista("capacidades"))+`<h2>Necesidades documentadas</h2>`+tabla(await get("necesidades"),vista("necesidades"))},
+async hipotesis(){return`<h2>Hipótesis y validaciones</h2><p class="aviso">Son preguntas por contrastar, no afirmaciones ni acusaciones.</p>`+tabla(await get("hipotesis"),vista("hipotesis"))},
+async fuentes(){return`<h2>Registro de fuentes</h2>`+tabla(await get("fuentes"),vista("fuentes"))},
+async solicitudes(){return`<h2>Solicitudes de acceso a la información</h2><p class="aviso">Los plazos marcados como estimados cuentan 20 días hábiles desde el ingreso (15 para amparo desde la respuesta) y deben confirmarse con el acuse de cada organismo.</p>`+tabla(await get("solicitudes"),vista("solicitudes"))},
+async programa(){return`<h2>Cómo se conecta con el Programa de Liderazgo</h2><p>El programa dura 14 meses (noviembre 2026 a diciembre 2027) y en su cierre la red opera como observatorio territorial. Este sitio es ese instrumento: lo que el programa levanta entra aquí con su origen y su nivel de verificación.</p>${tabla(PROG.map(r=>({"momento del programa":r[0],"qué produce":r[1],"dónde queda aquí":r[2],origen:r[3]})),["momento del programa","qué produce","dónde queda aquí","origen"])}<p><a href="https://cyberzone8.github.io/liderazgo-territorial/programa-liderazgo.html">Ver el programa completo</a></p>`},
+async metodo(){return`<h2>Metodología abierta</h2><ul>${Object.entries(ESQ.niveles).map(([k,v])=>`<li><b>${esc(k)}</b> ${esc(v)}.</li>`).join("")}</ul><p><b>Origen:</b> fuente pública, programa de liderazgo, aporte comunitario o mapa OSM. Un aporte comunitario parte en N0 y sube con corroboración. <b>Esfera:</b> tecnósfera, psicósfera o mixta, como en el programa. No se publican datos personales. Detalle en la carpeta <code>observatorio/docs/</code> del repositorio.</p>`}};
+async function go(){if(!ESQ.niveles.N0)ESQ=await fetch("publicado/esquema.json").then(r=>r.json()).catch(()=>ESQ);const h=(location.hash||"#inicio").slice(1),k=SEC[h]?h:"inicio";document.getElementById("tabs").innerHTML=Object.entries(SEC).map(([i,n])=>`<a href="#${i}" class="${i===k?"on":""}">${n}</a>`).join("");document.getElementById("app").innerHTML=await V[k]()}
+addEventListener("hashchange",go);go();
+</script></body></html>

@@ -1,0 +1,2 @@
+id,nombre,tipo,ambito,comuna,perfil_rt,cluster,origen,fuente_ids,nivel_verificacion,fecha_revision,notas
+ACT-0001,Asociación de Municipalidades de la Región del Biobío,asociacion_municipios,regional,,,,fuente_publica,SRC-0001,N2,2026-10-28,"Según su respuesta, la integran 20 de las 33 municipalidades de la región."

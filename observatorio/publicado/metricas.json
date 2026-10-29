@@ -1,0 +1,47 @@
+{
+ "generado": "2026-10-29",
+ "totales": {
+  "fuentes": 2,
+  "actores": 1,
+  "relaciones": 0,
+  "iniciativas": 0,
+  "capacidades": 0,
+  "necesidades": 1,
+  "hipotesis": 1,
+  "solicitudes": 19
+ },
+ "por_nivel": {
+  "N2": 2
+ },
+ "actores_sin_relaciones": [
+  "ACT-0001"
+ ],
+ "capacidades_sin_cruce": [],
+ "necesidades_sin_cruce": [],
+ "registros_por_revisar_180d": [],
+ "fuentes_sin_respaldo": [],
+ "hipotesis_por_estado": {
+  "pendiente": 1
+ },
+ "cobertura_ods": {
+  "17": 1
+ },
+ "solicitudes_por_estado": {
+  "en_plazo": 18,
+  "respondida": 1
+ },
+ "solicitudes_vencen_7d": [],
+ "amparo_estimado": [
+  {
+   "codigo": "MA036T0000031",
+   "hasta": "2026-11-17"
+  }
+ ],
+ "por_origen": {
+  "fuente_publica": 2
+ },
+ "esfera": {
+  "tecnosfera": 1
+ },
+ "perfiles_rt": {}
+}

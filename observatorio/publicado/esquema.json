@@ -1,0 +1,103 @@
+{
+ "niveles": {
+  "N0": "hipótesis o dato sin verificar",
+  "N1": "una fuente pública",
+  "N2": "documento oficial o norma, o dos fuentes independientes",
+  "N3": "validado por el propio organismo"
+ },
+ "tablas": {
+  "fuentes": {
+   "vista": [
+    "id",
+    "titulo",
+    "organismo_emisor",
+    "tipo",
+    "fecha_publicacion",
+    "fecha_acceso",
+    "url"
+   ]
+  },
+  "actores": {
+   "vista": [
+    "id",
+    "nombre",
+    "tipo",
+    "comuna",
+    "perfil_rt",
+    "cluster",
+    "origen",
+    "nivel_verificacion",
+    "fecha_revision"
+   ]
+  },
+  "relaciones": {
+   "vista": [
+    "id",
+    "origen_id",
+    "tipo_relacion",
+    "destino_id",
+    "descripcion",
+    "nivel_verificacion",
+    "fuente_ids"
+   ]
+  },
+  "iniciativas": {
+   "vista": [
+    "id",
+    "nombre",
+    "actor_id",
+    "estado",
+    "territorio",
+    "esfera",
+    "ods",
+    "nivel_verificacion",
+    "fuente_ids"
+   ]
+  },
+  "capacidades": {
+   "vista": [
+    "id",
+    "actor_id",
+    "capacidad",
+    "categoria",
+    "esfera",
+    "ods",
+    "nivel_verificacion",
+    "fuente_ids"
+   ]
+  },
+  "necesidades": {
+   "vista": [
+    "id",
+    "territorio",
+    "necesidad",
+    "tema",
+    "esfera",
+    "ods",
+    "nivel_verificacion",
+    "fuente_ids"
+   ]
+  },
+  "hipotesis": {
+   "vista": [
+    "id",
+    "enunciado",
+    "tipo",
+    "estado",
+    "criterio_validacion",
+    "fecha_registro"
+   ]
+  },
+  "solicitudes": {
+   "vista": [
+    "codigo_portal",
+    "fecha_ingreso",
+    "entidad",
+    "estado",
+    "plazo_estimado",
+    "tipo_respuesta",
+    "amparo_hasta_estimado"
+   ]
+  }
+ }
+}

@@ -1,0 +1,403 @@
+{
+ "_leeme": "Única definición del esquema del observatorio. validar.py, construir.py y la página leen este archivo. Para cambiar una tabla, cámbiala solo aquí (y el desplegable del formulario de Issues, que validar.py comprueba).",
+ "id_digitos": 4,
+ "multivalor": [
+  "fuente_ids",
+  "ods",
+  "iniciativa_ids",
+  "capacidad_ids",
+  "necesidad_ids"
+ ],
+ "niveles": {
+  "N0": "hipótesis o dato sin verificar",
+  "N1": "una fuente pública",
+  "N2": "documento oficial o norma, o dos fuentes independientes",
+  "N3": "validado por el propio organismo"
+ },
+ "tablas": {
+  "fuentes": {
+   "prefijo": "SRC",
+   "formulario": null,
+   "columnas": [
+    "id",
+    "titulo",
+    "organismo_emisor",
+    "url",
+    "tipo",
+    "fecha_publicacion",
+    "fecha_acceso",
+    "archivo_respaldo",
+    "licencia_uso",
+    "observaciones"
+   ],
+   "obligatorias": [
+    "id",
+    "titulo",
+    "organismo_emisor",
+    "tipo",
+    "fecha_acceso"
+   ],
+   "vocabulario": {
+    "tipo": "tipo_fuente"
+   },
+   "referencias": {},
+   "fechas": [
+    "fecha_publicacion",
+    "fecha_acceso"
+   ],
+   "exige_origen": false,
+   "vista": [
+    "id",
+    "titulo",
+    "organismo_emisor",
+    "tipo",
+    "fecha_publicacion",
+    "fecha_acceso",
+    "url"
+   ]
+  },
+  "actores": {
+   "prefijo": "ACT",
+   "formulario": "actor",
+   "columnas": [
+    "id",
+    "nombre",
+    "tipo",
+    "ambito",
+    "comuna",
+    "perfil_rt",
+    "cluster",
+    "origen",
+    "fuente_ids",
+    "nivel_verificacion",
+    "fecha_revision",
+    "notas"
+   ],
+   "obligatorias": [
+    "id",
+    "nombre",
+    "tipo",
+    "nivel_verificacion",
+    "fecha_revision"
+   ],
+   "vocabulario": {
+    "tipo": "tipo_actor",
+    "ambito": "ambito",
+    "nivel_verificacion": "nivel",
+    "origen": "origen",
+    "perfil_rt": "perfil_rt"
+   },
+   "referencias": {
+    "fuente_ids": "fuentes"
+   },
+   "fechas": [
+    "fecha_revision"
+   ],
+   "exige_origen": true,
+   "vista": [
+    "id",
+    "nombre",
+    "tipo",
+    "comuna",
+    "perfil_rt",
+    "cluster",
+    "origen",
+    "nivel_verificacion",
+    "fecha_revision"
+   ]
+  },
+  "relaciones": {
+   "prefijo": "REL",
+   "formulario": "relacion",
+   "columnas": [
+    "id",
+    "origen_id",
+    "destino_id",
+    "tipo_relacion",
+    "descripcion",
+    "fecha_inicio",
+    "fecha_fin",
+    "fuente_ids",
+    "nivel_verificacion",
+    "fecha_revision"
+   ],
+   "obligatorias": [
+    "id",
+    "origen_id",
+    "destino_id",
+    "tipo_relacion",
+    "nivel_verificacion",
+    "fecha_revision"
+   ],
+   "vocabulario": {
+    "tipo_relacion": "tipo_relacion",
+    "nivel_verificacion": "nivel"
+   },
+   "referencias": {
+    "origen_id": "actores",
+    "destino_id": "actores",
+    "fuente_ids": "fuentes"
+   },
+   "fechas": [
+    "fecha_inicio",
+    "fecha_fin",
+    "fecha_revision"
+   ],
+   "exige_origen": false,
+   "vista": [
+    "id",
+    "origen_id",
+    "tipo_relacion",
+    "destino_id",
+    "descripcion",
+    "nivel_verificacion",
+    "fuente_ids"
+   ]
+  },
+  "iniciativas": {
+   "prefijo": "INI",
+   "formulario": "iniciativa",
+   "columnas": [
+    "id",
+    "nombre",
+    "actor_id",
+    "tipo",
+    "descripcion",
+    "estado",
+    "fecha_inicio",
+    "territorio",
+    "ods",
+    "tema",
+    "esfera",
+    "origen",
+    "fuente_ids",
+    "nivel_verificacion",
+    "fecha_revision"
+   ],
+   "obligatorias": [
+    "id",
+    "nombre",
+    "actor_id",
+    "nivel_verificacion",
+    "fecha_revision"
+   ],
+   "vocabulario": {
+    "tipo": "tipo_iniciativa",
+    "estado": "estado_iniciativa",
+    "ods": "ods",
+    "nivel_verificacion": "nivel",
+    "origen": "origen",
+    "esfera": "esfera"
+   },
+   "referencias": {
+    "actor_id": "actores",
+    "fuente_ids": "fuentes"
+   },
+   "fechas": [
+    "fecha_inicio",
+    "fecha_revision"
+   ],
+   "exige_origen": true,
+   "vista": [
+    "id",
+    "nombre",
+    "actor_id",
+    "estado",
+    "territorio",
+    "esfera",
+    "ods",
+    "nivel_verificacion",
+    "fuente_ids"
+   ]
+  },
+  "capacidades": {
+   "prefijo": "CAP",
+   "formulario": "capacidad",
+   "columnas": [
+    "id",
+    "actor_id",
+    "capacidad",
+    "categoria",
+    "esfera",
+    "origen",
+    "ods",
+    "iniciativa_ids",
+    "fuente_ids",
+    "nivel_verificacion",
+    "fecha_revision"
+   ],
+   "obligatorias": [
+    "id",
+    "actor_id",
+    "capacidad",
+    "nivel_verificacion",
+    "fecha_revision"
+   ],
+   "vocabulario": {
+    "categoria": "categoria_capacidad",
+    "ods": "ods",
+    "nivel_verificacion": "nivel",
+    "origen": "origen",
+    "esfera": "esfera"
+   },
+   "referencias": {
+    "actor_id": "actores",
+    "iniciativa_ids": "iniciativas",
+    "fuente_ids": "fuentes"
+   },
+   "fechas": [
+    "fecha_revision"
+   ],
+   "exige_origen": true,
+   "vista": [
+    "id",
+    "actor_id",
+    "capacidad",
+    "categoria",
+    "esfera",
+    "ods",
+    "nivel_verificacion",
+    "fuente_ids"
+   ]
+  },
+  "necesidades": {
+   "prefijo": "NEC",
+   "formulario": "necesidad",
+   "columnas": [
+    "id",
+    "territorio",
+    "necesidad",
+    "tema",
+    "esfera",
+    "origen",
+    "ods",
+    "fuente_ids",
+    "nivel_verificacion",
+    "fecha_revision"
+   ],
+   "obligatorias": [
+    "id",
+    "territorio",
+    "necesidad",
+    "nivel_verificacion",
+    "fecha_revision"
+   ],
+   "vocabulario": {
+    "ods": "ods",
+    "nivel_verificacion": "nivel",
+    "origen": "origen",
+    "esfera": "esfera"
+   },
+   "referencias": {
+    "fuente_ids": "fuentes"
+   },
+   "fechas": [
+    "fecha_revision"
+   ],
+   "exige_origen": true,
+   "vista": [
+    "id",
+    "territorio",
+    "necesidad",
+    "tema",
+    "esfera",
+    "ods",
+    "nivel_verificacion",
+    "fuente_ids"
+   ]
+  },
+  "hipotesis": {
+   "prefijo": "HIP",
+   "formulario": "hipotesis",
+   "columnas": [
+    "id",
+    "enunciado",
+    "tipo",
+    "capacidad_ids",
+    "necesidad_ids",
+    "estado",
+    "criterio_validacion",
+    "fecha_registro",
+    "fuente_ids",
+    "notas"
+   ],
+   "obligatorias": [
+    "id",
+    "enunciado",
+    "tipo",
+    "estado",
+    "criterio_validacion",
+    "fecha_registro"
+   ],
+   "vocabulario": {
+    "tipo": "tipo_hipotesis",
+    "estado": "estado_hipotesis"
+   },
+   "referencias": {
+    "capacidad_ids": "capacidades",
+    "necesidad_ids": "necesidades",
+    "fuente_ids": "fuentes"
+   },
+   "fechas": [
+    "fecha_registro"
+   ],
+   "exige_origen": false,
+   "vista": [
+    "id",
+    "enunciado",
+    "tipo",
+    "estado",
+    "criterio_validacion",
+    "fecha_registro"
+   ]
+  },
+  "solicitudes": {
+   "prefijo": "SOL",
+   "formulario": null,
+   "columnas": [
+    "id",
+    "codigo_portal",
+    "fecha_ingreso",
+    "entidad",
+    "actor_id",
+    "tema",
+    "estado",
+    "fecha_limite",
+    "fecha_respuesta",
+    "tipo_respuesta",
+    "fuente_ids",
+    "observaciones"
+   ],
+   "obligatorias": [
+    "id",
+    "codigo_portal",
+    "fecha_ingreso",
+    "entidad",
+    "estado"
+   ],
+   "vocabulario": {
+    "estado": "estado_solicitud",
+    "tipo_respuesta": "tipo_respuesta"
+   },
+   "referencias": {
+    "actor_id": "actores",
+    "fuente_ids": "fuentes"
+   },
+   "fechas": [
+    "fecha_ingreso",
+    "fecha_limite",
+    "fecha_respuesta"
+   ],
+   "exige_origen": false,
+   "vista": [
+    "codigo_portal",
+    "fecha_ingreso",
+    "entidad",
+    "estado",
+    "plazo_estimado",
+    "tipo_respuesta",
+    "amparo_hasta_estimado"
+   ]
+  }
+ }
+}

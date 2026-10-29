@@ -1,0 +1,26 @@
+[
+ {
+  "id": "SRC-0001",
+  "titulo": "Ord. AMRBB N° 108/2026 (respuesta a solicitud MA036T0000031)",
+  "organismo_emisor": "Asociación de Municipalidades de la Región del Biobío",
+  "url": "",
+  "tipo": "documento_oficial",
+  "fecha_publicacion": "2026-10-27",
+  "fecha_acceso": "2026-10-28",
+  "archivo_respaldo": "repositorio_privado:AMRBB_Ord108_2026.pdf",
+  "licencia_uso": "Información pública (Ley 20.285)",
+  "observaciones": "Recibido por correo del Portal de Transparencia. El texto cita también MA036T0000028 y MA036T0000030: confirmar con la AMRBB."
+ },
+ {
+  "id": "SRC-0002",
+  "titulo": "Acuse de recibo solicitud MA036T0000031",
+  "organismo_emisor": "Asociación de Municipalidades de la Región del Biobío",
+  "url": "",
+  "tipo": "documento_oficial",
+  "fecha_publicacion": "2026-10-16",
+  "fecha_acceso": "2026-10-28",
+  "archivo_respaldo": "repositorio_privado:AMRBB_Acuse_MA036T0000031.pdf",
+  "licencia_uso": "Información pública (Ley 20.285)",
+  "observaciones": "Contiene datos personales del solicitante: no publicar el PDF."
+ }
+]

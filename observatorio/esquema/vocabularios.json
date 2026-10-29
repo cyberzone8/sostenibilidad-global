@@ -1,0 +1,126 @@
+{
+  "nivel": [
+    "N0",
+    "N1",
+    "N2",
+    "N3"
+  ],
+  "tipo_fuente": [
+    "documento_oficial",
+    "sitio_institucional",
+    "norma",
+    "dato_abierto",
+    "academico",
+    "prensa",
+    "otro"
+  ],
+  "tipo_actor": [
+    "gobierno_regional",
+    "servicio_publico",
+    "municipalidad",
+    "asociacion_municipios",
+    "universidad",
+    "empresa",
+    "organizacion_social",
+    "otro"
+  ],
+  "ambito": [
+    "regional",
+    "provincial",
+    "comunal",
+    "nacional"
+  ],
+  "tipo_relacion": [
+    "convenio",
+    "financia",
+    "coordina",
+    "colabora",
+    "participa_en",
+    "regula",
+    "provee_datos"
+  ],
+  "estado_iniciativa": [
+    "vigente",
+    "finalizada",
+    "en_diseno",
+    "desconocido"
+  ],
+  "tipo_iniciativa": [
+    "programa",
+    "proyecto",
+    "convenio",
+    "mesa_de_trabajo",
+    "politica",
+    "otro"
+  ],
+  "categoria_capacidad": [
+    "tecnica",
+    "territorial",
+    "financiera",
+    "normativa",
+    "datos",
+    "gobernanza",
+    "otra"
+  ],
+  "tipo_hipotesis": [
+    "articulacion",
+    "brecha",
+    "oportunidad"
+  ],
+  "estado_hipotesis": [
+    "pendiente",
+    "validada",
+    "descartada"
+  ],
+  "ods": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+    "11",
+    "12",
+    "13",
+    "14",
+    "15",
+    "16",
+    "17"
+  ],
+  "perfil_rt": [
+    "+R+T",
+    "+R-T",
+    "-R+T",
+    "-R-T"
+  ],
+  "esfera": [
+    "tecnosfera",
+    "psicosfera",
+    "mixta"
+  ],
+  "origen": [
+    "fuente_publica",
+    "programa_liderazgo",
+    "aporte_comunitario",
+    "mapa_osm"
+  ],
+  "estado_solicitud": [
+    "en_plazo",
+    "prorrogada",
+    "respondida",
+    "vencida_sin_respuesta",
+    "amparo_presentado",
+    "cerrada"
+  ],
+  "tipo_respuesta": [
+    "entrega_total",
+    "entrega_parcial",
+    "no_obra_en_poder",
+    "derivacion",
+    "denegacion"
+  ]
+}

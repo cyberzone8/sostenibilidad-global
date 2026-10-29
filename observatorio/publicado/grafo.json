@@ -1,0 +1,10 @@
+{
+ "nodos": [
+  {
+   "id": "ACT-0001",
+   "nombre": "Asociación de Municipalidades de la Región del Biobío",
+   "tipo": "asociacion_municipios"
+  }
+ ],
+ "aristas": []
+}
