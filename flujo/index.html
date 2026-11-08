@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Flujo de roles de IA para captar clientes</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#1c1b1a;--panel:#252321;--ink:#ece8e0;--mute:#a8a29a;--gold:#e8a838;--line:#3a3733;--code:#171615;color-scheme:dark light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#f6f3ec;--panel:#ebe6db;--ink:#24211d;--mute:#6a645b;--gold:#a8680a;--line:#d6cfc0;--code:#fffdf8}}
+:root[data-theme="light"]{--bg:#f6f3ec;--panel:#ebe6db;--ink:#24211d;--mute:#6a645b;--gold:#a8680a;--line:#d6cfc0;--code:#fffdf8}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Figtree,system-ui,sans-serif;line-height:1.6;font-size:16px}
+main{max-width:920px;margin:0 auto;padding:48px 20px 72px}
+h1{font-family:"Cormorant Garamond",Georgia,serif;font-weight:600;font-size:clamp(2.2rem,6vw,3.4rem);line-height:1.05;margin:0 0 14px}
+h2{font-family:"Cormorant Garamond",Georgia,serif;font-weight:600;font-size:1.8rem;margin:56px 0 8px}
+.lead{color:var(--mute);max-width:62ch;margin:0}
+.rule{border-left:3px solid var(--gold);padding:4px 0 4px 16px;margin:28px 0 0;max-width:62ch}
+.diagram{background:#232220;border:1px solid var(--line);border-radius:6px;padding:20px;overflow-x:auto;margin-top:20px;color:#ece8e0}
+.diagram pre.mermaid{margin:0;min-width:640px;text-align:center}
+.legend{color:var(--mute);font-size:.9rem;margin-top:10px}
+details{border-top:1px solid var(--line)}
+details:last-of-type{border-bottom:1px solid var(--line)}
+summary{cursor:pointer;list-style:none;padding:18px 0;display:flex;gap:16px;align-items:baseline;flex-wrap:wrap}
+summary::-webkit-details-marker{display:none}
+summary:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.n{font-family:"Cormorant Garamond",Georgia,serif;font-size:1.7rem;color:var(--gold);min-width:1.4em}
+.t{font-weight:600;font-size:1.1rem}
+.w{color:var(--mute);font-size:.92rem;margin-left:auto}
+.body{padding:0 0 26px 0}
+.io{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:18px}
+.io h3{margin:0 0 6px;font-size:.95rem;font-weight:600;color:var(--gold)}
+.io p{margin:0;font-size:.97rem}
+pre.prompt{background:var(--code);border:1px solid var(--line);border-radius:4px;padding:16px;margin:0;white-space:pre-wrap;word-break:break-word;font:.88rem/1.55 Figtree,system-ui,sans-serif;color:var(--ink)}
+button{margin-top:10px;background:var(--gold);color:#1c1b1a;border:0;border-radius:4px;padding:9px 16px;font:600 .9rem Figtree,system-ui,sans-serif;cursor:pointer}
+@media (max-width:640px){.io{grid-template-columns:1fr}.w{margin-left:0;width:100%}}
+</style>
+</head>
+<body>
+<main>
+<h1>Seis roles de IA, un solo flujo hacia el cliente que decide</h1>
+<p class="lead">Cada rol recibe algo concreto y entrega algo concreto. Mira el mapa para saber cuándo usar cada uno, y abre cada rol para ver qué debe entrar, qué debe salir y copiar su prompt.</p>
+<p class="rule">Regla que ordena todo el flujo: si algo nuevo no trae un cliente que decide esta semana, va a la lista “después”.</p>
+
+<h2>Mapa del flujo</h2>
+<div class="diagram">
+<pre class="mermaid">
+%%{init: {'theme':'dark','themeVariables':{'primaryColor':'#2e2b28','primaryTextColor':'#ece8e0','primaryBorderColor':'#e8a838','lineColor':'#a8a29a','fontFamily':'Figtree, sans-serif'}}}%%
+flowchart TD
+  U([Una sola vez]) --> R2["Rol 2<br/>Estratega de nicho y oferta"]
+  R2 -->|"1 nicho + 3 productos con precio en UF"| R1
+  D([Cada domingo]) --> R1["Rol 1<br/>Guardián del foco"]
+  R1 -->|"Máximo 3 objetivos de la semana"| R3["Rol 3<br/>Mapeador de decisores"]
+  R3 -->|"10 contactos por rol, con pregunta de apertura"| R4["Rol 4<br/>Redactor comercial"]
+  R4 -->|"Mensaje con invitación a 15 minutos"| C{"¿Acepta la conversación?"}
+  C -->|"No: siguiente contacto"| R3
+  C -->|"Sí: conversación de 15 minutos"| R5["Rol 5<br/>Cotizador y defensor del precio"]
+  R5 -->|"3 opciones en UF + respuesta a la objeción"| K{"¿Cierra?"}
+  K -->|"Sí: cliente y entrega"| R6
+  K -->|"No: registrar el motivo"| R6
+  V([Cada viernes]) --> R6["Rol 6<br/>Analista de embudo"]
+  R6 -->|"Paso más débil + 1 acción"| R1
+  R6 -.->|"Revisión mensual si el nicho no responde"| R2
+  classDef rol fill:#2e2b28,stroke:#e8a838,color:#ece8e0;
+  classDef tiempo fill:#1c1b1a,stroke:#a8a29a,color:#a8a29a;
+  class R1,R2,R3,R4,R5,R6 rol;
+  class U,D,V tiempo;
+</pre>
+</div>
+<p class="legend">Los óvalos marcan cuándo se activa el flujo. Los rombos son decisiones. El texto sobre cada flecha es lo que debe salir de un rol para entrar al siguiente.</p>
+
+<h2>Roles: entra, sale y prompt</h2>
+<p class="lead">Abre un rol y copia su prompt en un chat nuevo.</p>
+
+<div style="margin-top:20px">
+
+<details>
+<summary><span class="n">2</span><span class="t">Estratega de nicho y oferta</span><span class="w">Una vez, revisión cada mes</span></summary>
+<div class="body">
+<div class="io">
+<div><h3>Entra</h3><p>Tu experiencia (18 años), los sectores donde trabajas, lo que ya probaste y vendiste.</p></div>
+<div><h3>Sale</h3><p>Un nicho para 90 días con su dolor que se repite, una parrilla de 3 productos (entrada, medio, fondo) con precio en UF, y la “píldora”: la solución corta que entregas.</p></div>
+</div>
+<pre class="prompt">Eres estratega de nicho y oferta. Tengo 18 años de experiencia como docente, investigador e ingeniero en calidad. Trabajo en salud comunitaria, capacitación (OTEC), servicios de salud, CESFAM y colegios. Uso IA para crear productos en poco tiempo. No tengo nicho definido.
+Hazme una pregunta a la vez hasta que podamos decidir:
+a) Un solo nicho para los próximos 90 días, con el dolor que se repite en él.
+b) Una parrilla de 3 productos: uno de entrada, uno medio y uno de fondo, con precio en UF a 1 UF por hora.
+c) La “píldora”: qué solución concreta y corta entrego.
+No inventes cifras de mercado; si falta un dato, escribe [A VALIDAR]. Antes de cerrar cada decisión, pregúntame: ¿quién paga esto y por qué le duele?</pre>
+<button type="button">Copiar prompt</button>
+</div>
+</details>
+
+<details>
+<summary><span class="n">1</span><span class="t">Guardián del foco semanal</span><span class="w">Domingo y cada mañana</span></summary>
+<div class="body">
+<div class="io">
+<div><h3>Entra</h3><p>Todo lo pendiente de la semana, sin filtrar, y la meta de ingreso constante.</p></div>
+<div><h3>Sale</h3><p>Máximo 3 objetivos que te acercan a hablar con quien decide y paga, una lista “después” sin culpa, y un bloque diario de 2 horas para contactar o cotizar antes de crear.</p></div>
+</div>
+<pre class="prompt">Eres mi guardián del foco. Soy gerente de dos organizaciones de capacitación e intermediación, tengo muchas líneas en paralelo y me disperso. Mi meta es una entrada de dinero constante y clientes que me recomienden.
+Cada domingo te pasaré todo lo que tengo pendiente. Tú:
+1. Me obligas a elegir máximo 3 objetivos de la semana, y cada uno debe acercarme a hablar con alguien que decide y paga.
+2. Todo lo demás lo mandas a una lista "después", sin culpa.
+3. Me das un bloque diario de 2 horas solo para contactar o cotizar, antes de cualquier tarea de crear.
+Si te propongo crear un producto, taller o sistema nuevo, respóndeme: "¿Esto trae un cliente que decide esta semana? Si no, va a la lista después".
+Un turno = una pregunta. Máximo 80 palabras por mensaje.</pre>
+<button type="button">Copiar prompt</button>
+</div>
+</details>
+
+<details>
+<summary><span class="n">3</span><span class="t">Mapeador de decisores</span><span class="w">Cada semana</span></summary>
+<div class="body">
+<div class="io">
+<div><h3>Entra</h3><p>El nicho elegido y los tipos de organización a los que apuntas (OTEC, CESFAM, servicio de salud, colegio).</p></div>
+<div><h3>Sale</h3><p>Por cada tipo: quién decide y quién influye, qué le duele en su lenguaje, dónde encontrarlo y una pregunta de apertura. Más una lista de 10 contactos por rol, ordenados por probabilidad de pago.</p></div>
+</div>
+<pre class="prompt">Eres mapeador de decisores. Mi nicho es [NICHO]. Quiero llegar a quienes deciden y pagan, no a quienes solo se interesan.
+Por cada tipo de organización (OTEC, CESFAM, servicio de salud, colegio) dime:
+1. Qué cargo decide y qué cargo influye.
+2. Qué le duele a ese cargo, en su lenguaje.
+3. Dónde lo encuentro (LinkedIn, correo institucional, radio, red de contactos).
+4. Una pregunta de apertura para una conversación de 15 minutos.
+Dame una lista de 10 contactos por semana, por rol y no por nombre, y ordénalos de mayor a menor probabilidad de pago. No inventes datos de personas.</pre>
+<button type="button">Copiar prompt</button>
+</div>
+</details>
+
+<details>
+<summary><span class="n">4</span><span class="t">Redactor comercial</span><span class="w">Cada vez que contactas</span></summary>
+<div class="body">
+<div class="io">
+<div><h3>Entra</h3><p>Un destinatario (por rol) y el dolor que tiene.</p></div>
+<div><h3>Sale</h3><p>Tres piezas juntas: WhatsApp de 3 a 4 líneas, correo o LinkedIn de 5 a 6 líneas, guion de radio o video de 30 segundos. Todas cierran con invitación a 15 minutos y fecha concreta.</p></div>
+</div>
+<pre class="prompt">Eres redactor comercial. Escribes en lenguaje simple, del cliente, sin jerga académica. Mi promesa base: "tienes un problema que se repite aunque ya intentaste; no es falta de esfuerzo, es que nadie te mostró qué lo sostiene".
+Cuando te dé un destinatario y su dolor, entrégame juntos:
+a) WhatsApp de 3 a 4 líneas.
+b) LinkedIn o correo de 5 a 6 líneas.
+c) Guion de radio o video de 30 segundos.
+Cierra siempre con una invitación a 15 minutos y una fecha concreta. No vendas el curso ni expliques el método; vende el dolor ordenado.</pre>
+<button type="button">Copiar prompt</button>
+</div>
+</details>
+
+<details>
+<summary><span class="n">5</span><span class="t">Cotizador y defensor del precio</span><span class="w">Cuando hay un cliente interesado</span></summary>
+<div class="body">
+<div class="io">
+<div><h3>Entra</h3><p>La descripción del cliente que aceptó la conversación y lo que dijo que le duele.</p></div>
+<div><h3>Sale</h3><p>Tres opciones (esencial, completa recomendada, con acompañamiento), cada una con tabla de ítem, horas y valor en UF, más la objeción probable con tu respuesta en 2 frases. Si dudas y quieres regalar el trabajo, te muestra las horas reales que eso cuesta.</p></div>
+</div>
+<pre class="prompt">Eres mi cotizador y defensor del precio. Me cuesta cobrar y suelo trabajar gratis o a bajo costo.
+Valor hora: 1 UF. Día de terreno, taller o devolución: 8 UF. IVA 19% en UF. Pago 50% al inicio y 50% a la entrega. Validez 15 días. Nunca uses pesos.
+Cuando te describa un cliente, entrégame 3 opciones (esencial, completa recomendada, con acompañamiento), cada una con tabla de ítem, horas y UF, más la objeción probable y mi respuesta en 2 frases.
+Si te digo "mejor se lo hago gratis" o "le rebajo", respóndeme con las horas reales que eso me cuesta y pregúntame qué recibo a cambio.</pre>
+<button type="button">Copiar prompt</button>
+</div>
+</details>
+
+<details>
+<summary><span class="n">6</span><span class="t">Analista de embudo</span><span class="w">Cada viernes</span></summary>
+<div class="body">
+<div class="io">
+<div><h3>Entra</h3><p>Cuatro números de la semana: personas contactadas, conversaciones de 15 minutos, propuestas enviadas y clientes cerrados.</p></div>
+<div><h3>Sale</h3><p>La conversión entre cada paso, el paso donde se cae el embudo y una sola acción para la próxima semana. Esa acción vuelve al Guardián del foco el domingo.</p></div>
+</div>
+<pre class="prompt">Eres analista de embudo. Cada viernes te daré: personas contactadas, conversaciones de 15 minutos, propuestas enviadas y clientes cerrados.
+Calcula la conversión entre cada paso y dime dónde se cae. Referencia: mi taller de octubre tuvo 4 asistentes de un grupo de unas 100 personas y 0 en el segundo día, con 16 horas de preparación.
+Dime cuál es el paso más débil y una sola acción para la próxima semana. No inventes cifras; si falta el dato, [A VALIDAR].</pre>
+<button type="button">Copiar prompt</button>
+</div>
+</details>
+
+</div>
+</main>
+<script>
+document.querySelectorAll('details').forEach(function(d){
+  var b=d.querySelector('button'),p=d.querySelector('pre.prompt');
+  if(!b||!p)return;
+  b.addEventListener('click',function(){
+    var txt=p.textContent,done=function(){b.textContent='Prompt copiado';setTimeout(function(){b.textContent='Copiar prompt'},1800)};
+    try{
+      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(done,fallback);}else{fallback();}
+    }catch(e){fallback();}
+    function fallback(){
+      try{var r=document.createRange();r.selectNodeContents(p);var s=window.getSelection();s.removeAllRanges();s.addRange(r);document.execCommand('copy');s.removeAllRanges();done();}catch(e){b.textContent='Selecciona y copia a mano';}
+    }
+  });
+});
+</script>
+
+<!--claude-mermaid-runtime-begin:3477-->
+<style>.mermaid-diagram{margin-block:4px}.mermaid-diagram svg{display:block;margin:0 auto;max-width:100%;height:auto}</style>
+<script src="/_runtime/mermaid-11.16.1.min.js"></script>
+<script>(function(){
+var CFG={"palettes":{"light":{"surface":"#f4efe4","text":"#42392e","line":"#8a7f6d","border":"#7a6c52","bg":"#fffdf8"},"dark":{"surface":"#262b34","text":"#f2f3f5","line":"#a8adb8","border":"#9aa4b8","bg":"#1f232b"}}};
+if(typeof mermaid==='undefined')return;
+var pres=Array.prototype.slice.call(document.querySelectorAll('pre.mermaid')).filter(function(p){if(p.hasAttribute('data-claude-mermaid-claimed'))return false;p.setAttribute('data-claude-mermaid-claimed','1');return true;});
+if(!pres.length)return;
+var mq=window.matchMedia?window.matchMedia('(prefers-color-scheme: dark)'):null;
+var root=document.documentElement;
+var items=pres.map(function(pre){
+var mount=document.createElement('div');mount.className='mermaid-diagram';
+return {pre:pre,mount:mount,src:pre.textContent||''};
+});
+var seq=0;
+var renderGen=0;
+var lastKey='';
+function pageBg(fallback){
+var els=[document.body,document.documentElement];
+for(var i=0;i<els.length;i++){
+var c=els[i]&&getComputedStyle(els[i]).backgroundColor;
+if(c&&c!=='transparent'&&c!=='rgba(0, 0, 0, 0)')return c;
+}
+return fallback;
+}
+function render(){
+var theme=root.getAttribute('data-theme');
+var dark=theme==='dark'||(!!(mq&&mq.matches)&&theme!=='light');
+var pal=dark?CFG.palettes.dark:CFG.palettes.light;
+var bg=pageBg(pal.bg);
+var key=(dark?'d':'l')+'|'+bg;
+if(key===lastKey)return;
+lastKey=key;
+var gen=++renderGen;
+var font=getComputedStyle(document.body).fontFamily||'sans-serif';
+var nat={useMaxWidth:false};
+mermaid.initialize({
+startOnLoad:false,securityLevel:'strict',theme:'base',
+flowchart:nat,sequence:nat,er:nat,state:nat,class:nat,pie:nat,
+gantt:nat,journey:nat,timeline:nat,gitGraph:nat,mindmap:nat,xyChart:nat,
+quadrantChart:nat,sankey:nat,c4:nat,requirement:nat,block:nat,
+packet:nat,kanban:nat,architecture:nat,radar:nat,
+themeVariables:{background:bg,mainBkg:pal.surface,primaryColor:pal.surface,
+primaryTextColor:pal.text,lineColor:pal.line,primaryBorderColor:pal.border,
+nodeBorder:pal.border,clusterBorder:pal.border,edgeLabelBackground:bg,
+clusterBkg:'rgba(127,127,127,0.07)',titleColor:pal.text,
+darkMode:dark,rowOdd:bg,rowEven:'rgba(127,127,127,0.07)',
+attributeBackgroundColorOdd:bg,attributeBackgroundColorEven:'rgba(127,127,127,0.07)',
+fontSize:'16px',fontFamily:font},
+themeCSS:'.node rect, .node circle, .node polygon, .node path, .cluster rect { stroke-width: 2px; }'
+});
+items.forEach(function(it){
+var id='claude-mermaid-'+seq++;
+mermaid.render(id,it.src).then(function(r){
+if(gen!==renderGen)return;
+var prev=it.pre.previousElementSibling;
+if(prev&&prev.className==='mermaid-diagram'&&prev!==it.mount)return;
+it.mount.innerHTML=r.svg;
+if(!it.mount.parentNode)it.pre.parentNode.insertBefore(it.mount,it.pre);
+it.pre.style.display='none';
+},function(){
+var scratch=document.getElementById(id);
+if(scratch)scratch.parentNode.removeChild(scratch);
+scratch=document.getElementById('d'+id);
+if(scratch)scratch.parentNode.removeChild(scratch);
+if(gen!==renderGen)return;
+if(it.mount.parentNode)it.mount.parentNode.removeChild(it.mount);
+it.pre.style.display='';
+});
+});
+}
+render();
+if(mq&&mq.addEventListener)mq.addEventListener('change',render);
+if(typeof MutationObserver!=='undefined')new MutationObserver(render).observe(root,{attributes:true,attributeFilter:['data-theme']});
+})();</script>
+<!--claude-mermaid-runtime-end-->
+</body>
+</html>
